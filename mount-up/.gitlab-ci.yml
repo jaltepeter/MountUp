@@ -1,0 +1,20 @@
+image: "ruby:2.5"
+before_script:
+  - apt-get update -qy
+  - apt-get -y install zip unzip
+
+stages:
+  - build
+
+build:
+  stage: build
+  script:
+    - zip mount-up.zip -r mount-up -x ".*"
+  artifacts:
+    name: mount-up
+    when: on_success
+    paths:
+      - mount-up.zip
+  when: on_success
+  only:
+    - tags
