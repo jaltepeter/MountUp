@@ -1,7 +1,7 @@
 {
     "name": "mount-up",
-    "title": "Mount Up",
-    "description": "Allows tokens to be ridden by other tokens",
+    "title": "Mount Up!",
+    "description": "Allows tokens to be ridden or carried by other tokens",
     "author": "Brunhine",
     "version": "0.1",
     "minimumCoreVersion": "0.5.5",
