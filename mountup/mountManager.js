@@ -1,6 +1,6 @@
 import { RideLinks } from "./rideLinks.js"
 import { Chatter } from "./chatter.js"
-import { findTokenById, warn } from "./utils.js"
+import { findTokenById, warn, socketName, actionMode } from "./utils.js"
 
 /**
  * Provides all of the functionality for interacting with the game (tokens, canvas, etc.)
@@ -10,14 +10,21 @@ export class MountManager {
     /**
      * Called when the mount up button was clicked on a token's HUD
      * Determines if conditions are appropriate for mounting, and executes the mount if so
-     * @param {Object} token - The token from which the button was clicked on the hud
+     * @param {Object} data - The token from which the button was clicked on the hud
      */
-    static mountUp(token) {
-        if (this.isMount(token._id)) {
-            this.restoreRiderSize(token._id);
-            let rider = findTokenById(RideLinks.getRiderData(token._id).riderId);
-            Chatter.dismountMessage(rider.data._id, token._id);
-            RideLinks.breakRideLink(token._id);
+    static mountUp(data) {
+        if (this.isMount(data._id)) {
+            this.restoreRiderSize(data._id);
+            let rider = findTokenById(RideLinks.getRiderData(data._id).riderId);
+            Chatter.dismountMessage(rider.data._id, data._id);
+            if (data.isGM) {
+                RideLinks.breakRideLink(data._id);
+            } else {
+                game.socket.emit(socketName, {
+                    mode: actionMode.BreakLink,
+                    mountId: data._id
+                });
+            }
             return true;
         }
 
@@ -29,17 +36,25 @@ export class MountManager {
         } else if (targets.length > 1) {
             warn("Only one rider per mount please. (for now)");
             return false;
-        } else if (targets[0].id == token._id) {
+        } else if (targets[0].id == data._id) {
             warn("You can't mount yourself.");
             return false;
         } else {
             let target = targets[0];
             let rider = findTokenById(target.id);
-            let mount = findTokenById(token._id);
+            let mount = findTokenById(data._id);
 
-            RideLinks.createRideLink(rider, mount);
+            if (data.isGM) {
+                RideLinks.createRideLink(rider, mount);
+            } else {
+                game.socket.emit(socketName, {
+                    mode: actionMode.CreateLink,
+                    riderId: rider.id,
+                    mountId: mount.id
+                });
+            }
             this.moveRiderToMount(rider, mount);
-            Chatter.mountMessage(target.id, token._id)
+            Chatter.mountMessage(target.id, data._id)
             return true;
         }
     }
