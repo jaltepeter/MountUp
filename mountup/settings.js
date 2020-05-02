@@ -12,33 +12,33 @@ export class Settings {
      * Returns true if chat messages should be sent
      */
     static shouldChat() {
-        return game.settings.get("mount-up", "should-chat");
+        return game.settings.get("mountup", "should-chat");
     }
     
     /**
      * Returns the user specified mounting message
      */
     static getMountMessage() {
-        return game.settings.get("mount-up", "mount-message");
+        return game.settings.get("mountup", "mount-message");
     }
 
     /**
      * Returns the user specified dismounting message
      */
     static getDismountMessage() {
-        return game.settings.get("mount-up", "dismount-message");
+        return game.settings.get("mountup", "dismount-message");
     }
 
     static resetLinksIfNeeded(){
-        if (game.settings.get("mount-up", "reset-links") == true) {
+        if (game.settings.get("mountup", "reset-links") == true) {
             RideLinks.breakAllRideLinks();
-            game.settings.set("mount-up", "reset-links", false);
+            game.settings.set("mountup", "reset-links", false);
             info(`All "Mount Up" links have been deleted`);
         }
     }
 
     static getIcon(){
-        switch ( game.settings.get("mount-up", "icon")){
+        switch ( game.settings.get("mountup", "icon")){
             case 0: return "fa-horse";
             case 1: return "fa-people-carry";
             case 2: return "fa-hands";
@@ -53,7 +53,7 @@ export class Settings {
      */
     static registerSettings = function () {
 
-        game.settings.register("mount-up", "icon", {
+        game.settings.register("mountup", "icon", {
             name: "Icon",
             //hint: "Which icon to use.",
             scope: "world",
@@ -73,7 +73,7 @@ export class Settings {
         /**
          * Whether or not chat messages should be sent
          */
-        game.settings.register("mount-up", "should-chat", {
+        game.settings.register("mountup", "should-chat", {
             name: "Send messages to chat",
             hint: "Should chat messages about mounting/carrying and dismounting/dropping be sent to chat?",
             scope: "world",
@@ -82,7 +82,7 @@ export class Settings {
             default: true
         });
 
-        game.settings.register("mount-up", "reset-links", {
+        game.settings.register("mountup", "reset-links", {
             name: "Reset Links",
             hint: "Clear all currently defined links from the game (use if something has gone wrong, or you have deleted some scenes that may have linked mounts)",
             scope: "world",
@@ -95,7 +95,7 @@ export class Settings {
         /**
          * The mounting message
          */
-        game.settings.register("mount-up", "mount-message", {
+        game.settings.register("mountup", "mount-message", {
             name: "Mount Message Format",
             hint: "How mounting chat messages should be formatted if enabled. (use {mount} and {dismount} for name substitution)",
             scope: "world",
@@ -107,7 +107,7 @@ export class Settings {
         /**
          * The dismounting message
          */
-        game.settings.register("mount-up", "dismount-message", {
+        game.settings.register("mountup", "dismount-message", {
             name: "Mount Message Format",
             hint: "How dismounting chat messages should be formatted if enabled. (use {mount} and {dismount} for name substitution)",
             scope: "world",
@@ -119,7 +119,7 @@ export class Settings {
         /**
          * Debug setting
          */
-        game.settings.register("mount-up", "debug", {
+        game.settings.register("mountup", "debug", {
             name: "Debug Mode",
             hint: "Debug Mode",
             scope: "world",
@@ -131,7 +131,7 @@ export class Settings {
         /**
          * Ride links
          */
-        game.settings.register("mount-up", "ride-links", {
+        game.settings.register("mountup", "ride-links", {
             scope: "world",
             config: false,
             type: Object,

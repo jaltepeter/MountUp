@@ -7,7 +7,7 @@ export class RideLinks {
      * Returns the current ride links
      */
     static get() {
-        let links = game.settings.get("mount-up", "ride-links");
+        let links = game.settings.get("mountup", "ride-links");
         return links;
     }
 
@@ -16,7 +16,7 @@ export class RideLinks {
      * @param {Object} links - The new set of links to be remembered
      */
     static set(links) {
-        game.settings.set("mount-up", "ride-links", links);
+        game.settings.set("mountup", "ride-links", links);
     }
 
     /**

@@ -9,12 +9,12 @@ stages:
 build:
   stage: build
   script:
-    - zip mount-up.zip -r mount-up -x ".*"
+    - zip mountup.zip -r mountup -x ".*"
   artifacts:
-    name: mount-up
+    name: mountup
     when: on_success
     paths:
-      - mount-up.zip
+      - mountup.zip
   when: on_success
   only:
     - tags

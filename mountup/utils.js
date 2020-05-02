@@ -6,7 +6,7 @@ import {modName} from "./settings.js"
  * @param {Boolean} force If True, force the message to the console, regardless of debug mode
  */
 export function logMessage(message, force = false){
-    if (game.settings.get("mount-up", "debug") || force){
+    if (game.settings.get("mountup", "debug") || force){
         console.log(`${modName} | ${message}`);
     }
 }
