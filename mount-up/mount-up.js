@@ -1,9 +1,9 @@
-import { registerSettings } from "./settings.js"
+import { Settings } from "./settings.js"
 import { MountHud } from "./mountHud.js"
 import { MountManager } from "./mountManager.js";
 
 Hooks.on('ready', () => {
-    registerSettings();
+    Settings.registerSettings();
 });
 
 Hooks.on('renderTokenHUD', (app, html, data) => {
