@@ -1,9 +1,9 @@
 {
     "name": "mount-up",
     "title": "Mount Up!",
-    "description": "Allows tokens to be ridden or carried by other tokens",
+    "description": "Allows tokens to carry or be carried by other tokens. This is completely system agnostic, and fully customizable to fit right into your game.",
     "author": "Brunhine",
-    "version": "0.1",
+    "version": "1.0",
     "minimumCoreVersion": "0.5.5",
     "compatibleCoreVersion": "0.5.5",
     "esmodules": [
@@ -12,5 +12,5 @@
     "scripts": [],
     "url": "https://gitlab.com/brunhine/foundry-mountup",
     "manifest": "https://gitlab.com/brunhine/foundry-mountup/raw/master/mount-up/module.json",
-    "download": "https://gitlab.com/brunhine/foundry-mountup/-/jobs/artifacts/0.1/raw/mount-up.zip?job=build"
+    "download": "https://gitlab.com/brunhine/foundry-mountup/-/jobs/artifacts/1.0/raw/mount-up.zip?job=build"
 }
