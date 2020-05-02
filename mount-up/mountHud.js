@@ -1,4 +1,5 @@
 import { MountManager } from "./mountManager.js"
+import { Settings } from "./settings.js";
 
 /**
  * Functinality class for managing the token HUD
@@ -13,7 +14,7 @@ export class MountHud {
      * @param {Object} data - The HUD Data
      */
     static async addMountButton(app, html, data) {
-        let button = $(`<div class="control-icon mount-up"><i class="fas fa-horse"></i></div>`);
+        let button = $(`<div class="control-icon mount-up"><i class="fas ${Settings.getIcon()}"></i></div>`);
 
         if (MountManager.isMount(data._id)) {
             this.addSlash(button);

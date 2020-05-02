@@ -14,7 +14,7 @@ export class Settings {
     static shouldChat() {
         return game.settings.get("mount-up", "should-chat");
     }
-
+    
     /**
      * Returns the user specified mounting message
      */
@@ -37,10 +37,38 @@ export class Settings {
         }
     }
 
+    static getIcon(){
+        switch ( game.settings.get("mount-up", "icon")){
+            case 0: return "fa-horse";
+            case 1: return "fa-people-carry";
+            case 2: return "fa-hands";
+            case 3: return "fa-hand-holding";
+            case 4: return "fa-fist-raised";
+            case 5: return "fa-handshake";
+        }
+    }
+
     /**
      * Registers all of the necessary game settings for the module
      */
     static registerSettings = function () {
+
+        game.settings.register("mount-up", "icon", {
+            name: "Icon",
+            //hint: "Which icon to use.",
+            scope: "world",
+            config: true,
+            type: Number,
+            default: 0,
+            choices: [
+                "Horse",
+                "People Carrying",
+                "Hands",
+                "Open Hand",
+                "Fist",
+                "Handshake"
+            ]
+        });
 
         /**
          * Whether or not chat messages should be sent
@@ -55,7 +83,7 @@ export class Settings {
         });
 
         game.settings.register("mount-up", "reset-links", {
-            name: "Reset Links ** WILL FORCE RELOAD**",
+            name: "Reset Links",
             hint: "Clear all currently defined links from the game (use if something has gone wrong, or you have deleted some scenes that may have linked mounts)",
             scope: "world",
             config: true,

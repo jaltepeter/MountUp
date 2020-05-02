@@ -14,8 +14,8 @@ export class MountManager {
      */
     static mountUp(token) {
         if (this.isMount(token._id)) {
-            this.restoreRiderSize(token._id);            
-            let rider = findTokenById( RideLinks.getRiderData(token._id).riderId);
+            this.restoreRiderSize(token._id);
+            let rider = findTokenById(RideLinks.getRiderData(token._id).riderId);
             Chatter.dismountMessage(token._id, rider.data._id);
             RideLinks.breakRideLink(token._id);
             return true;
