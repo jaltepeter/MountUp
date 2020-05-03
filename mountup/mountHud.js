@@ -13,17 +13,49 @@ export class MountHud {
      * @param {Object} html - the html data
      * @param {Object} data - The HUD Data
      */
-    static async addMountButton(app, html, data) {
+    static async renderMountHud(app, html, data) {
+
+        let targets = canvas.tokens.controlled;
+        let target = targets[0];
+
+        // if exactly 0 selected and hud is from any mount then show the dismount button
+        if (targets.length == 0 && MountManager.isaMount(data._id)) {
+            this.addMountButton(html, data, true);
+        }
+        // if exactly 1 is selected
+        else if (targets.length == 1) {
+            // if the hud is from the same as selection
+            if (target.id == data._id) {
+                // AND it is a mount
+                if (MountManager.isaMount(target.id)) {
+                    this.addMountButton(html, data, true);
+                }
+            }
+            // if hud is from its mount show the dismount button
+            else if (MountManager.isRidersMount(target.id, data._id)) {
+                this.addMountButton(html, data, true);
+            }
+            // if the hud is NOT a mount 
+            else if (!MountManager.isaMount(data._id)) {
+                // AND the selected is NOT a rider - show the mount button
+                if (!MountManager.isaRider(target.id) && !MountManager.isAncestor(data._id, target.id)) {
+                    this.addMountButton(html, data);
+                }
+            }
+        }
+    }
+
+    static async addMountButton(html, data, hasSlash = false) {
         let button = $(`<div class="control-icon mount-up"><i class="fas ${Settings.getIcon()}"></i></div>`);
 
-        if (MountManager.isMount(data._id)) {
+        if (hasSlash) {
             this.addSlash(button);
         }
 
         html.find('.col.left').prepend(button);
         button.find('i').click(async (ev) => {
             if (MountManager.mountUp(data)) {
-                if (MountManager.isMount(data._id)) {
+                if (hasSlash) {
                     this.removeSlash(button);
                 } else {
                     this.addSlash(button);

@@ -46,8 +46,18 @@ export class RideLinks {
         this.set(links);
     }
 
-    static breakAllRideLinks(){
+    static breakAllRideLinks() {
         this.set({});
+    }
+
+    static getMountId(riderId) {
+        let links = RideLinks.get();
+        for (const mountId of Object.keys(links)) {
+            if (riderId == links[mountId].riderId) {
+                return mountId;
+            }
+        }
+        return undefined;
     }
 
     /**

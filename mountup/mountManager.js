@@ -1,6 +1,6 @@
 import { RideLinks } from "./rideLinks.js"
 import { Chatter } from "./chatter.js"
-import { findTokenById, warn, socketName, actionMode } from "./utils.js"
+import { findTokenById, warn, socketName, socketAction } from "./utils.js"
 
 /**
  * Provides all of the functionality for interacting with the game (tokens, canvas, etc.)
@@ -13,7 +13,7 @@ export class MountManager {
      * @param {Object} data - The token from which the button was clicked on the hud
      */
     static mountUp(data) {
-        if (this.isMount(data._id)) {
+        if (this.isaMount(data._id)) {
             this.restoreRiderSize(data._id);
             let rider = findTokenById(RideLinks.getRiderData(data._id).riderId);
             Chatter.dismountMessage(rider.data._id, data._id);
@@ -21,7 +21,7 @@ export class MountManager {
                 RideLinks.breakRideLink(data._id);
             } else {
                 game.socket.emit(socketName, {
-                    mode: actionMode.BreakLink,
+                    mode: socketAction.BreakLink,
                     mountId: data._id
                 });
             }
@@ -48,7 +48,7 @@ export class MountManager {
                 RideLinks.createRideLink(rider, mount);
             } else {
                 game.socket.emit(socketName, {
-                    mode: actionMode.CreateLink,
+                    mode: socketAction.CreateLink,
                     riderId: rider.id,
                     mountId: mount.id
                 });
@@ -91,7 +91,7 @@ export class MountManager {
      */
     static deleteToken(token) {
         let links = RideLinks.get();
-        for (const mountId of Object.keys(RideLinks.get())) {
+        for (const mountId of Object.keys(links)) {
 
             if (token._id == mountId || token._id == links[mountId].riderId) {
                 RideLinks.breakRideLink(mountId);
@@ -101,7 +101,22 @@ export class MountManager {
     }
 
     static popAllRiders() {
-        // TODO
+        let links = RideLinks.get();
+        for (const mountId of Object.keys(links)) {
+            this.popRider(mountId, links);
+        }
+    }
+
+    static popRider(mountId, rideLinks = undefined) {
+        if (!rideLinks)
+            rideLinks = RideLinks.get();
+
+        let rider = (rideLinks && rideLinks[mountId] && rideLinks[mountId].riderId) || undefined;
+
+        if (rider) {
+            findTokenById(rideLinks[mountId].riderId).displayToFront();
+            this.popRider(rider);
+        }
     }
 
     /**
@@ -113,7 +128,7 @@ export class MountManager {
     static handleTokenMovement(tokenId, updateData) {
         let links = RideLinks.get();
 
-        if (this.isMount(tokenId)) {
+        if (this.isaMount(tokenId)) {
             let ride = links[tokenId];
 
             // A mount moved, make the rider follow
@@ -127,11 +142,28 @@ export class MountManager {
      * Returns true if the token is currently serving as a mount in any existing ride link
      * @param {String} tokenId - The ID of the token to evaluate
      */
-    static isMount(tokenId) {
+    static isaMount(tokenId) {
         for (const mountId of Object.keys(RideLinks.get())) {
             if (tokenId == mountId) return true;
         }
         return false;
+    }
+
+    /**
+     * Returns true if the token is currenty serving as a rider in any existing ride link
+     * @param {String} tokenId - The ID of the token to evaluate
+     */
+    static isaRider(tokenId) {
+        let links = RideLinks.get();
+        for (const mountId of Object.keys(links)) {
+            if (tokenId == links[mountId].riderId) return true;
+        }
+        return false;
+    }
+
+    static isRidersMount(riderId, mountId) {
+        let links = RideLinks.get();
+        return (links && links[mountId] && links[mountId].riderId == riderId) || false;
     }
 
     /**
@@ -160,8 +192,13 @@ export class MountManager {
             x: mountCenter.x - (rider.w / 2),
             y: mountCenter.y - (rider.h / 2)
         });
+    }
 
-        rider.displayToFront();
+    static isAncestor(child, ancestor) {
+        let parent = RideLinks.getMountId(child);
+        if (!parent) return false;
+        if (parent == ancestor) return true;
+        return this.isAncestor(parent, ancestor);
     }
 }
 
