@@ -1,6 +1,6 @@
-import { RideLinks } from "./rideLinks.js"
-import { Chatter } from "./chatter.js"
-import { findTokenById, warn, socketName, socketAction } from "./utils.js"
+import { RideLinks } from "./rideLinks.js";
+import { Chatter } from "./chatter.js";
+import { findTokenById, warn, socketName, socketAction } from "./utils.js";
 
 /**
  * Provides all of the functionality for interacting with the game (tokens, canvas, etc.)
@@ -54,7 +54,7 @@ export class MountManager {
                 });
             }
             this.moveRiderToMount(rider, mount);
-            Chatter.mountMessage(target.id, data._id)
+            Chatter.mountMessage(target.id, data._id);
             return true;
         }
     }
@@ -76,7 +76,7 @@ export class MountManager {
             await rider.update({
                 width: newWidth / grid,
                 height: newHeight / grid
-            })
+            });
         }
 
         await rider.update({
@@ -183,7 +183,7 @@ export class MountManager {
             await rider.update({
                 width: newWidth,
                 height: newHeight
-            })
+            });
         }
 
         let mountCenter = mount.getCenter(newX == undefined ? mount.x : newX, newY == undefined ? mount.y : newY);

@@ -1,4 +1,4 @@
-import { MountManager } from "./mountManager.js"
+import { MountManager } from "./mountManager.js";
 import { Settings } from "./settings.js";
 
 /**

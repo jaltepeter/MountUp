@@ -1,7 +1,7 @@
-import { Settings } from "./settings.js"
-import { MountHud } from "./mountHud.js"
+import { Settings } from "./settings.js";
+import { MountHud } from "./mountHud.js";
 import { MountManager } from "./mountManager.js";
-import { socketName, socketAction, findTokenById } from "./utils.js"
+import { socketName, socketAction, findTokenById } from "./utils.js";
 import { RideLinks } from "./rideLinks.js";
 
 Hooks.on('ready', () => {

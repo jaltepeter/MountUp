@@ -14,7 +14,7 @@ export class Settings {
     static shouldChat() {
         return game.settings.get("mountup", "should-chat");
     }
-    
+
     /**
      * Returns the user specified mounting message
      */
@@ -29,7 +29,7 @@ export class Settings {
         return game.settings.get("mountup", "dismount-message");
     }
 
-    static resetLinksIfNeeded(){
+    static resetLinksIfNeeded() {
         if (game.settings.get("mountup", "reset-links") == true) {
             RideLinks.breakAllRideLinks();
             game.settings.set("mountup", "reset-links", false);
@@ -37,8 +37,8 @@ export class Settings {
         }
     }
 
-    static getIcon(){
-        switch ( game.settings.get("mountup", "icon")){
+    static getIcon() {
+        switch (game.settings.get("mountup", "icon")) {
             case 0: return "fa-horse";
             case 1: return "fa-people-carry";
             case 2: return "fa-hands";
@@ -51,7 +51,7 @@ export class Settings {
     /**
      * Registers all of the necessary game settings for the module
      */
-    static registerSettings = function () {
+    static registerSettings() {
 
         game.settings.register("mountup", "icon", {
             name: "Icon",
