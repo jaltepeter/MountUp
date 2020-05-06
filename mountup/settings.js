@@ -97,7 +97,7 @@ export class Settings {
          */
         game.settings.register("mountup", "mount-message", {
             name: "Mount Message Format",
-            hint: "How mounting chat messages should be formatted if enabled. (use {mount} and {dismount} for name substitution)",
+            hint: "How mounting chat messages should be formatted if enabled. (use {rider} and {mount} for name substitution)",
             scope: "world",
             config: true,
             type: String,
@@ -109,7 +109,7 @@ export class Settings {
          */
         game.settings.register("mountup", "dismount-message", {
             name: "Mount Message Format",
-            hint: "How dismounting chat messages should be formatted if enabled. (use {mount} and {dismount} for name substitution)",
+            hint: "How dismounting chat messages should be formatted if enabled. (use {rider} and {mount} for name substitution)",
             scope: "world",
             config: true,
             type: String,
