@@ -9,7 +9,7 @@ To install this module manually:
 1. Inside the Foundry "Configuration and Setup" screen, click "Add-on Modules"
 2. Click "Install Module"
 3. In the "Manifest URL" field, paste the following url:
-`https://gitlab.com/brunhine/foundry-mountup/-/raw/master/mount-up/module.json`
+`https://gitlab.com/brunhine/foundry-mountup/-/raw/master/mountup/module.json`
 4. Click 'Install' and wait for installation to complete
 5. Don't forget to enable the module in game using the "Manage Module" button
 

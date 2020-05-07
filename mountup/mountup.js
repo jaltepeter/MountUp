@@ -6,6 +6,7 @@ import { RideLinks } from "./rideLinks.js";
 
 Hooks.on('ready', () => {
     Settings.registerSettings();
+    MountManager.popAllRiders();
 
     game.socket.on(socketName, data => {
         if (game.user.isGM) {
@@ -48,8 +49,4 @@ Hooks.on('controlToken', (token) => {
 Hooks.on('preDeleteToken', (scene, token) => {
 
     MountManager.deleteToken(token);
-});
-
-Hooks.on('canvasReady', (canvas) => {
-    MountManager.popAllRiders();
 });
