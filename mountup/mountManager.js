@@ -74,6 +74,8 @@ export class MountManager {
             x: mount.x,
             y: mount.y,
         });
+
+        rider.parent.sortChildren();
     }
 
     /**
@@ -98,7 +100,7 @@ export class MountManager {
     }
 
     static popAllRiders() {
-        canvas.tokens.ownedTokens.forEach((token) => {
+        canvas.tokens.placeables.forEach((token) => {
             if (this.isaMount(token.id) && !this.isaRider(token.id)) {
                 this.popRider(token.id);
             }
@@ -110,12 +112,14 @@ export class MountManager {
         let rider = findTokenById(mount.getFlag('mountup', 'rider'));
 
         if (rider) {
-            await rider.displayToFront();
+            rider.zIndex = mount.zIndex + 10;
         }
 
         if (this.isaMount(rider.id)) {
             this.popRider(rider.id);
         }
+
+        mount.parent.sortChildren();
     }
 
     /**
@@ -181,16 +185,20 @@ export class MountManager {
             let newHeight = (mount.h / 2) / grid;
             await rider.update({
                 width: newWidth,
-                height: newHeight
+                height: newHeight,
             });
+            rider.zIndex = mount.zIndex + 10;
         }
 
         let mountCenter = mount.getCenter(newX == undefined ? mount.x : newX, newY == undefined ? mount.y : newY);
 
         await rider.update({
             x: mountCenter.x - (rider.w / 2),
-            y: mountCenter.y - (rider.h / 2)
+            y: mountCenter.y - (rider.h / 2),
         });
+        rider.zIndex = mount.zIndex + 10;
+
+        rider.parent.sortChildren();
     }
 
     static isAncestor(childId, ancestorId) {
