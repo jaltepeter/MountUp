@@ -1,6 +1,13 @@
 import { modName } from "./settings.js";
 
+export const flagScope = 'mountup';
 export const socketName = "module.mountup";
+
+export const flag = {
+    Mount: 'mount',
+    Rider: 'rider',
+    OrigSize: 'origsize'
+};
 
 export const socketAction = {
     CreateLink: 0,

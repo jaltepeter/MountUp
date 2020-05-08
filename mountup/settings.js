@@ -1,5 +1,3 @@
-import { RideLinks } from "./rideLinks.js";
-import { info } from "./utils.js";
 
 export const modName = "Mount Up";
 
@@ -27,14 +25,6 @@ export class Settings {
      */
     static getDismountMessage() {
         return game.settings.get("mountup", "dismount-message");
-    }
-
-    static resetLinksIfNeeded() {
-        if (game.settings.get("mountup", "reset-links") == true) {
-            RideLinks.breakAllRideLinks();
-            game.settings.set("mountup", "reset-links", false);
-            info(`All "Mount Up" links have been deleted`);
-        }
     }
 
     static getIcon() {
@@ -82,16 +72,6 @@ export class Settings {
             default: true
         });
 
-        game.settings.register("mountup", "reset-links", {
-            name: "Reset Links",
-            hint: "Clear all currently defined links from the game (use if something has gone wrong, or you have deleted some scenes that may have linked mounts)",
-            scope: "world",
-            config: true,
-            type: Boolean,
-            default: false,
-            onChange: (value) => { if (value) this.resetLinksIfNeeded(); }
-        });
-
         /**
          * The mounting message
          */
@@ -126,16 +106,6 @@ export class Settings {
             config: false,
             type: Boolean,
             default: false
-        });
-
-        /**
-         * Ride links
-         */
-        game.settings.register("mountup", "ride-links", {
-            scope: "world",
-            config: false,
-            type: Object,
-            default: {}
         });
     }
 
