@@ -1,3 +1,7 @@
+# 1.2.1
+- Fixes the text for the settings hints
+- Fixed the error message during module init
+
 # 1.2
 - Fixed permission issues by handling ride creation on GM side via socket
 - Better handling of ancestor interactions (you should now longer be able to have a rider be mounted by its own mount)

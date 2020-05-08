@@ -1,6 +1,13 @@
 import { modName } from "./settings.js";
 
+export const flagScope = 'mountup';
 export const socketName = "module.mountup";
+
+export const flag = {
+    Mount: 'mount',
+    Rider: 'rider',
+    OrigSize: 'origsize'
+};
 
 export const socketAction = {
     CreateLink: 0,
@@ -48,5 +55,5 @@ export function info(message) {
  * @param {String} tokenId - The ID of the token to look for
  */
 export function findTokenById(tokenId) {
-    return canvas.tokens.ownedTokens.find(t => t.id === tokenId);
+    return canvas.tokens.placeables.find(t => t.id === tokenId);
 }
