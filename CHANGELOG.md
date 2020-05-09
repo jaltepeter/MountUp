@@ -1,3 +1,8 @@
+# 2.0
+- Significant rewrite to how ride links are stored
+	- No longer requires sockets or game settings
+	- Should eliminate multiple issues experienced due to permission issues
+
 # 1.2.1
 - Fixes the text for the settings hints
 - Fixed the error message during module init
