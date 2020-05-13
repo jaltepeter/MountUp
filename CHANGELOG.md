@@ -1,3 +1,6 @@
+# 2.0.1
+- Ensure compatibility with 0.5.6
+
 # 2.0
 - Significant rewrite to how ride links are stored
 	- No longer requires sockets or game settings
