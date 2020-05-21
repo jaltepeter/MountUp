@@ -1,3 +1,6 @@
+# 2.1.0
+- Fix for FVTT 0.5.7 hotfix changes
+
 # 2.0.1
 - Ensure compatibility with 0.5.6
 
