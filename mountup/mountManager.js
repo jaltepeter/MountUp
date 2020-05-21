@@ -26,28 +26,42 @@ export class MountManager {
 
         let targets = canvas.tokens.controlled;
 
-        if (targets.length === 0) {
-            warn("Please select the token to be the rider first.");
-            return false;
-        } else if (targets.length > 1) {
-            warn("Only one rider per mount please. (for now)");
-            return false;
-        } else if (targets[0].id == data._id) {
-            warn("You can't mount yourself.");
-            return false;
-        } else {
-            let target = targets[0];
-            let rider = findTokenById(target.id);
-            let mount = findTokenById(data._id);
+
+        if (canvas.tokens.controlled.length == 2) {
+            let mount = canvas.tokens.controlled.find(t => t.id == data._id);
+            let rider = canvas.tokens.controlled.find(t => t.id != mount.id);
 
             await mount.setFlag(flagScope, flag.Rider, rider.id);
             await rider.setFlag(flagScope, flag.Mount, mount.id);
             await rider.setFlag(flagScope, flag.OrigSize, { w: rider.w, h: rider.h });
 
             this.moveRiderToMount(rider, mount);
-            Chatter.mountMessage(target.id, data._id);
+            Chatter.mountMessage(rider.id, mount.id);
             return true;
         }
+
+        // if (targets.length === 0) {
+        //     warn("Please select the token to be the rider first.");
+        //     return false;
+        // } else if (targets.length > 1) {
+        //     warn("Only one rider per mount please. (for now)");
+        //     return false;
+        // } else if (targets[0].id == data._id) {
+        //     warn("You can't mount yourself.");
+        //     return false;
+        // } else {
+        //     let target = targets[0];
+        //     let rider = findTokenById(target.id);
+        //     let mount = findTokenById(data._id);
+
+        //     await mount.setFlag(flagScope, flag.Rider, rider.id);
+        //     await rider.setFlag(flagScope, flag.Mount, mount.id);
+        //     await rider.setFlag(flagScope, flag.OrigSize, { w: rider.w, h: rider.h });
+
+        //     this.moveRiderToMount(rider, mount);
+        //     Chatter.mountMessage(target.id, data._id);
+        //     return true;
+        // }
     }
 
     /**
