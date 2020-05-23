@@ -15,58 +15,23 @@ export class MountHud {
      */
     static async renderMountHud(app, html, data) {
 
-
-        // the mount is the token who was right clicked
         let mount = canvas.tokens.controlled.find(t => t.id == data._id);
 
-
-        // if exactly 1 selected and hud is from any mount then show the dismount button
         if (canvas.tokens.controlled.length == 1 && MountManager.isaMount(mount.id)) {
             this.addMountButton(html, data, true);
-        }
-        // if exactly 2 is selected (rider and mount)
-        else if (canvas.tokens.controlled.length == 2) {
-            // if only two are selected, the rider is the token who isnt the mount
+        } else if (canvas.tokens.controlled.length == 2) {
             let rider = canvas.tokens.controlled.find(t => t.id != mount.id);
 
-
-            // if the pair is linked - show the dismount button
             if (MountManager.isRidersMount(rider.id, mount.id)) {
                 this.addMountButton(html, data, true);
             }
-            // if the pair is not linked AND the mount is not already a mount - show the mount button
             else {
                 if (!MountManager.isaMount(mount.id)) {
-                    this.addMountButton(html, data);
+                    if (!MountManager.isAncestor(mount.id, rider.id)) {
+                        this.addMountButton(html, data);
+                    }
                 }
             }
-
-            // if (isaMount(mount.id)) {
-            //     this.addMountButton(html, data, true);
-            // } else {
-            //     this.
-            // }
-
-
-
-
-            // if (target.id == data._id) {
-            //     // AND it is a mount
-            //     if (MountManager.isaMount(target.id)) {
-            //         this.addMountButton(html, data, true);
-            //     }
-            // }
-            // // if hud is from its mount show the dismount button
-            // else if (MountManager.isRidersMount(target.id, data._id)) {
-            //     this.addMountButton(html, data, true);
-            // }
-            // // if the hud is NOT a mount 
-            // else if (!MountManager.isaMount(data._id)) {
-            //     // AND the selected is NOT a rider - show the mount button
-            //     if (!MountManager.isaRider(target.id) && !MountManager.isAncestor(data._id, target.id)) {
-            //         this.addMountButton(html, data);
-            //     }
-            // }
         }
     }
 

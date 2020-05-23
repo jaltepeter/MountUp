@@ -33,7 +33,15 @@ export function logMessage(message, force = false) {
  * @param {String} message - The message to be displayed
  */
 export function warn(message) {
-    ui.notifications.warn(message);
+    ui.notifications.warn(`Mount Up! : ${message}`);
+}
+
+/**
+ * Pops a "toast" notification in the error style containing the provided message
+ * @param {String} message - The message to be displayed
+ */
+export function error(message) {
+    ui.notifications.error(`Mount Up! : ${message}`);
 }
 
 /**
@@ -41,13 +49,21 @@ export function warn(message) {
  * @param {String} message - The message to be displayed
  */
 export function info(message) {
-    ui.notifications.info(message);
+    ui.notifications.info(`Mount Up! : ${message}`);
 }
 
 /**
- * Returns a token object from the canvas based on the ID value
+ * Returns the first token object from the canvas based on the ID value
  * @param {String} tokenId - The ID of the token to look for
  */
 export function findTokenById(tokenId) {
-    return canvas.tokens.placeables.find(t => t.id === tokenId);
+    return canvas.tokens.placeables.find(t => t.id == tokenId);
+}
+
+/**
+ * Returns the first token object from the canvas based on the name value (uses a lowercase search)
+ * @param {String} tokenName - The name of the token to look for
+ */
+export function findTokenByName(tokenName) {
+    return canvas.tokens.placeables.find(t => t.name.toLowerCase() == tokenName.toLowerCase());
 }

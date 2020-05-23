@@ -15,55 +15,39 @@ export class MountManager {
     static async mountUp(data) {
 
         if (this.isaMount(data._id)) {
-            this.restoreRiderSize(data._id);
+
             let mount = findTokenById(data._id);
             let rider = findTokenById(mount.getFlag('mountup', 'rider'));
-            Chatter.dismountMessage(rider.data._id, data._id);
-            await mount.unsetFlag(flagScope, flag.Rider);
-            await rider.unsetFlag(flagScope, flag.Mount);
-            await rider.unsetFlag(flagScope, flag.OrigSize);
-            return true;
+            return this.doRemoveMount(rider, mount);
         }
-
-        let targets = canvas.tokens.controlled;
-
 
         if (canvas.tokens.controlled.length == 2) {
             let mount = canvas.tokens.controlled.find(t => t.id == data._id);
             let rider = canvas.tokens.controlled.find(t => t.id != mount.id);
-
-            await mount.setFlag(flagScope, flag.Rider, rider.id);
-            await rider.setFlag(flagScope, flag.Mount, mount.id);
-            await rider.setFlag(flagScope, flag.OrigSize, { w: rider.w, h: rider.h });
-
-            this.moveRiderToMount(rider, mount);
-            Chatter.mountMessage(rider.id, mount.id);
-            return true;
+            return this.doCreateMount(rider, mount);
         }
-
-        // if (targets.length === 0) {
-        //     warn("Please select the token to be the rider first.");
-        //     return false;
-        // } else if (targets.length > 1) {
-        //     warn("Only one rider per mount please. (for now)");
-        //     return false;
-        // } else if (targets[0].id == data._id) {
-        //     warn("You can't mount yourself.");
-        //     return false;
-        // } else {
-        //     let target = targets[0];
-        //     let rider = findTokenById(target.id);
-        //     let mount = findTokenById(data._id);
-
-        //     await mount.setFlag(flagScope, flag.Rider, rider.id);
-        //     await rider.setFlag(flagScope, flag.Mount, mount.id);
-        //     await rider.setFlag(flagScope, flag.OrigSize, { w: rider.w, h: rider.h });
-
-        //     this.moveRiderToMount(rider, mount);
-        //     Chatter.mountMessage(target.id, data._id);
-        //     return true;
-        // }
     }
+
+    static async doCreateMount(rider, mount) {
+        await mount.setFlag(flagScope, flag.Rider, rider.id);
+        await rider.setFlag(flagScope, flag.Mount, mount.id);
+        await rider.setFlag(flagScope, flag.OrigSize, { w: rider.w, h: rider.h });
+
+        this.moveRiderToMount(rider, mount);
+        Chatter.mountMessage(rider.id, mount.id);
+        return true;
+    }
+
+    static async doRemoveMount(rider, mount) {
+        this.restoreRiderSize(mount.id);
+        Chatter.dismountMessage(rider.id, mount.id);
+        await mount.unsetFlag(flagScope, flag.Rider);
+        await rider.unsetFlag(flagScope, flag.Mount);
+        await rider.unsetFlag(flagScope, flag.OrigSize);
+        return true;
+    }
+
+
 
     /**
      * Restores the size of a mount's rider token to original size
@@ -150,7 +134,7 @@ export class MountManager {
             //let ride = links[tokenId];
             let mount = findTokenById(tokenId);
             // A mount moved, make the rider follow
-            let rider = findTokenById(mount.getFlag('mountup', 'rider'));
+            let rider = findTokenById(mount.getFlag(flagScope, flag.Rider));
 
             if (rider.owner) {
                 await this.moveRiderToMount(rider, mount, updateData.x, updateData.y);

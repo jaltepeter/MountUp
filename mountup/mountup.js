@@ -3,6 +3,7 @@ import { MountHud } from "./mountHud.js";
 import { MountManager } from "./mountManager.js";
 import { socketName, socketAction } from './socketInfo.js';
 import { findTokenById } from "./utils.js";
+import { mount, dismount, dropRider } from './macros.js';
 
 Hooks.on('ready', () => {
     Settings.registerSettings();
@@ -17,6 +18,12 @@ Hooks.on('ready', () => {
             }
         }
     });
+
+    window.MountUp = {
+        mount: mount,
+        dismount: dismount,
+        dropRider: dropRider
+    };
 });
 
 Hooks.on('canvasReady', () => {
