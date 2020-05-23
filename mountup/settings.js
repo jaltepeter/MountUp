@@ -6,8 +6,6 @@ const mod = 'mountup';
  */
 export class Settings {
 
-
-
     /**
      * Returns true if chat messages should be sent
      */
@@ -27,6 +25,10 @@ export class Settings {
      */
     static getDismountMessage() {
         return game.settings.get(mod, 'dismount-message');
+    }
+
+    static getRiderLock() {
+        return game.settings.get(mod, 'lock-riders');
     }
 
     static getHudColumn() {
@@ -86,6 +88,18 @@ export class Settings {
             type: Number,
             default: 0,
             choices: ['Top', 'Bottom']
+        });
+
+        /**
+         * Whether or not riders should be locked to mounts
+         */
+        game.settings.register(mod, 'lock-riders', {
+            name: 'Should riders be locked to mounts?',
+            hint: 'If enabled, riders will be unable to move seperately from their mount until dismounted.',
+            scope: 'world',
+            config: true,
+            type: Boolean,
+            default: true
         });
 
         /**

@@ -5,7 +5,8 @@ export const flagScope = 'mountup';
 export const flag = {
     Mount: 'mount',
     Rider: 'rider',
-    OrigSize: 'origsize'
+    OrigSize: 'origsize',
+    MountMove: 'mountMove'
 };
 
 export function firstGM() {

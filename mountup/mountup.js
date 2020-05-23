@@ -2,7 +2,7 @@ import { Settings } from "./settings.js";
 import { MountHud } from "./mountHud.js";
 import { MountManager } from "./mountManager.js";
 import { socketName, socketAction } from './socketInfo.js';
-import { findTokenById } from "./utils.js";
+import { findTokenById, flagScope, flag } from "./utils.js";
 import { mount, dismount, dropRider } from './macros.js';
 
 Hooks.on('ready', () => {

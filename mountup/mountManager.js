@@ -1,6 +1,7 @@
 import { Chatter } from "./chatter.js";
 import { findTokenById, warn, flagScope, flag } from "./utils.js";
 import { socketName, socketAction } from './socketInfo.js';
+import { Settings } from "./settings.js";
 
 /**
  * Provides all of the functionality for interacting with the game (tokens, canvas, etc.)
@@ -117,7 +118,7 @@ export class MountManager {
         if (this.isaMount(rider.id)) {
             this.popRider(rider.id);
         }
-
+        rider.unsetFlag(flagScope, flag.MountMove);
         mount.parent.sortChildren();
     }
 
@@ -128,12 +129,19 @@ export class MountManager {
      * @param {Object} updateData - Update data being sent by the game
      */
     static async handleTokenMovement(tokenId, updateData) {
-        //let links = RideLinks.get();
+        if (this.isaRider(tokenId)) {
+            if (Settings.getRiderLock()) {
+                let rider = findTokenById(tokenId);
+                if (!rider.getFlag(flagScope, flag.MountMove)) {
+                    delete updateData.x;
+                    delete updateData.y;
+                    warn(`${rider.name} is currently locked to a mount`);
+                }
+            }
+        }
 
         if (this.isaMount(tokenId)) {
-            //let ride = links[tokenId];
             let mount = findTokenById(tokenId);
-            // A mount moved, make the rider follow
             let rider = findTokenById(mount.getFlag(flagScope, flag.Rider));
 
             if (rider.owner) {
@@ -200,6 +208,8 @@ export class MountManager {
         }
 
         let mountCenter = mount.getCenter(newX == undefined ? mount.x : newX, newY == undefined ? mount.y : newY);
+
+        await rider.setFlag(flagScope, flag.MountMove, true);
 
         await rider.update({
             x: mountCenter.x - (rider.w / 2),
