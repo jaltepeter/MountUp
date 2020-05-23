@@ -77,7 +77,13 @@ export class MountHud {
             this.addSlash(button);
         }
 
-        html.find('.col.left').prepend(button);
+        let col = html.find(Settings.getHudColumn());
+        if (Settings.getHudTopBottom() == 'top') {
+            col.prepend(button);
+        } else {
+            col.append(button);
+        }
+
         button.find('i').click(async (ev) => {
             if (MountManager.mountUp(data)) {
                 if (hasSlash) {
