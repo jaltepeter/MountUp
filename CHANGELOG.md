@@ -1,3 +1,13 @@
+# 2.2.0
+- Players can now move tokens unowned by them if they are mounted to a token they own
+- Added macro support for common operations:
+	- Mounting
+	- Dismounting
+	- Dropping a rider from a mount
+- Added 2 new settings:
+	- HUD Column: Define if you want the Mount Up button to appear on the left or right column in the HUD
+	- HUD Top/Bottom: Define if you want the Mount Up button to appear on the top or bottom of the column in the HUD
+
 # 2.1.0
 - Fix for FVTT 0.5.7 hotfix changes
 
