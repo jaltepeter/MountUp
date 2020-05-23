@@ -1,9 +1,22 @@
 import { Settings } from "./settings.js";
 import { MountHud } from "./mountHud.js";
 import { MountManager } from "./mountManager.js";
+import { socketName, socketAction } from './socketInfo.js';
+import { findTokenById } from "./utils.js";
 
 Hooks.on('ready', () => {
     Settings.registerSettings();
+
+    game.socket.on(socketName, data => {
+        if (game.user.isGM) {
+            switch (data.mode) {
+                case socketAction.MoveToken:
+                    let rider = findTokenById(data.riderId);
+                    let mount = findTokenById(data.mountId);
+                    MountManager.moveRiderToMount(rider, mount, data.x, data.y);
+            }
+        }
+    });
 });
 
 Hooks.on('canvasReady', () => {

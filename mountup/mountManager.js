@@ -1,5 +1,6 @@
 import { Chatter } from "./chatter.js";
 import { findTokenById, warn, flagScope, flag } from "./utils.js";
+import { socketName, socketAction } from './socketInfo.js';
 
 /**
  * Provides all of the functionality for interacting with the game (tokens, canvas, etc.)
@@ -151,7 +152,17 @@ export class MountManager {
             // A mount moved, make the rider follow
             let rider = findTokenById(mount.getFlag('mountup', 'rider'));
 
-            await this.moveRiderToMount(rider, mount, updateData.x, updateData.y);
+            if (rider.owner) {
+                await this.moveRiderToMount(rider, mount, updateData.x, updateData.y);
+            } else {
+                game.socket.emit(socketName, {
+                    mode: socketAction.MoveToken,
+                    riderId: rider.id,
+                    mountId: mount.id,
+                    x: updateData.x,
+                    y: updateData.y
+                });
+            }
         }
     }
 
