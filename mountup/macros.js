@@ -1,8 +1,12 @@
-import { findTokenByName, findTokenById, error, flagScope, flag } from "./utils.js";
 import { MountManager } from "./mountManager.js";
+import { error, findTokenById, findTokenByName, flag, flagScope } from "./utils.js";
 
+/**
+ * Macro function to mount a rider token onto a mount token
+ * @param {string} riderNameOrId - The name or the ID of the rider token
+ * @param {string} mountNameOrId - The name or the ID of the mount token
+ */
 export function mount(riderNameOrId, mountNameOrId) {
-
     let rider = findTokenById(riderNameOrId) || findTokenByName(riderNameOrId);
     let mount = findTokenById(mountNameOrId) || findTokenByName(mountNameOrId);
 
@@ -15,6 +19,10 @@ export function mount(riderNameOrId, mountNameOrId) {
     } else { error(`A token could not be found with the name or id : ${riderName}`); }
 }
 
+/**
+ * Macro function to dismount a rider token from its mount
+ * @param {string} riderNameOrId - The name or the ID of the rider token
+ */
 export function dismount(riderNameOrId) {
     let rider = findTokenById(riderNameOrId) || findTokenByName(riderNameOrId);
     if (rider) {
@@ -24,6 +32,10 @@ export function dismount(riderNameOrId) {
     } else { error(`A token could not be found with the name or id : ${riderNameOrId}`); }
 }
 
+/**
+ * Macro function to have a mount drop its rider
+ * @param {string} mountNameOrId - The name or the ID of the mount token
+ */
 export function dropRider(mountNameOrId) {
     let mount = findTokenById(mountNameOrId) || findTokenByName(mountNameOrId);
     if (mount) {

@@ -1,7 +1,9 @@
 import { modName } from "./settings.js";
 
+/**
+ * Flag Info
+ */
 export const flagScope = 'mountup';
-
 export const flag = {
     Mount: 'mount',
     Rider: 'rider',
@@ -9,6 +11,19 @@ export const flag = {
     MountMove: 'mountMove'
 };
 
+/**
+ * Socket Info
+ */
+export const socketName = 'module.mountup';
+export const socketAction = {
+    Mount: 0,
+    Dismount: 1,
+    MoveToken: 2
+};
+
+/**
+ * Returns the ID of the first GM logged in
+ */
 export function firstGM() {
     for (let user of game.users.entities) {
         if (user.data.role >= 4 && user.active) {

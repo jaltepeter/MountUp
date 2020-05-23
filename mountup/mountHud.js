@@ -18,24 +18,30 @@ export class MountHud {
         let mount = canvas.tokens.controlled.find(t => t.id == data._id);
 
         if (canvas.tokens.controlled.length == 1 && MountManager.isaMount(mount.id)) {
-            this.addMountButton(html, data, true);
+            this.addButton(html, data, true);
         } else if (canvas.tokens.controlled.length == 2) {
             let rider = canvas.tokens.controlled.find(t => t.id != mount.id);
 
             if (MountManager.isRidersMount(rider.id, mount.id)) {
-                this.addMountButton(html, data, true);
+                this.addButton(html, data, true);
             }
             else {
                 if (!MountManager.isaMount(mount.id)) {
                     if (!MountManager.isAncestor(mount.id, rider.id)) {
-                        this.addMountButton(html, data);
+                        this.addButton(html, data);
                     }
                 }
             }
         }
     }
 
-    static async addMountButton(html, data, hasSlash = false) {
+    /**
+     * Adds the mount button to the HUD HTML
+     * @param {object} html - The HTML
+     * @param {object} data - The data
+     * @param {boolean} hasSlash - If true, the slash will be placed over the mount icon
+     */
+    static async addButton(html, data, hasSlash = false) {
         let button = $(`<div class="control-icon mount-up"><i class="fas ${Settings.getIcon()}"></i></div>`);
 
         if (hasSlash) {

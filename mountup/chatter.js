@@ -1,6 +1,9 @@
-import { Settings } from "./settings.js"
-import { findTokenById } from "./utils.js"
+import { Settings } from "./settings.js";
+import { findTokenById } from "./utils.js";
 
+/**
+ * Provides functionality for sending chat messages
+ */
 export class Chatter {
 
     /**
@@ -8,9 +11,9 @@ export class Chatter {
      * @param {String} riderId - The ID of the rider
      * @param {String} mountId - The ID of the mount
      */
-   static  mountMessage(riderId, mountId) {
+    static mountMessage(riderId, mountId) {
         if (Settings.shouldChat()) {
-            let icon = `<span class="fa-stack"><i class="fas ${Settings.getIcon()} fa-stack-1x"></i></span>&nbsp;`;            
+            let icon = `<span class="fa-stack"><i class="fas ${Settings.getIcon()} fa-stack-1x"></i></span>&nbsp;`;
             this.sendChatMessage(icon + Settings.getMountMessage(), riderId, mountId);
         }
     }
@@ -30,7 +33,13 @@ export class Chatter {
         }
     }
 
-    static  sendChatMessage(message, riderId, mountId){
+    /**
+     * Sends a preformatted message to the chat log
+     * @param {string} message - The message to be sent
+     * @param {string} riderId - The ID of the rider token
+     * @param {string} mountId - The ID of the mount token
+     */
+    static sendChatMessage(message, riderId, mountId) {
         let rider = findTokenById(riderId);
         let mount = findTokenById(mountId);
 
@@ -40,5 +49,4 @@ export class Chatter {
             content: message
         });
     }
-
 }

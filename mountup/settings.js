@@ -1,6 +1,7 @@
 
 export const modName = 'Mount Up';
 const mod = 'mountup';
+
 /**
  * Provides functionality for interaction with module settings
  */
@@ -27,18 +28,30 @@ export class Settings {
         return game.settings.get(mod, 'dismount-message');
     }
 
+    /**
+     * Returns true if the setting to lock riders is enabled
+     */
     static getRiderLock() {
         return game.settings.get(mod, 'lock-riders');
     }
 
+    /**
+     * Returns the css class for the left or right HUD column based on the game setting
+     */
     static getHudColumn() {
         return game.settings.get(mod, 'column') == 0 ? '.col.left' : '.col.right';
     }
 
+    /**
+     * Returns whether the button should be placed on the top or bottom of the HUD column
+     */
     static getHudTopBottom() {
         return game.settings.get(mod, 'topbottom') == 0 ? 'top' : 'bottom';
     }
 
+    /**
+     * Gets the icon that should be used on the HUD
+     */
     static getIcon() {
         switch (game.settings.get(mod, 'icon')) {
             case 0: return 'fa-horse';
@@ -55,6 +68,7 @@ export class Settings {
      */
     static registerSettings() {
 
+        /** Which Icon should be used */
         game.settings.register(mod, 'icon', {
             name: 'Icon',
             //hint: 'Which icon to use.',
@@ -72,6 +86,7 @@ export class Settings {
             ]
         });
 
+        /** Which column should the button be placed on */
         game.settings.register(mod, 'column', {
             name: 'HUD Column',
             scope: 'world',
@@ -81,6 +96,7 @@ export class Settings {
             choices: ['Left', 'Right']
         });
 
+        /** Whether the button should be placed on the top or bottom of the column */
         game.settings.register(mod, 'topbottom', {
             name: 'HUD Top/Bottom',
             scope: 'world',
@@ -90,9 +106,7 @@ export class Settings {
             choices: ['Top', 'Bottom']
         });
 
-        /**
-         * Whether or not riders should be locked to mounts
-         */
+        /** Whether or not riders should be locked to mounts */
         game.settings.register(mod, 'lock-riders', {
             name: 'Should riders be locked to mounts?',
             hint: 'If enabled, riders will be unable to move seperately from their mount until dismounted.',
@@ -102,9 +116,7 @@ export class Settings {
             default: true
         });
 
-        /**
-         * Whether or not chat messages should be sent
-         */
+        /** Whether or not chat messages should be sent */
         game.settings.register(mod, 'should-chat', {
             name: 'Send messages to chat',
             hint: 'Should chat messages about mounting/carrying and dismounting/dropping be sent to chat?',
@@ -114,9 +126,7 @@ export class Settings {
             default: true
         });
 
-        /**
-         * The mounting message
-         */
+        /** The mounting message */
         game.settings.register(mod, 'mount-message', {
             name: 'Mount Message Format',
             hint: 'How mounting chat messages should be formatted if enabled. (use {rider} and {mount} for name substitution)',
@@ -126,9 +136,7 @@ export class Settings {
             default: '{rider} has mounted {mount}.'
         });
 
-        /**
-         * The dismounting message
-         */
+        /** The dismounting message */
         game.settings.register(mod, 'dismount-message', {
             name: 'Mount Message Format',
             hint: 'How dismounting chat messages should be formatted if enabled. (use {rider} and {mount} for name substitution)',
@@ -138,9 +146,7 @@ export class Settings {
             default: '{rider} has dismounted from {mount}.'
         });
 
-        /**
-         * Debug setting
-         */
+        /** Debug setting */
         game.settings.register(mod, 'debug', {
             name: 'Debug Mode',
             hint: 'Debug Mode',

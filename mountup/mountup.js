@@ -1,9 +1,8 @@
-import { Settings } from "./settings.js";
+import { dismount, dropRider, mount } from './macros.js';
 import { MountHud } from "./mountHud.js";
 import { MountManager } from "./mountManager.js";
-import { socketName, socketAction } from './socketInfo.js';
-import { findTokenById, flagScope, flag } from "./utils.js";
-import { mount, dismount, dropRider } from './macros.js';
+import { Settings } from "./settings.js";
+import { findTokenById, socketAction, socketName } from "./utils.js";
 
 Hooks.on('ready', () => {
     Settings.registerSettings();

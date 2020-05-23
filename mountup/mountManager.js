@@ -1,7 +1,6 @@
 import { Chatter } from "./chatter.js";
-import { findTokenById, warn, flagScope, flag } from "./utils.js";
-import { socketName, socketAction } from './socketInfo.js';
 import { Settings } from "./settings.js";
+import { findTokenById, flag, flagScope, socketAction, socketName, warn } from "./utils.js";
 
 /**
  * Provides all of the functionality for interacting with the game (tokens, canvas, etc.)
@@ -29,6 +28,11 @@ export class MountManager {
         }
     }
 
+    /**
+     * Creates a link between the rider and mount and moves the rider onto the mount
+     * @param {object} rider - The rider token
+     * @param {object} mount - The mount token
+     */
     static async doCreateMount(rider, mount) {
         await mount.setFlag(flagScope, flag.Rider, rider.id);
         await rider.setFlag(flagScope, flag.Mount, mount.id);
@@ -39,6 +43,11 @@ export class MountManager {
         return true;
     }
 
+    /**
+     * Removes a link between the rider and mount and restores the rider's size if necessary
+     * @param {object} rider - The rider token
+     * @param {object} mount - The mount token
+     */
     static async doRemoveMount(rider, mount) {
         this.restoreRiderSize(mount.id);
         Chatter.dismountMessage(rider.id, mount.id);
@@ -47,8 +56,6 @@ export class MountManager {
         await rider.unsetFlag(flagScope, flag.OrigSize);
         return true;
     }
-
-
 
     /**
      * Restores the size of a mount's rider token to original size
@@ -99,6 +106,9 @@ export class MountManager {
         return true;
     }
 
+    /**
+     * Pops all rider tokens on top of their mount tokens (canvas wide)
+     */
     static popAllRiders() {
         canvas.tokens.placeables.forEach((token) => {
             if (this.isaMount(token.id) && !this.isaRider(token.id)) {
@@ -107,6 +117,10 @@ export class MountManager {
         });
     }
 
+    /**
+     * Recursively pops a mount's riders on the z-index
+     * @param {string} mountId - The ID of the mount token
+     */
     static async popRider(mountId) {
         let mount = findTokenById(mountId);
         let rider = findTokenById(mount.getFlag('mountup', 'rider'));
@@ -180,6 +194,11 @@ export class MountManager {
         } else return false;
     }
 
+    /**
+     * Returns true if the specified mount belongs to the specified rider
+     * @param {string} riderId - The rider token's ID
+     * @param {string} mountId - The mount token's ID
+     */
     static isRidersMount(riderId, mountId) {
         let rider = findTokenById(riderId);
         let mount = findTokenById(mountId);
@@ -220,6 +239,11 @@ export class MountManager {
         rider.parent.sortChildren();
     }
 
+    /**
+     * Returns true if the tokens are related via a long mount chain
+     * @param {string} childId - The ID of the child
+     * @param {string} ancestorId - The ID of the ancestor
+     */
     static isAncestor(childId, ancestorId) {
         if (this.isaRider(childId)) {
             let child = findTokenById(childId);
