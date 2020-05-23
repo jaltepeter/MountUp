@@ -1,3 +1,7 @@
+# 2.3.0
+- New setting allowing for riders to be locked to their mounts until dismounted
+	- If enabled, this will prevent rider tokens from moving off of their mount, but they will still move with the mount
+
 # 2.2.0
 - Players can now move tokens unowned by them if they are mounted to a token they own
 - Added macro support for common operations:
