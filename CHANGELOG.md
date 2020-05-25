@@ -1,3 +1,5 @@
+- Fix for rider location on fresh install or upgrade
+
 # 2.4.0
 - New settings to configure where the rider should be placed on the mount:
 	- Options for horizontal are "Left", "Center", and "Right"

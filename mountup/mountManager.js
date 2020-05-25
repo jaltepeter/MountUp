@@ -246,15 +246,11 @@ export class MountManager {
      * @param {object} newMountLoc - The location the mount is moving to
      */
     static getRiderLocation(rider, mount, newMountLoc) {
-        let loc = { x: mount.x, y: mount.y };
-
         newMountLoc.x = newMountLoc.x == undefined ? mount.x : newMountLoc.x;
         newMountLoc.y = newMountLoc.y == undefined ? mount.y : newMountLoc.y;
+        let loc = { x: newMountLoc.x, y: newMountLoc.y };
 
         switch (Settings.getRiderX()) {
-            case riderX.Left:
-                loc.x = newMountLoc.x;
-                break;
             case riderX.Center:
                 let mountCenter = mount.getCenter(newMountLoc.x, newMountLoc.y);
                 loc.x = mountCenter.x - (rider.w / 2);
@@ -265,9 +261,6 @@ export class MountManager {
         }
 
         switch (Settings.getRiderY()) {
-            case riderY.Top:
-                loc.y = newMountLoc.y;
-                break;
             case riderY.Center:
                 let mountCenter = mount.getCenter(newMountLoc.x, newMountLoc.y);
                 loc.y = mountCenter.y - (rider.h / 2);
