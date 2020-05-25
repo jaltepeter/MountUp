@@ -1,3 +1,4 @@
+# 2.4.1
 - Fix for rider location on fresh install or upgrade
 
 # 2.4.0
