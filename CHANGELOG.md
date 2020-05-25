@@ -1,3 +1,10 @@
+# 2.4.0
+- New settings to configure where the rider should be placed on the mount:
+	- Options for horizontal are "Left", "Center", and "Right"
+	- Options for vertical are "Top", "Center", and "Bottom"
+- Fix for rider lock warning when dismounting if rider lock is enabled
+
+
 # 2.3.0
 - New setting allowing for riders to be locked to their mounts until dismounted
 	- If enabled, this will prevent rider tokens from moving off of their mount, but they will still move with the mount
