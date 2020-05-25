@@ -122,6 +122,7 @@ export class MountManager {
      * @param {string} mountId - The ID of the mount token
      */
     static async popRider(mountId) {
+
         let mount = findTokenById(mountId);
         let rider = findTokenById(mount.getFlag('mountup', 'rider'));
 
@@ -132,8 +133,13 @@ export class MountManager {
         if (this.isaMount(rider.id)) {
             this.popRider(rider.id);
         }
-        rider.unsetFlag(flagScope, flag.MountMove);
+
+        if (rider.owner) {
+            rider.unsetFlag(flagScope, flag.MountMove);
+        }
+
         mount.parent.sortChildren();
+
     }
 
     /**

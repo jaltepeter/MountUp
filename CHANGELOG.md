@@ -1,3 +1,6 @@
+# 2.4.2
+- Fix for error message on other players' instance when a mount is moved due to no permissinos to set flags on unowned tokens
+
 # 2.4.1
 - Fix for rider location on fresh install or upgrade
 
