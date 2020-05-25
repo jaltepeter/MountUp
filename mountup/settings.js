@@ -29,6 +29,20 @@ export class Settings {
     }
 
     /**
+     * Returns the user specified rider horizontal location
+     */
+    static getRiderX() {
+        return game.settings.get(mod, 'rider-x');
+    }
+
+    /**
+     * Returns the user specified rider vertical location
+     */
+    static getRiderY() {
+        return game.settings.get(mod, 'rider-y');
+    }
+
+    /**
      * Returns true if the setting to lock riders is enabled
      */
     static getRiderLock() {
@@ -114,6 +128,28 @@ export class Settings {
             config: true,
             type: Boolean,
             default: true
+        });
+
+        /** Where to place the rider horizontally on the mount */
+        game.settings.register(mod, 'rider-x', {
+            name: 'Rider Horizontal Alignment',
+            // hint: 'Where to place the rider on the mount horizontally',
+            scope: 'world',
+            config: true,
+            type: Number,
+            defualt: 1,
+            choices: ['Left', 'Center', 'Right']
+        });
+
+        /** Where to place the rider vertically on the mount */
+        game.settings.register(mod, 'rider-y', {
+            name: 'Rider Vertical Alignment',
+            // hint: 'Where to place the rider on the mount vertically',
+            scope: 'world',
+            config: true,
+            type: Number,
+            defualt: 0,
+            choices: ['Top', 'Center', 'Bottom']
         });
 
         /** Whether or not chat messages should be sent */

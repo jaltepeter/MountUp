@@ -1,6 +1,6 @@
 import { Chatter } from "./chatter.js";
 import { Settings } from "./settings.js";
-import { findTokenById, flag, flagScope, socketAction, socketName, warn } from "./utils.js";
+import { findTokenById, flag, flagScope, riderX, riderY, socketAction, socketName, warn } from "./utils.js";
 
 /**
  * Provides all of the functionality for interacting with the game (tokens, canvas, etc.)
@@ -15,7 +15,6 @@ export class MountManager {
     static async mountUp(data) {
 
         if (this.isaMount(data._id)) {
-
             let mount = findTokenById(data._id);
             let rider = findTokenById(mount.getFlag('mountup', 'rider'));
             return this.doRemoveMount(rider, mount);
@@ -49,6 +48,7 @@ export class MountManager {
      * @param {object} mount - The mount token
      */
     static async doRemoveMount(rider, mount) {
+        await rider.setFlag(flagScope, flag.MountMove, true);
         this.restoreRiderSize(mount.id);
         Chatter.dismountMessage(rider.id, mount.id);
         await mount.unsetFlag(flagScope, flag.Rider);
@@ -226,17 +226,57 @@ export class MountManager {
             rider.zIndex = mount.zIndex + 10;
         }
 
-        let mountCenter = mount.getCenter(newX == undefined ? mount.x : newX, newY == undefined ? mount.y : newY);
+        let loc = this.getRiderLocation(rider, mount, { x: newX, y: newY });
 
         await rider.setFlag(flagScope, flag.MountMove, true);
 
         await rider.update({
-            x: mountCenter.x - (rider.w / 2),
-            y: mountCenter.y - (rider.h / 2),
+            x: loc.x,
+            y: loc.y,
         });
         rider.zIndex = mount.zIndex + 10;
 
         rider.parent.sortChildren();
+    }
+
+    /**
+     * Gets the correct rider placement coordinates based on the mount's position and movement
+     * @param {token} rider - The rider token
+     * @param {token} mount - The mount token
+     * @param {object} newMountLoc - The location the mount is moving to
+     */
+    static getRiderLocation(rider, mount, newMountLoc) {
+        let loc = { x: mount.x, y: mount.y };
+
+        newMountLoc.x = newMountLoc.x == undefined ? mount.x : newMountLoc.x;
+        newMountLoc.y = newMountLoc.y == undefined ? mount.y : newMountLoc.y;
+
+        switch (Settings.getRiderX()) {
+            case riderX.Left:
+                loc.x = newMountLoc.x;
+                break;
+            case riderX.Center:
+                let mountCenter = mount.getCenter(newMountLoc.x, newMountLoc.y);
+                loc.x = mountCenter.x - (rider.w / 2);
+                break;
+            case riderX.Right:
+                loc.x = newMountLoc.x + mount.w - rider.w;
+                break;
+        }
+
+        switch (Settings.getRiderY()) {
+            case riderY.Top:
+                loc.y = newMountLoc.y;
+                break;
+            case riderY.Center:
+                let mountCenter = mount.getCenter(newMountLoc.x, newMountLoc.y);
+                loc.y = mountCenter.y - (rider.h / 2);
+                break;
+            case riderY.Bottom:
+                loc.y = newMountLoc.y + mount.h - rider.h;
+                break;
+        }
+        return loc;
     }
 
     /**

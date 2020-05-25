@@ -22,6 +22,24 @@ export const socketAction = {
 };
 
 /**
+ * Rider horizontal placement
+ */
+export const riderX = {
+    Left: 0,
+    Center: 1,
+    Right: 2
+};
+
+/**
+ * Rider vertical placement
+ */
+export const riderY = {
+    Top: 0,
+    Center: 1,
+    Bottom: 2
+};
+
+/**
  * Returns the ID of the first GM logged in
  */
 export function firstGM() {
