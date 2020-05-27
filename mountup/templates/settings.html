@@ -42,6 +42,11 @@
         <p class="notes">{{localize 'settings.riderLock.hint'}}</p>
     </div>
     <div class="form-group">
+        <label>{{localize 'settings.riderRotate.name'}}</label>
+        <input name="riderRotate" type="checkbox" {{#if riderRotate}}checked="checked" {{/if}} />
+        <p class="notes">{{localize 'settings.riderRotate.hint'}}</p>
+    </div>
+    <div class="form-group">
         <label>{{localize 'settings.riderX.name'}}</label>
         <select name="riderX">
             {{#select riderX}}

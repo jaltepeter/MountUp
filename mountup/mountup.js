@@ -36,7 +36,7 @@ Hooks.on('renderTokenHUD', (app, html, data) => {
 });
 
 Hooks.on('preUpdateToken', async (scene, token, updateData) => {
-    if (updateData.x || updateData.y) {
+    if (updateData.hasOwnProperty("x") || updateData.hasOwnProperty("y") || updateData.hasOwnProperty("rotation")) {
         await MountManager.handleTokenMovement(token._id, updateData);
     }
 });

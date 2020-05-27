@@ -66,7 +66,7 @@ export class Settings {
     }
 
     static setRiderY(val) {
-        game.settings.get(mod, 'rider-y', val);
+        game.settings.set(mod, 'rider-y', val);
     }
 
     /**
@@ -89,6 +89,14 @@ export class Settings {
 
     static setRiderLock(val) {
         game.settings.set(mod, 'lock-riders', val);
+    }
+
+    static getRiderRotate() {
+        return game.settings.get(mod, 'rider-rotate');
+    }
+
+    static setRiderRotate(val) {
+        game.settings.set(mod, 'rider-rotate', val);
     }
 
 
@@ -192,6 +200,13 @@ export class Settings {
             config: false,
             type: Boolean,
             default: true
+        });
+
+        game.settings.register(mod, 'rider-rotate', {
+            scope: 'world',
+            config: false,
+            type: Boolean,
+            defualt: false
         });
 
         /** Where to place the rider horizontally on the mount */

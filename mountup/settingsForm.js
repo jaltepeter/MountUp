@@ -26,6 +26,7 @@ export class SettingsForm extends FormApplication {
             hudColumn: this.getSelectList(hudColumns, Settings.getHudColumn()),
             hudTopBottom: this.getSelectList(hudTopBottom, Settings.getHudTopBottom()),
             riderLock: Settings.getRiderLock(),
+            riderRotate: Settings.getRiderRotate(),
             riderX: this.getSelectList(riderX, Settings.getRiderX()),
             riderY: this.getSelectList(riderY, Settings.getRiderY()),
             shouldChat: Settings.getShouldChat(),
@@ -46,6 +47,7 @@ export class SettingsForm extends FormApplication {
         Settings.setHudColumn(d.hudColumn);
         Settings.setHudTopBottom(d.hudTopBottom);
         Settings.setRiderLock(d.riderLock);
+        Settings.setRiderRotate(d.riderRotate);
         Settings.setRiderX(d.riderX);
         Settings.setRiderY(d.riderY);
         Settings.setShouldChat(d.shouldChat);

@@ -26,6 +26,10 @@
             "name": "Should riders be locked to mounts?",
             "hint": "If enabled, riders will be unable to move seperately from their mount until dismounted."
         },
+        "riderRotate": {
+            "name": "Should riders rotate with mounts?",
+            "hint": "If enabled, rider rotation will be updated to match mount rotation"
+        },
         "riderX": {
             "name": "Rider Horizontal Alignment"
         },

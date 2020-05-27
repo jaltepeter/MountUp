@@ -165,14 +165,15 @@ export class MountManager {
             let rider = findTokenById(mount.getFlag(flagScope, flag.Rider));
 
             if (rider.owner) {
-                await this.moveRiderToMount(rider, mount, updateData.x, updateData.y);
+                await this.moveRiderToMount(rider, mount, updateData.x, updateData.y, updateData.rotation);
             } else {
                 game.socket.emit(socketName, {
                     mode: socketAction.MoveToken,
                     riderId: rider.id,
                     mountId: mount.id,
                     x: updateData.x,
-                    y: updateData.y
+                    y: updateData.y,
+                    rotation: updateData.rotation
                 });
             }
         }
@@ -220,7 +221,7 @@ export class MountManager {
      * @param {Number} newX - (optional) The new X-coordinate for the move
      * @param {Number} newY - (optional) The new Y-coordinate for the move
      */
-    static async moveRiderToMount(rider, mount, newX = undefined, newY = undefined) {
+    static async moveRiderToMount(rider, mount, newX = undefined, newY = undefined, rotation = undefined) {
         if (rider.w >= mount.w || rider.h >= mount.h) {
             let grid = canvas.scene.data.grid;
             let newWidth = (mount.w / 2) / grid;
@@ -234,11 +235,18 @@ export class MountManager {
 
         let loc = this.getRiderLocation(rider, mount, { x: newX, y: newY });
 
+        if (Settings.getRiderRotate()) {
+            rotation = rotation;
+        } else {
+            rotation = rider.rotation;
+        }
+
         await rider.setFlag(flagScope, flag.MountMove, true);
 
         await rider.update({
             x: loc.x,
             y: loc.y,
+            rotation: rotation
         });
         rider.zIndex = mount.zIndex + 10;
 
