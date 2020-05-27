@@ -36,7 +36,7 @@ export class SettingsForm extends FormApplication {
         return data;
     }
 
-    /**
+    /** 
      * Executes on form submission.
      * @param {Object} e - the form submission event
      * @param {Object} d - the form data
