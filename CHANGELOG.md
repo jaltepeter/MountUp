@@ -1,3 +1,7 @@
+# 2.5.0
+- New Setting: "Rider Rotation" allows for riders to match their rotation to the mount's rotation
+- Moved all settings for Mount Up! into their own settings window.
+
 # 2.4.2
 - Fix for error message on other players' instance when a mount is moved due to no permissinos to set flags on unowned tokens
 

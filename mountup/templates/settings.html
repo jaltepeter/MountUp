@@ -1,6 +1,6 @@
 <form autocomplete="off" onsubmit="event.preventDefault()">
     <img src="./modules/mountup/images/card.png" />
-    <h1>{{localize 'settings.formHeaders.hudSettings'}}</h1>
+    <h2>{{localize 'settings.formHeaders.hudSettings'}}</h2>
     <div class="form-group">
         <label>{{localize 'settings.icon.name'}}:</label>
         <select name="icon">
@@ -35,7 +35,7 @@
         <p class="notes">{{localize 'settings.hudTopBottom.hint'}}</p>
     </div>
     <hr />
-    <h1>{{localize 'settings.formHeaders.riderBehavior'}}</h1>
+    <h2>{{localize 'settings.formHeaders.riderBehavior'}}</h2>
     <div class="form-group">
         <label>{{localize 'settings.riderLock.name'}}</label>
         <input name="riderLock" type="checkbox" {{#if riderLock}}checked="checked" {{/if}} />
@@ -69,7 +69,7 @@
         <p class="notes"></p>
     </div>
     <hr />
-    <h1>{{localize 'settings.formHeaders.chatSettings'}}</h1>
+    <h2>{{localize 'settings.formHeaders.chatSettings'}}</h2>
     <div class="form-group">
         <label>{{localize 'settings.shouldChat.name'}}</label>
         <input name="shouldChat" type="checkbox" {{#if shouldChat}}checked="checked" {{/if}} />
