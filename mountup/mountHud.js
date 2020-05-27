@@ -42,14 +42,14 @@ export class MountHud {
      * @param {boolean} hasSlash - If true, the slash will be placed over the mount icon
      */
     static async addButton(html, data, hasSlash = false) {
-        let button = $(`<div class="control-icon mount-up"><i class="fas ${Settings.getIcon()}"></i></div>`);
+        let button = $(`<div class="control-icon mount-up"><i class="fas ${Settings.getIconClass()}"></i></div>`);
 
         if (hasSlash) {
             this.addSlash(button);
         }
 
-        let col = html.find(Settings.getHudColumn());
-        if (Settings.getHudTopBottom() == 'top') {
+        let col = html.find(Settings.getHudColumnClass());
+        if (Settings.getHudTopBottomClass() == 'top') {
             col.prepend(button);
         } else {
             col.append(button);

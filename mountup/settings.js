@@ -1,31 +1,49 @@
+import { SettingsForm } from './settingsForm.js';
 
 export const modName = 'Mount Up';
 const mod = 'mountup';
+
+export const iconOptions = [
+    'Horse',
+    'People Carrying',
+    'Hands',
+    'Open Hand',
+    'Fist',
+    'Handshake'
+];
+
+export const hudColumns = ['Left', 'Right'];
+export const hudTopBottom = ['Top', 'Bottom'];
+export const riderX = ['Left', 'Center', 'Right'];
+export const riderY = ['Top', 'Center', 'Bottom'];
 
 /**
  * Provides functionality for interaction with module settings
  */
 export class Settings {
 
-    /**
-     * Returns true if chat messages should be sent
-     */
-    static shouldChat() {
-        return game.settings.get(mod, 'should-chat');
+    //#region getters and setters
+    static getIcon() {
+        return game.settings.get(mod, 'icon');
     }
 
-    /**
-     * Returns the user specified mounting message
-     */
-    static getMountMessage() {
-        return game.settings.get(mod, 'mount-message');
+    static setIcon(val) {
+        game.settings.set(mod, 'icon', val);
     }
 
-    /**
-     * Returns the user specified dismounting message
-     */
-    static getDismountMessage() {
-        return game.settings.get(mod, 'dismount-message');
+    static getHudColumn() {
+        return game.settings.get(mod, 'column');
+    }
+    static setHudColumn(val) {
+        game.settings.set(mod, 'column', val);
+    }
+
+    static getHudTopBottom() {
+        return game.settings.get(mod, 'topbottom');
+    }
+
+    static setHudTopBottom(val) {
+        game.settings.set(mod, 'topbottom', val);
     }
 
     /**
@@ -35,11 +53,31 @@ export class Settings {
         return game.settings.get(mod, 'rider-x');
     }
 
+
+    static setRiderX(val) {
+        game.settings.set(mod, 'rider-x', val);
+    }
+
     /**
      * Returns the user specified rider vertical location
      */
     static getRiderY() {
         return game.settings.get(mod, 'rider-y');
+    }
+
+    static setRiderY(val) {
+        game.settings.get(mod, 'rider-y', val);
+    }
+
+    /**
+    * Returns true if chat messages should be sent
+    */
+    static getShouldChat() {
+        return game.settings.get(mod, 'should-chat');
+    }
+
+    static setShouldChat(val) {
+        game.settings.set(mod, 'should-chat', val);
     }
 
     /**
@@ -49,24 +87,54 @@ export class Settings {
         return game.settings.get(mod, 'lock-riders');
     }
 
+    static setRiderLock(val) {
+        game.settings.set(mod, 'lock-riders', val);
+    }
+
+
+
     /**
-     * Returns the css class for the left or right HUD column based on the game setting
+     * Returns the user specified mounting message
      */
-    static getHudColumn() {
+    static getMountMessage() {
+        return game.settings.get(mod, 'mount-message');
+    }
+
+    static setMountMessage(val) {
+        game.settings.set(mod, 'mount-message', val);
+    }
+
+    /**
+     * Returns the user specified dismounting message
+     */
+    static getDismountMessage() {
+        return game.settings.get(mod, 'dismount-message');
+    }
+
+    static setDismountMessage(val) {
+        game.settings.set(mod, 'dismount-message', val);
+    }
+    //#endregion
+
+    //#region CSS Getters
+    /**
+    * Returns the css class for the left or right HUD column based on the game setting
+    */
+    static getHudColumnClass() {
         return game.settings.get(mod, 'column') == 0 ? '.col.left' : '.col.right';
     }
 
     /**
      * Returns whether the button should be placed on the top or bottom of the HUD column
      */
-    static getHudTopBottom() {
+    static getHudTopBottomClass() {
         return game.settings.get(mod, 'topbottom') == 0 ? 'top' : 'bottom';
     }
 
     /**
      * Gets the icon that should be used on the HUD
      */
-    static getIcon() {
+    static getIconClass() {
         switch (game.settings.get(mod, 'icon')) {
             case 0: return 'fa-horse';
             case 1: return 'fa-people-carry';
@@ -76,121 +144,96 @@ export class Settings {
             case 5: return 'fa-handshake';
         }
     }
+    //#endregion CSS Getters
 
     /**
      * Registers all of the necessary game settings for the module
      */
     static registerSettings() {
 
+        game.settings.registerMenu(mod, 'settingsMeny', {
+            name: 'settings.button.name',
+            label: 'settings.button.label',
+            icon: 'fas fa-horse',
+            type: SettingsForm,
+            restricted: true
+        });
+
         /** Which Icon should be used */
         game.settings.register(mod, 'icon', {
-            name: 'Icon',
-            //hint: 'Which icon to use.',
             scope: 'world',
-            config: true,
+            config: false,
             type: Number,
             default: 0,
-            choices: [
-                'Horse',
-                'People Carrying',
-                'Hands',
-                'Open Hand',
-                'Fist',
-                'Handshake'
-            ]
+            choices: iconOptions
         });
 
         /** Which column should the button be placed on */
         game.settings.register(mod, 'column', {
-            name: 'HUD Column',
             scope: 'world',
-            config: true,
+            config: false,
             type: Number,
             default: 0,
-            choices: ['Left', 'Right']
+            choices: hudColumns
         });
 
         /** Whether the button should be placed on the top or bottom of the column */
         game.settings.register(mod, 'topbottom', {
-            name: 'HUD Top/Bottom',
             scope: 'world',
-            config: true,
+            config: false,
             type: Number,
             default: 0,
-            choices: ['Top', 'Bottom']
+            choices: hudTopBottom
         });
 
         /** Whether or not riders should be locked to mounts */
         game.settings.register(mod, 'lock-riders', {
-            name: 'Should riders be locked to mounts?',
-            hint: 'If enabled, riders will be unable to move seperately from their mount until dismounted.',
             scope: 'world',
-            config: true,
+            config: false,
             type: Boolean,
             default: true
         });
 
         /** Where to place the rider horizontally on the mount */
         game.settings.register(mod, 'rider-x', {
-            name: 'Rider Horizontal Alignment',
-            // hint: 'Where to place the rider on the mount horizontally',
             scope: 'world',
-            config: true,
+            config: false,
             type: Number,
             defualt: 1,
-            choices: ['Left', 'Center', 'Right']
+            choices: riderX
         });
 
         /** Where to place the rider vertically on the mount */
         game.settings.register(mod, 'rider-y', {
-            name: 'Rider Vertical Alignment',
-            // hint: 'Where to place the rider on the mount vertically',
             scope: 'world',
-            config: true,
+            config: false,
             type: Number,
             defualt: 0,
-            choices: ['Top', 'Center', 'Bottom']
+            choices: riderY
         });
 
         /** Whether or not chat messages should be sent */
         game.settings.register(mod, 'should-chat', {
-            name: 'Send messages to chat',
-            hint: 'Should chat messages about mounting/carrying and dismounting/dropping be sent to chat?',
             scope: 'world',
-            config: true,
+            config: false,
             type: Boolean,
             default: true
         });
 
         /** The mounting message */
         game.settings.register(mod, 'mount-message', {
-            name: 'Mount Message Format',
-            hint: 'How mounting chat messages should be formatted if enabled. (use {rider} and {mount} for name substitution)',
             scope: 'world',
-            config: true,
+            config: false,
             type: String,
             default: '{rider} has mounted {mount}.'
         });
 
         /** The dismounting message */
         game.settings.register(mod, 'dismount-message', {
-            name: 'Mount Message Format',
-            hint: 'How dismounting chat messages should be formatted if enabled. (use {rider} and {mount} for name substitution)',
             scope: 'world',
-            config: true,
+            config: false,
             type: String,
             default: '{rider} has dismounted from {mount}.'
         });
-
-        /** Debug setting */
-        game.settings.register(mod, 'debug', {
-            name: 'Debug Mode',
-            hint: 'Debug Mode',
-            scope: 'world',
-            config: false,
-            type: Boolean,
-            default: false
-        });
     }
-
 }

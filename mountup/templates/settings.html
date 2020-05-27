@@ -1,0 +1,86 @@
+<form autocomplete="off" onsubmit="event.preventDefault()">
+    <h1>{{localize 'settings.formHeaders.hudSettings'}}</h1>
+    <div class="form-group">
+        <label>{{localize 'settings.icon.name'}}:</label>
+        <select name="icon">
+            {{#select icons}}
+            {{#each icons}}
+            <option value="{{@index}}" {{#if this.selected}}selected="selected" {{/if}}>{{this.value}}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+        <p class="notes">{{localize 'settings.icon.hint'}}</p>
+    </div>
+    <div class="form-group">
+        <label>{{localize 'settings.hudColumn.name'}}:</label>
+        <select name="hudColumn">
+            {{#select hudColumn}}
+            {{#each hudColumn}}
+            <option value="{{@index}}" {{#if this.selected}}selected="selected" {{/if}}>{{this.value}}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+        <p class="notes">{{localize 'settings.hudColumn.hint'}}</p>
+    </div>
+    <div class="form-group">
+        <label>{{localize 'settings.hudTopBottom.name'}}:</label>
+        <select name="hudTopBottom">
+            {{#select hudTopBottom}}
+            {{#each hudTopBottom}}
+            <option value="{{@index}}" {{#if this.selected}}selected="selected" {{/if}}>{{this.value}}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+        <p class="notes">{{localize 'settings.hudTopBottom.hint'}}</p>
+    </div>
+    <hr />
+    <h1>{{localize 'settings.formHeaders.riderBehavior'}}</h1>
+    <div class="form-group">
+        <label>{{localize 'settings.riderLock.name'}}</label>
+        <input name="riderLock" type="checkbox" {{#if riderLock}}checked="checked" {{/if}} />
+        <p class="notes">{{localize 'settings.riderLock.hint'}}</p>
+    </div>
+    <div class="form-group">
+        <label>{{localize 'settings.riderX.name'}}</label>
+        <select name="riderX">
+            {{#select riderX}}
+            {{#each riderX}}
+            <option value="{{@index}}" {{#if this.selected}}selected="selected" {{/if}}>{{this.value}}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+        <p class="notes"></p>
+    </div>
+    <div class="form-group">
+        <label>{{localize 'settings.riderY.name'}}</label>
+        <select name="riderY">
+            {{#select riderY}}
+            {{#each riderY}}
+            <option value="{{@index}}" {{#if this.selected}}selected="selected" {{/if}}>{{this.value}}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+        <p class="notes"></p>
+    </div>
+    <hr />
+    <h1>{{localize 'settings.formHeaders.chatSettings'}}</h1>
+    <div class="form-group">
+        <label>{{localize 'settings.shouldChat.name'}}</label>
+        <input name="shouldChat" type="checkbox" {{#if shouldChat}}checked="checked" {{/if}} />
+        <p class="notes">{{localize 'settings.shouldChat.hint'}}</p>
+    </div>
+    <div class="form-group">
+        <label>{{localize 'settings.mountMsg.name'}}</label>
+        <input name="mountMsg" type="text" value="{{mountMsg}}" />
+        <p class="notes">{{localize 'settings.mountMsg.hint'}}</p>
+    </div>
+    <div class="form-group">
+        <label>{{localize 'settings.dismountMsg.name'}}</label>
+        <input name="dismountMsg" type="text" value="{{dismountMsg}}" />
+        <p class="notes">{{localize 'settings.dismountMsg.hint'}}</p>
+    </div>
+    <hr />
+    <button type="submit" name="submit">
+        <i class="far fa-save"></i> {{localize 'settings.formHeaders.save'}}
+    </button>
+</form>

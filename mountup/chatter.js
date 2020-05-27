@@ -12,8 +12,8 @@ export class Chatter {
      * @param {String} mountId - The ID of the mount
      */
     static mountMessage(riderId, mountId) {
-        if (Settings.shouldChat()) {
-            let icon = `<span class="fa-stack"><i class="fas ${Settings.getIcon()} fa-stack-1x"></i></span>&nbsp;`;
+        if (Settings.getShouldChat()) {
+            let icon = `<span class="fa-stack"><i class="fas ${Settings.getIconClass()} fa-stack-1x"></i></span>&nbsp;`;
             this.sendChatMessage(icon + Settings.getMountMessage(), riderId, mountId);
         }
     }
@@ -24,9 +24,9 @@ export class Chatter {
      * @param {String} mountId - The ID of the mount
      */
     static dismountMessage(riderId, mountId) {
-        if (Settings.shouldChat()) {
+        if (Settings.getShouldChat()) {
             let icon = `<span class="fa-stack" >
-                            <i class="fas ${Settings.getIcon()} fa-stack-1x"></i>
+                            <i class="fas ${Settings.getIconClass()} fa-stack-1x"></i>
                             <i class="fas fa-slash fa-stack-1x" style="color: tomato"></i>
                         </span>&nbsp;`;
             this.sendChatMessage(icon + Settings.getDismountMessage(), riderId, mountId);

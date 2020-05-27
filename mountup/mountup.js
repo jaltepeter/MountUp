@@ -2,6 +2,7 @@ import { dismount, dropRider, mount } from './macros.js';
 import { MountHud } from "./mountHud.js";
 import { MountManager } from "./mountManager.js";
 import { Settings } from "./settings.js";
+import { SettingsForm } from './settingsForm.js';
 import { findTokenById, socketAction, socketName } from "./utils.js";
 
 Hooks.on('ready', () => {
@@ -18,6 +19,8 @@ Hooks.on('ready', () => {
         }
     });
 
+    new SettingsForm().render(true);
+
     window.MountUp = {
         mount: mount,
         dismount: dismount,
@@ -27,6 +30,8 @@ Hooks.on('ready', () => {
 
 Hooks.on('canvasReady', () => {
     MountManager.popAllRiders();
+
+
 });
 
 Hooks.on('renderTokenHUD', (app, html, data) => {
