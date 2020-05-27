@@ -159,9 +159,9 @@ export class Settings {
      */
     static registerSettings() {
 
-        game.settings.registerMenu(mod, 'settingsMeny', {
-            name: 'settings.button.name',
-            label: 'settings.button.label',
+        game.settings.registerMenu(mod, 'settingsMenu', {
+            name: 'mu.settings.button.name',
+            label: 'mu.settings.button.label',
             icon: 'fas fa-horse',
             type: SettingsForm,
             restricted: true
