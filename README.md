@@ -22,6 +22,8 @@ To install this module manually:
 # Localization
 Japanese Language support provided by [Brother Sharper](https://github.com/BrotherSharper) ('Brother Sharp#6921' on discord)
 
+*always welcoming more translations*
+
 # Usage
 *In this example, we will be using a rider and a mount and rider scenario, but this could be anything like driving or carrying. You can even change the icons used by the module to fit your game.*
 
