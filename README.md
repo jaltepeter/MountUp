@@ -13,6 +13,8 @@ To install this module manually:
 4. Click 'Install' and wait for installation to complete
 5. Don't forget to enable the module in game using the "Manage Module" button
 
+## Localization
+
 ## Usage
 *In this example, we will be using a rider and a mount and rider scenario, but this could be anything like driving or carrying. You can even change the icons used by the module to fit your game.*
 
