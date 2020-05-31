@@ -29,31 +29,31 @@ export class MountManager {
 
     /**
      * Creates a link between the rider and mount and moves the rider onto the mount
-     * @param {object} rider - The rider token
-     * @param {object} mount - The mount token
+     * @param {object} riderToken - The rider token
+     * @param {object} mountToken - The mount token
      */
-    static async doCreateMount(rider, mount) {
-        await mount.setFlag(flagScope, flag.Rider, rider.id);
-        await rider.setFlag(flagScope, flag.Mount, mount.id);
-        await rider.setFlag(flagScope, flag.OrigSize, { w: rider.w, h: rider.h });
+    static async doCreateMount(riderToken, mountToken) {
+        await mountToken.setFlag(flagScope, flag.Rider, riderToken.id);
+        await riderToken.setFlag(flagScope, flag.Mount, mountToken.id);
+        await riderToken.setFlag(flagScope, flag.OrigSize, { w: riderToken.w, h: riderToken.h });
 
-        this.moveRiderToMount(rider, mount);
-        Chatter.mountMessage(rider.id, mount.id);
+        this.moveRiderToMount(riderToken, mountToken);
+        Chatter.mountMessage(riderToken.id, mountToken.id);
         return true;
     }
 
     /**
      * Removes a link between the rider and mount and restores the rider's size if necessary
-     * @param {object} rider - The rider token
-     * @param {object} mount - The mount token
+     * @param {object} riderToken - The rider token
+     * @param {object} mountToken - The mount token
      */
-    static async doRemoveMount(rider, mount) {
-        await rider.setFlag(flagScope, flag.MountMove, true);
-        this.restoreRiderSize(mount.id);
-        Chatter.dismountMessage(rider.id, mount.id);
-        await mount.unsetFlag(flagScope, flag.Rider);
-        await rider.unsetFlag(flagScope, flag.Mount);
-        await rider.unsetFlag(flagScope, flag.OrigSize);
+    static async doRemoveMount(riderToken, mountToken) {
+        await riderToken.setFlag(flagScope, flag.MountMove, true);
+        this.restoreRiderSize(mountToken.id);
+        Chatter.dismountMessage(riderToken.id, mountToken.id);
+        await mountToken.unsetFlag(flagScope, flag.Rider);
+        await riderToken.unsetFlag(flagScope, flag.Mount);
+        await riderToken.unsetFlag(flagScope, flag.OrigSize);
         return true;
     }
 
@@ -216,71 +216,71 @@ export class MountManager {
      * Moves the Rider token to Mount token.
      * If both tokens are being moved together, newX and newY must be provided, or rider 
      *  will end up at the Mount's starting location
-     * @param {Object} rider - The rider
-     * @param {Object} mount - The mount
+     * @param {Object} riderToken - The rider
+     * @param {Object} mountToken - The mount
      * @param {Number} newX - (optional) The new X-coordinate for the move
      * @param {Number} newY - (optional) The new Y-coordinate for the move
      */
-    static async moveRiderToMount(rider, mount, newX = undefined, newY = undefined, rotation = undefined) {
-        if (rider.w >= mount.w || rider.h >= mount.h) {
+    static async moveRiderToMount(riderToken, mountToken, newX = undefined, newY = undefined, rotation = undefined) {
+        if (riderToken.w >= mountToken.w || riderToken.h >= mountToken.h) {
             let grid = canvas.scene.data.grid;
-            let newWidth = (mount.w / 2) / grid;
-            let newHeight = (mount.h / 2) / grid;
-            await rider.update({
+            let newWidth = (mountToken.w / 2) / grid;
+            let newHeight = (mountToken.h / 2) / grid;
+            await riderToken.update({
                 width: newWidth,
                 height: newHeight,
             });
-            rider.zIndex = mount.zIndex + 10;
+            riderToken.zIndex = mountToken.zIndex + 10;
         }
 
-        let loc = this.getRiderLocation(rider, mount, { x: newX, y: newY });
+        let loc = this.getRiderLocation(riderToken, mountToken, { x: newX, y: newY });
 
         if (Settings.getRiderRotate()) {
             rotation = rotation;
         } else {
-            rotation = rider.rotation;
+            rotation = riderToken.rotation;
         }
 
-        await rider.setFlag(flagScope, flag.MountMove, true);
+        await riderToken.setFlag(flagScope, flag.MountMove, true);
 
-        await rider.update({
+        await riderToken.update({
             x: loc.x,
             y: loc.y,
             rotation: rotation
         });
-        rider.zIndex = mount.zIndex + 10;
+        riderToken.zIndex = mountToken.zIndex + 10;
 
-        rider.parent.sortChildren();
+        riderToken.parent.sortChildren();
     }
 
     /**
      * Gets the correct rider placement coordinates based on the mount's position and movement
-     * @param {token} rider - The rider token
-     * @param {token} mount - The mount token
+     * @param {token} riderToken - The rider token
+     * @param {token} mountToken - The mount token
      * @param {object} newMountLoc - The location the mount is moving to
      */
-    static getRiderLocation(rider, mount, newMountLoc) {
-        newMountLoc.x = newMountLoc.x == undefined ? mount.x : newMountLoc.x;
-        newMountLoc.y = newMountLoc.y == undefined ? mount.y : newMountLoc.y;
+    static getRiderLocation(riderToken, mountToken, newMountLoc) {
+        newMountLoc.x = newMountLoc.x == undefined ? mountToken.x : newMountLoc.x;
+        newMountLoc.y = newMountLoc.y == undefined ? mountToken.y : newMountLoc.y;
         let loc = { x: newMountLoc.x, y: newMountLoc.y };
 
         switch (Settings.getRiderX()) {
             case riderX.Center:
-                let mountCenter = mount.getCenter(newMountLoc.x, newMountLoc.y);
-                loc.x = mountCenter.x - (rider.w / 2);
+                let mountCenter = mountToken.getCenter(newMountLoc.x, newMountLoc.y);
+                loc.x = mountCenter.x - (riderToken.w / 2);
                 break;
             case riderX.Right:
-                loc.x = newMountLoc.x + mount.w - rider.w;
+                loc.x = newMountLoc.x + mountToken.w - riderToken.w;
                 break;
         }
 
         switch (Settings.getRiderY()) {
             case riderY.Center:
-                let mountCenter = mount.getCenter(newMountLoc.x, newMountLoc.y);
-                loc.y = mountCenter.y - (rider.h / 2);
+                let mountCenter = mountToken.getCenter(newMountLoc.x, newMountLoc.y);
+                loc.y = mountCenter.y - (riderToken.h / 2);
                 break;
             case riderY.Bottom:
-                loc.y = newMountLoc.y + mount.h - rider.h;
+                loc.y = newMountLoc.y + mountToken.h - riderToken.h;
                 break;
         }
         return loc;
