@@ -19,20 +19,35 @@ export class MountHud {
 
         if (canvas.tokens.controlled.length == 1 && MountManager.isaMount(mount.id)) {
             this.addButton(html, data, true);
-        } else if (canvas.tokens.controlled.length == 2) {
-            let rider = canvas.tokens.controlled.find(t => t.id != mount.id);
+        } else if (canvas.tokens.controlled.length >= 2) {
+            this.addMountButton(html, data);
+            // let rider = canvas.tokens.controlled.find(t => t.id != mount.id);
 
-            if (MountManager.isRidersMount(rider.id, mount.id)) {
-                this.addButton(html, data, true);
-            }
-            else {
-                if (!MountManager.isaMount(mount.id)) {
-                    if (!MountManager.isAncestor(mount.id, rider.id)) {
-                        this.addButton(html, data);
-                    }
-                }
-            }
+            // if (MountManager.isRidersMount(rider.id, mount.id)) {
+            //     this.addButton(html, data, true);
+            // }
+            // else {
+            //     // if (!MountManager.isaMount(mount.id)) {
+            //     if (!MountManager.isAncestor(mount.id, rider.id)) {
+            //         this.addButton(html, data);
+            //     }
+            //     // }
+            // }
         }
+    }
+
+    static addMountButton(html, hudToken) {
+        let button = $(`<div class="control-icon mount-up"><i class="fas ${Settings.getIconClass()}"></i></div>`);
+        let col = html.find(Settings.getHudColumnClass());
+        if (Settings.getHudTopBottomClass() == 'top') {
+            col.prepend(button);
+        } else {
+            col.append(button);
+        }
+
+        button.find('i').click(async (ev) => {
+            MountManager.mountUp(hudToken);
+        });
     }
 
     /**

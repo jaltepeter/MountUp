@@ -3,10 +3,10 @@ import { modName } from "./settings.js";
 /**
  * Flag Info
  */
-export const flagScope = 'mountup';
-export const flag = {
+export const FlagScope = 'mountup';
+export const Flags = {
     Mount: 'mount',
-    Rider: 'rider',
+    Riders: 'riders',
     OrigSize: 'origsize',
     MountMove: 'mountMove'
 };

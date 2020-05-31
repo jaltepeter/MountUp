@@ -13,7 +13,7 @@ Hooks.on('ready', () => {
                 case socketAction.MoveToken:
                     let rider = findTokenById(data.riderId);
                     let mount = findTokenById(data.mountId);
-                    MountManager.moveRiderToMount(rider, mount, data.x, data.y);
+                    MountManager.doTokenUpdate(rider, mount, data.x, data.y);
             }
         }
     });
@@ -37,13 +37,13 @@ Hooks.on('renderTokenHUD', (app, html, data) => {
 
 Hooks.on('preUpdateToken', async (scene, token, updateData) => {
     if (updateData.hasOwnProperty("x") || updateData.hasOwnProperty("y") || updateData.hasOwnProperty("rotation")) {
-        await MountManager.handleTokenMovement(token._id, updateData);
+        await MountManager.doTokenUpdate(token._id, updateData);
     }
 });
 
 Hooks.on('updateToken', async (scene, token, updateData) => {
     if (MountManager.isaMount(updateData._id)) {
-        await MountManager.popRider(updateData._id);
+        MountManager.popRider(updateData._id);
     }
 });
 
