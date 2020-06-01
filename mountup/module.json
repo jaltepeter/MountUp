@@ -3,7 +3,7 @@
     "title": "Mount Up!",
     "description": "Allows tokens to carry or be carried by other tokens. This is completely system agnostic, and fully customizable to fit right into your game.",
     "author": "Brunhine",
-    "version": "b3.0.0",
+    "version": "mr-b1",
     "minimumCoreVersion": "0.5.5",
     "compatibleCoreVersion": "0.6.0",
     "esmodules": [
