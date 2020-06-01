@@ -3,6 +3,7 @@ import { SettingsForm } from './settingsForm.js';
 export const modName = 'Mount Up';
 const mod = 'mountup';
 
+
 export const iconOptions = [
     'Horse',
     'People Carrying',
@@ -11,11 +12,16 @@ export const iconOptions = [
     'Fist',
     'Handshake'
 ];
-
 export const hudColumns = ['Left', 'Right'];
 export const hudTopBottom = ['Top', 'Bottom'];
-export const riderX = ['Left', 'Center', 'Right'];
-export const riderY = ['Top', 'Center', 'Bottom'];
+export const riderXOptions = ['Left', 'Center', 'Right'];
+export const riderYOptions = ['Top', 'Center', 'Bottom'];
+export const riderLockOptions = [
+    'mu.settings.riderLock.noLock',
+    'Lock to location',
+    'Lock to mount bounds',
+    'Dismount when outside mount bounds'
+];
 
 /**
  * Provides functionality for interaction with module settings
@@ -198,8 +204,9 @@ export class Settings {
         game.settings.register(mod, 'lock-riders', {
             scope: 'world',
             config: false,
-            type: Boolean,
-            default: true
+            type: Number,
+            default: 3,
+            choices: riderLockOptions
         });
 
         game.settings.register(mod, 'rider-rotate', {
@@ -215,7 +222,7 @@ export class Settings {
             config: false,
             type: Number,
             defualt: 1,
-            choices: riderX
+            choices: riderXOptions
         });
 
         /** Where to place the rider vertically on the mount */
@@ -224,7 +231,7 @@ export class Settings {
             config: false,
             type: Number,
             defualt: 0,
-            choices: riderY
+            choices: riderYOptions
         });
 
         /** Whether or not chat messages should be sent */

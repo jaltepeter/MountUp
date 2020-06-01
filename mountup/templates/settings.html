@@ -38,7 +38,13 @@
     <h2>{{localize 'mu.settings.formHeaders.riderBehavior'}}</h2>
     <div class="form-group">
         <label>{{localize 'mu.settings.riderLock.name'}}</label>
-        <input name="riderLock" type="checkbox" {{#if riderLock}}checked="checked" {{/if}} />
+        <select name="riderLock">
+            {{#select riderLock}}
+            {{#each riderLock}}
+            <option value="{{@index}}" {{#if this.selected}}selected="selected" {{/if}}>{{localize this.value}}</option>
+            {{/each}}
+            {{/select}}
+        </select>
         <p class="notes">{{localize 'mu.settings.riderLock.hint'}}</p>
     </div>
     <div class="form-group">
