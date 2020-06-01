@@ -24,6 +24,6 @@
         }
     ],
     "url": "https://gitlab.com/brunhine/foundry-mountup",
-    "manifest": "https://gitlab.com/brunhine/foundry-mountup/raw/master/mountup/module.json",
+    "manifest": "https://gitlab.com/brunhine/foundry-mountup/-/raw/multi-rider/mountup/module.json",
     "download": "https://gitlab.com/brunhine/foundry-mountup/-/jobs/artifacts/multi-rider-b1/raw/mountup.zip?job=build"
 }
