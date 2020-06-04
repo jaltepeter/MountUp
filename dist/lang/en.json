@@ -1,0 +1,55 @@
+{
+    "mu": {
+        "settings": {
+            "button": {
+                "name": "Mount Up! Settings",
+                "label": "Mount Up!"
+            },
+            "formHeaders": {
+                "hudSettings": "HUD Settings",
+                "riderBehavior": "Rider Behavior",
+                "chatSettings": "Chat Settings",
+                "save": "Save Settings"
+            },
+            "icon": {
+                "name": "Icon",
+                "hint": "The icon to show in the HUD"
+            },
+            "hudColumn": {
+                "name": "HUD Column",
+                "hint": "Which HUD column to place the button in"
+            },
+            "hudTopBottom": {
+                "name": "HUD Top/Bottom",
+                "hint": "Where to place the button in the column"
+            },
+            "riderLock": {
+                "name": "Should riders be locked to mounts?",
+                "hint": "If enabled, riders will be unable to move seperately from their mount until dismounted.",
+                "noLock": "No lock"
+            },
+            "riderRotate": {
+                "name": "Should riders rotate with mounts?",
+                "hint": "If enabled, rider rotation will be updated to match mount rotation"
+            },
+            "riderX": {
+                "name": "Rider Horizontal Alignment"
+            },
+            "riderY": {
+                "name": "Rider Vertical Alignment"
+            },
+            "shouldChat": {
+                "name": "Send messages to chat",
+                "hint": "Should chat messages about mounting/carrying and dismounting/dropping be sent to chat?"
+            },
+            "mountMsg": {
+                "name": "Mount Message Format",
+                "hint": "How mounting chat messages should be formatted if enabled. (use {rider} and {mount} for name substitution)"
+            },
+            "dismountMsg": {
+                "name": "Dismount Message Format",
+                "hint": "How dismounting chat messages should be formatted if enabled. (use {rider} and {mount} for name substitution)"
+            }
+        }
+    }
+}
