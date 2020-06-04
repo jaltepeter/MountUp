@@ -1,29 +1,29 @@
 {
-    "name": "mountup",
-    "title": "Mount Up!",
-    "description": "Allows tokens to carry or be carried by other tokens. This is completely system agnostic, and fully customizable to fit right into your game.",
-    "author": "Brunhine",
-    "version": "2.5.0",
-    "minimumCoreVersion": "0.5.5",
-    "compatibleCoreVersion": "0.6.0",
-    "esmodules": [
-        "scripts/mountup.js"
-    ],
-    "scripts": [],
-    "socket": true,
-    "languages": [
-        {
-            "lang": "en",
-            "name": "English",
-            "path": "lang/en.json"
-        },
-        {
-            "lang": "ja",
-            "name": " 日本語",
-            "path": "lang/ja.json"
-        }
-    ],
-    "url": "https://github.com/Brunhine/MountUp",
-    "manifest": "https://raw.githubusercontent.com/Brunhine/MountUp/master/src/module.json",
-    "download": "https://github.com/Brunhine/MountUp/releases/download/v2.5.0/mountup.zip"
+	"name": "mountup",
+	"title": "Mount Up!",
+	"description": "Allows tokens to carry or be carried by other tokens. This is completely system agnostic, and fully customizable to fit right into your game.",
+	"author": "Brunhine",
+	"version": "3.0.0",
+	"minimumCoreVersion": "0.5.5",
+	"compatibleCoreVersion": "0.6.0",
+	"esmodules": [
+		"scripts/mountup.js"
+	],
+	"scripts": [],
+	"socket": true,
+	"languages": [
+		{
+			"lang": "en",
+			"name": "English",
+			"path": "lang/en.json"
+		},
+		{
+			"lang": "ja",
+			"name": " 日本語",
+			"path": "lang/ja.json"
+		}
+	],
+	"url": "https://github.com/Brunhine/MountUp",
+	"manifest": "https://raw.githubusercontent.com/Brunhine/MountUp/master/src/module.json",
+	"download": "https://github.com/Brunhine/MountUp/releases/download/v3.0.0/mountup.zip"
 }
