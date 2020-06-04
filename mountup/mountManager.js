@@ -246,17 +246,17 @@ export class MountManager {
 
             updateData.x = updateData.x !== undefined ? updateData.x : mountToken.x;
             updateData.y = updateData.y !== undefined ? updateData.y : mountToken.y;
-            updateData.rotation = updateData.rotation !== undefined ? updateData.rotation : mountToken.rotation;
+            updateData.rotation = updateData.rotation !== undefined ? updateData.rotation : mountToken.data.rotation;
 
             const mountLocation = { x: mountToken.x, y: mountToken.y };
 
             for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
                 const riderToken = findTokenById(riderId);
                 if (riderToken.owner) {
-                    await this.moveRiderToMount(riderToken, mountLocation, updateData.x, updateData.y, updateData.rotation || mountToken.rotation);
+                    await this.moveRiderToMount(riderToken, mountLocation, updateData.x, updateData.y, updateData.rotation || mountToken.data.rotation);
                 } else {
                     const offset = { x: mountLocation.x - riderToken.x, y: mountLocation.y - riderToken.y };
-                    const rotation = Settings.getRiderRotate() ? updateData.rotation : riderToken.rotation;
+                    const rotation = Settings.getRiderRotate() ? updateData.rotation : riderToken.data.rotation;
                     game.socket.emit(socketName, {
                         mode: socketAction.UpdateToken,
                         riderId: riderToken.id,
