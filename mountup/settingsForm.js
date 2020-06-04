@@ -1,4 +1,4 @@
-import { hudColumns, hudTopBottom, iconOptions, riderX, riderY, Settings } from './settings.js';
+import { hudColumns, hudTopBottom, iconOptions, riderLockOptions, riderXOptions, riderYOptions, Settings } from './settings.js';
 
 export class SettingsForm extends FormApplication {
 
@@ -25,10 +25,10 @@ export class SettingsForm extends FormApplication {
             icons: this.getSelectList(iconOptions, Settings.getIcon()),
             hudColumn: this.getSelectList(hudColumns, Settings.getHudColumn()),
             hudTopBottom: this.getSelectList(hudTopBottom, Settings.getHudTopBottom()),
-            riderLock: Settings.getRiderLock(),
+            riderLock: this.getSelectList(riderLockOptions, Settings.getRiderLock()),
             riderRotate: Settings.getRiderRotate(),
-            riderX: this.getSelectList(riderX, Settings.getRiderX()),
-            riderY: this.getSelectList(riderY, Settings.getRiderY()),
+            riderX: this.getSelectList(riderXOptions, Settings.getRiderX()),
+            riderY: this.getSelectList(riderYOptions, Settings.getRiderY()),
             shouldChat: Settings.getShouldChat(),
             mountMsg: Settings.getMountMessage(),
             dismountMsg: Settings.getDismountMessage()

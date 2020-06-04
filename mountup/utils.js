@@ -3,10 +3,10 @@ import { modName } from "./settings.js";
 /**
  * Flag Info
  */
-export const flagScope = 'mountup';
-export const flag = {
+export const FlagScope = 'mountup';
+export const Flags = {
     Mount: 'mount',
-    Rider: 'rider',
+    Riders: 'riders',
     OrigSize: 'origsize',
     MountMove: 'mountMove'
 };
@@ -18,7 +18,7 @@ export const socketName = 'module.mountup';
 export const socketAction = {
     Mount: 0,
     Dismount: 1,
-    MoveToken: 2
+    UpdateToken: 2
 };
 
 /**
@@ -37,6 +37,13 @@ export const riderY = {
     Top: 0,
     Center: 1,
     Bottom: 2
+};
+
+export const riderLock = {
+    NoLock: 0,
+    LockLocation: 1,
+    LockBounds: 2,
+    Dismount: 3
 };
 
 /**
@@ -76,6 +83,7 @@ export function warn(message) {
  */
 export function error(message) {
     ui.notifications.error(`Mount Up! : ${message}`);
+    console.log(`Mount Up! : ${message}`);
 }
 
 /**

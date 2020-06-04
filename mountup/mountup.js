@@ -10,10 +10,12 @@ Hooks.on('ready', () => {
     game.socket.on(socketName, data => {
         if (game.user.isGM) {
             switch (data.mode) {
-                case socketAction.MoveToken:
-                    let rider = findTokenById(data.riderId);
-                    let mount = findTokenById(data.mountId);
-                    MountManager.moveRiderToMount(rider, mount, data.x, data.y);
+                case socketAction.UpdateToken:
+                    findTokenById(data.riderId).update({
+                        x: data.x,
+                        y: data.y,
+                        rotation: data.rotation
+                    });
             }
         }
     });
@@ -37,13 +39,14 @@ Hooks.on('renderTokenHUD', (app, html, data) => {
 
 Hooks.on('preUpdateToken', async (scene, token, updateData) => {
     if (updateData.hasOwnProperty("x") || updateData.hasOwnProperty("y") || updateData.hasOwnProperty("rotation")) {
-        await MountManager.handleTokenMovement(token._id, updateData);
+        //await findTokenById(token._id).setFlag(FlagScope, Flags.MountMove, true);
+        await MountManager.doTokenUpdate(token._id, updateData);
     }
 });
 
 Hooks.on('updateToken', async (scene, token, updateData) => {
     if (MountManager.isaMount(updateData._id)) {
-        await MountManager.popRider(updateData._id);
+        MountManager.popRider(updateData._id);
     }
 });
 

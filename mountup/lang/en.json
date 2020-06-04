@@ -25,7 +25,8 @@
             },
             "riderLock": {
                 "name": "Should riders be locked to mounts?",
-                "hint": "If enabled, riders will be unable to move seperately from their mount until dismounted."
+                "hint": "If enabled, riders will be unable to move seperately from their mount until dismounted.",
+                "noLock": "No lock"
             },
             "riderRotate": {
                 "name": "Should riders rotate with mounts?",

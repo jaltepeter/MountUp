@@ -20,7 +20,7 @@ To install this module manually:
 5. Don't forget to enable the module in game using the "Manage Module" button
 
 # Localization
-Japanese Language support provided by [Brother Sharper](https://github.com/BrotherSharper) ('Brother Sharp#6921' on discord)
+Japanese Language support provided by [BrotherSharper](https://github.com/BrotherSharper) ('Brother Sharp#6921' on discord)
 
 *always welcoming more translations*
 

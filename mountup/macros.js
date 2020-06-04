@@ -1,5 +1,5 @@
 import { MountManager } from "./mountManager.js";
-import { error, findTokenById, findTokenByName, flag, flagScope } from "./utils.js";
+import { error, findTokenById, findTokenByName, Flags, FlagScope } from "./utils.js";
 
 /**
  * Macro function to mount a rider token onto a mount token
@@ -27,7 +27,7 @@ export function dismount(riderNameOrId) {
     let rider = findTokenById(riderNameOrId) || findTokenByName(riderNameOrId);
     if (rider) {
         if (MountManager.isaRider(rider.id)) {
-            MountManager.doRemoveMount(rider, findTokenById(rider.getFlag(flagScope, flag.Mount)));
+            MountManager.doRemoveMount(rider, findTokenById(rider.getFlag(FlagScope, Flags.Mount)));
         } else { error(`Token '${rider.name}' is not a rider`); }
     } else { error(`A token could not be found with the name or id : ${riderNameOrId}`); }
 }
@@ -40,7 +40,7 @@ export function dropRider(mountNameOrId) {
     let mount = findTokenById(mountNameOrId) || findTokenByName(mountNameOrId);
     if (mount) {
         if (MountManager.isaMount(mount.id)) {
-            MountManager.doRemoveMount(findTokenById(mount.getFlag(flagScope, flag.Rider)), mount);
+            MountManager.doRemoveMount(findTokenById(mount.getFlag(FlagScope, Flags.Rider)), mount);
         } else { error(`Token '${mount.name}' is not a mount`); }
     } else { error(`A token could not be found with the name or id : ${mountNameOrId}`); }
 }
