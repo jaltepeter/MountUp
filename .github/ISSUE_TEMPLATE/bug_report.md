@@ -12,7 +12,7 @@ _A clear and concise description of what the bug is._
 
 **Environment Details**
 Foundry VTT Version: _(Example 0.5.4)_
-Follow Me Version: _(Example 2.2.0)_
+Mount Up! Version: _(Example 2.2.0)_
 
 **To Reproduce**
 Steps to reproduce the behavior:

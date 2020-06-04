@@ -1,4 +1,4 @@
-![logo](/img/card.png)
+![logo](/img/ogMountUp.png)
 
 # Mount Up!
 **Mount Up!** is a module for [Foundry VTT](https://foundryvtt.com/  "Foundry VTT") that allows tokens to carry or be carried by other tokens. This is completely system agnostic, and fully customizable to fit right into your game.
