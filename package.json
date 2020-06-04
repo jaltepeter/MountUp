@@ -1,0 +1,26 @@
+{
+	"name": "mountup",
+	"version": "1.0.0",
+	"description": "",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Brunhine",
+	"license": "ISC",
+	"devDependencies": {
+		"archiver": "^4.0.1",
+		"browser-sync": "^2.26.7",
+		"chalk": "^4.0.0",
+		"clean-webpack-plugin": "^3.0.0",
+		"fs-extra": "^9.0.0",
+		"gulp": "^4.0.2",
+		"gulp-git": "^2.10.1",
+		"gulp-less": "^4.0.1",
+		"gulp-sass": "^4.1.0",
+		"gulp-typescript": "^6.0.0-alpha.1",
+		"json-stringify-pretty-compact": "^2.0.0",
+		"sass": "^1.26.7",
+		"typescript": "^3.9.3",
+		"webpack": "^4.43.0"
+	}
+}
