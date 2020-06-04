@@ -1,3 +1,8 @@
+# 3.0.0
+- NEW: Multiple riders per mount!
+- Use Webpack to significantly reduce module size
+
+
 # 2.5.0
 - New Setting: "Rider Rotation" allows for riders to match their rotation to the mount's rotation
 - Moved all settings for Mount Up! into their own settings window.
