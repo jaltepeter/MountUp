@@ -2,11 +2,12 @@
 # Mount Up!
 **Mount Up!** is a module for [Foundry VTT](https://foundryvtt.com/  "Foundry VTT") that allows tokens to carry or be carried by other tokens. This is completely system agnostic, and fully customizable to fit right into your game.
 
-----
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/brunhine/mountup?style=flat-square)
+![GitHub latest version downloads](https://img.shields.io/github/downloads/brunhine/mountup/latest/total?style=flat-square)
 
-[[_TOC_]]
-
-----
+[![Twitter Follow](https://img.shields.io/badge/follow-%40Brunhine-blue.svg?style=flat-square&logo=twitter)](https://twitter.com/brunhine)
+[![Become a Patron](https://img.shields.io/badge/support-patreon-orange.svg?style=flat-square&logo=patreon)](https://www.patreon.com/brunhine)
+[![Donate via Ko-Fi](https://img.shields.io/badge/support-ko--fi-ff4646?style=flat-square&logo=ko-fi)](https://ko-fi.com/brunhine)
 
 # Installation
 It's always better and easier to install modules through in in app browser. Just search for "Mount Up!"
@@ -15,7 +16,7 @@ To install this module manually:
 1. Inside the Foundry "Configuration and Setup" screen, click "Add-on Modules"
 2. Click "Install Module"
 3. In the "Manifest URL" field, paste the following url:
-`https://gitlab.com/brunhine/foundry-mountup/-/raw/master/mountup/module.json`
+`https://raw.githubusercontent.com/Brunhine/MountUp/master/src/module.json`
 4. Click 'Install' and wait for installation to complete
 5. Don't forget to enable the module in game using the "Manage Module" button
 

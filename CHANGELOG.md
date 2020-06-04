@@ -1,5 +1,18 @@
 # 3.0.0
 - NEW: Multiple riders per mount!
+- New Settings options for rider lock:
+    - No lock - do nothing when rider moves off mount
+    - Lock to location - rider cannot move at all without mount (current version of rider lock)
+    - Lock to mount bounds - rider is free to move about while inside the mount bounds, but cannot move out.
+    - Dismount when outside mount bounds - if rider is moved off the mount, it will be dismounted
+- Unless locked by 'rider lock', riders are free to move about their mounts and that positioning will be remmebered when the mount is moved
+- HUD Buttons now have tooltips to help you better understand the effect of clicking it
+- To mount:
+    - Select 2 or more tokens and right click on the 'mount' token and click the mount Buttons
+    - You can mount multiple riders all at once, or one at a time
+- To Dismount:
+    - Select a mount - clicking the dismount button will drop all riders for that mount *check tooltips*
+    - Select a rider - clicking the dismount button will dismount only that rider *check tooltips*
 - Use Webpack to significantly reduce module size
 
 
