@@ -255,7 +255,7 @@ export class MountManager {
             for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
                 const riderToken = findTokenById(riderId);
                 if (riderToken.owner) {
-                    await this.moveRiderToMount(riderToken, mountLocation, updateData.x, updateData.y, updateData.rotation || mountToken.data.rotation);
+                    await this.moveRiderToMount(riderToken, mountLocation, updateData.x, updateData.y, updateData.rotation == undefined ? mountToken.data.rotation : updateData.rotation);
                 } else {
                     const offset = { x: mountLocation.x - riderToken.x, y: mountLocation.y - riderToken.y };
                     const rotation = Settings.getRiderRotate() ? updateData.rotation : riderToken.data.rotation;
