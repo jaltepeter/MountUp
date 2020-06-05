@@ -218,25 +218,27 @@ export class MountManager {
             };
 
             if (!riderToken.getFlag(FlagScope, Flags.MountMove)) {
-                switch (Settings.getRiderLock()) {
-                    case riderLock.NoLock:
-                        break;
-                    case riderLock.LockLocation:
-                        delete updateData.x;
-                        delete updateData.y;
-                        warn(`${riderToken.name} is currently locked to a mount`);
-                        break;
-                    case riderLock.LockBounds:
-                        if (!this.isInsideTokenBounds(newLocation, mountToken)) {
+                if (!canvas.tokens.controlled.map(t => t.id).includes(riderToken.getFlag(FlagScope, Flags.Mount))) {
+                    switch (Settings.getRiderLock()) {
+                        case riderLock.NoLock:
+                            break;
+                        case riderLock.LockLocation:
                             delete updateData.x;
                             delete updateData.y;
-                            warn(`${riderToken.name} is currently locked inside a mount`);
-                        }
-                        break;
-                    case riderLock.Dismount:
-                        if (!this.isInsideTokenBounds(newLocation, mountToken)) {
-                            this.doRemoveMount(riderToken, mountToken);
-                        }
+                            warn(`${riderToken.name} is currently locked to a mount`);
+                            break;
+                        case riderLock.LockBounds:
+                            if (!this.isInsideTokenBounds(newLocation, mountToken)) {
+                                delete updateData.x;
+                                delete updateData.y;
+                                warn(`${riderToken.name} is currently locked inside a mount`);
+                            }
+                            break;
+                        case riderLock.Dismount:
+                            if (!this.isInsideTokenBounds(newLocation, mountToken)) {
+                                this.doRemoveMount(riderToken, mountToken);
+                            }
+                    }
                 }
             }
         }
