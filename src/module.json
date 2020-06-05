@@ -3,7 +3,7 @@
 	"title": "Mount Up!",
 	"description": "Allows tokens to carry or be carried by other tokens. This is completely system agnostic, and fully customizable to fit right into your game.",
 	"author": "Brunhine",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"minimumCoreVersion": "0.5.5",
 	"compatibleCoreVersion": "0.6.0",
 	"esmodules": [
@@ -25,5 +25,5 @@
 	],
 	"url": "https://github.com/Brunhine/MountUp",
 	"manifest": "https://raw.githubusercontent.com/Brunhine/MountUp/master/src/module.json",
-	"download": "https://github.com/Brunhine/MountUp/releases/download/v3.0.0/mountup.zip"
+	"download": "https://github.com/Brunhine/MountUp/releases/download/v3.0.1/mountup.zip"
 }

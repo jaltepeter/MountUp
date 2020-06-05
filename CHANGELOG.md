@@ -1,3 +1,9 @@
+# 3.0.1
+- Fix for rider rotation not returning to zero when mount does
+- Fix for rider being dismounted if being moved with mount while 'dismount while outside rider bounds' is enabled
+- Fix logo not displaying properly in settings window
+
+
 # 3.0.0
 - NEW: Multiple riders per mount!
 - New Settings options for rider lock:
