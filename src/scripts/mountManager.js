@@ -143,7 +143,11 @@ export class MountManager {
      */
     static async handleTokenDelete(tokenId) {
         let token = findTokenById(tokenId);
-
+        
+        if (!token) {
+            return true;
+        }
+        
         if (this.isaRider(token.id)) {
             let mount = findTokenById(token.getFlag(FlagScope, Flags.Mount));
             await mount.unsetFlag(FlagScope, Flags.Riders);
