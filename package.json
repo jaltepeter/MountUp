@@ -9,7 +9,7 @@
 	"license": "ISC",
 	"devDependencies": {
 		"archiver": "^4.0.1",
-		"browser-sync": "^2.26.7",
+		"browser-sync": "^2.26.14",
 		"chalk": "^4.0.0",
 		"clean-webpack-plugin": "^3.0.0",
 		"fs-extra": "^9.0.0",
@@ -22,5 +22,9 @@
 		"sass": "^1.26.7",
 		"typescript": "^3.9.3",
 		"webpack": "^4.43.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Brunhine/MountUp.git"
 	}
 }
