@@ -1,3 +1,10 @@
+# 3.1.0
+
+- Converted to typescript
+- Direct integration with the module token attacher
+- Minor bug fix 
+- Preparation to foundryvtt 0.8.0
+
 # 3.0.1
 - Fix for rider rotation not returning to zero when mount does
 - Fix for rider being dismounted if being moved with mount while 'dismount while outside rider bounds' is enabled
