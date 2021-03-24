@@ -56,25 +56,25 @@ export let initHooks = () => {
 
   // REMOVED ?????
 
-//   Hooks.on('canvasReady', () => {
-//      MountManager.popAllRiders();
-//   });
+  Hooks.on('canvasReady', () => {
+     MountManager.popAllRiders();
+  });
 
-//   Hooks.on('updateToken', async (scene, token, updateData) => {
-//       if (MountManager.isaMount(updateData._id)) {
-//           MountManager.popRider(updateData._id);
-//       }
-//   });
+  Hooks.on('updateToken', async (scene, token, updateData) => {
+      if (MountManager.isaMount(updateData._id)) {
+          MountManager.popRider(updateData._id);
+      }
+  });
 
-//   Hooks.on('controlToken', async (token) => {
-//       if (MountManager.isaMount(token.id)) {
-//           await MountManager.popRider(token.id);
-//       }
-//   });
+  Hooks.on('controlToken', async (token) => {
+      if (MountManager.isaMount(token.id)) {
+          await MountManager.popRider(token.id);
+      }
+  });
 
-//   Hooks.on('preDeleteToken', async (scene, token) => {
-//       await MountManager.handleTokenDelete(token._id);
-//       return true;
-//   });
+  Hooks.on('preDeleteToken', async (scene, token) => {
+      await MountManager.handleTokenDelete(token._id);
+      return true;
+  });
 
 }
