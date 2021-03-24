@@ -56,7 +56,7 @@ export class MountHud {
 
         const button = this.buildButton(html, `Mount ${tokenNames.join(', ').replace(/, ([^,]*)$/, ' and $1')} on to ${hudToken.name}`);
 
-        button.find('i').click(async (ev) => {
+        button.find('i').on("click", async (ev) => {
             MountManager.mountUp(hudToken);
         });
     }
@@ -66,7 +66,7 @@ export class MountHud {
         let button = this.buildButton(html, `Dismount ${hudToken.name} from ${findTokenById(rider.getFlag(FlagScope, Flags.Mount)).name}`);
         button = this.addSlash(button);
 
-        button.find('i').click(async (ev) => {
+        button.find('i').on("click", async (ev) => {
             MountManager.dismount(hudToken);
         });
     }
@@ -75,7 +75,7 @@ export class MountHud {
         let button = this.buildButton(html, `Remove all riders from ${hudToken.name}`);
         button = this.addSlash(button);
 
-        button.find('i').click(async (ev) => {
+        button.find('i').on("click", async (ev) => {
             MountManager.removeAllRiders(hudToken);
         });
     }
@@ -111,7 +111,7 @@ export class MountHud {
             col.append(button);
         }
 
-        button.find('i').click(async (ev) => {
+        button.find('i').on("click", async (ev) => {
             if (MountManager.mountUp(data)) {
                 if (hasSlash) {
                     this.removeSlash(button);

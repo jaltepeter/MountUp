@@ -57,5 +57,13 @@
   "download": "https://github.com/Brunhine/MountUp/master/package/coloredeffects.zip",
   "minimumCoreVersion": "0.7.6",
   "compatibleCoreVersion": "0.7.9",
-  "changelog": "https://raw.githubusercontent.com/Brunhine/MountUp/master/changelog.md"
+  "changelog": "https://raw.githubusercontent.com/Brunhine/MountUp/master/changelog.md",
+  "dependencies": [
+    {
+      "name": "lib-wrapper"
+    },
+    {
+      "name": "token-attacher"
+    }
+  ]
 }

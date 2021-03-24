@@ -77,6 +77,10 @@ Hooks.once('ready', () => {
    	ui.notifications.error(`The '${MODULE_NAME}' module requires to install and activate the 'libWrapper' module.`);
 		return;
 	}
+	if (!game.modules.get("token-attacher")?.active && game.user.isGM){
+    ui.notifications.error(`The '${MODULE_NAME}' module requires to install and activate the 'token-attacher' module.`);
+    return;
+  }
 
 	readyHooks();
 });

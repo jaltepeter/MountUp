@@ -1,4 +1,5 @@
 import { warn } from "../foundryvtt-mountup.js";
+import { MODULE_NAME } from "./settings.js";
 import { dismount, dropRider, mount } from './macros.js';
 import { MountHud } from "./mountHud.js";
 import { MountManager } from "./mountManager.js";
@@ -17,7 +18,8 @@ export let readyHooks = async () => {
             }
         }
     });
-    window['MountUp'] = {
+    // window['MountUp'] = {
+    window[MODULE_NAME] = {
         mount: mount,
         dismount: dismount,
         dropRider: dropRider
@@ -32,12 +34,13 @@ export let initHooks = () => {
     Hooks.on('renderTokenHUD', (app, html, data) => {
         MountHud.renderMountHud(app, html, data);
     });
-    Hooks.on('preUpdateToken', async (scene, token, updateData) => {
-        if (updateData.hasOwnProperty("x") || updateData.hasOwnProperty("y") || updateData.hasOwnProperty("rotation")) {
-            //await findTokenById(token._id).setFlag(FlagScope, Flags.MountMove, true);
-            await MountManager.doTokenUpdate(token._id, updateData);
-        }
-    });
+    // NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
+    // Hooks.on('preUpdateToken', async (scene, token, updateData) => {
+    //     if (updateData.hasOwnProperty("x") || updateData.hasOwnProperty("y") || updateData.hasOwnProperty("rotation")) {
+    //         //await findTokenById(token._id).setFlag(FlagScope, Flags.MountMove, true);
+    //         await MountManager.doTokenUpdate(token._id, updateData);
+    //     }
+    // });
     Hooks.on('updateToken', async (scene, token, updateData) => {
         if (MountManager.isaMount(updateData._id)) {
             MountManager.popRider(updateData._id);

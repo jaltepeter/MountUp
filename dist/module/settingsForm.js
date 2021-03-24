@@ -1,4 +1,4 @@
-import { hudColumns, hudTopBottom, iconOptions, riderLockOptions, riderXOptions, riderYOptions, Settings } from './settings.js';
+import { hudColumns, hudTopBottom, iconOptions, MODULE_NAME, riderLockOptions, riderXOptions, riderYOptions, Settings } from './settings.js';
 export class SettingsForm extends FormApplication {
     constructor(object, options = {}) {
         super(object, options);
@@ -10,7 +10,8 @@ export class SettingsForm extends FormApplication {
         return mergeObject(super.defaultOptions, {
             id: "mountup-settings-form",
             title: "Mount Up! - Settings",
-            template: "./modules/mountup/templates/settings.html",
+            //template: "./modules/mountup/templates/settings.html",
+            template: `./modules/${MODULE_NAME}/templates/settings.html`,
             classes: ["sheet"],
             width: 500,
             closeOnSubmit: true

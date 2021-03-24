@@ -1,6 +1,6 @@
 import { Chatter } from "./chatter.js";
 import { Settings } from "./settings.js";
-import { error, findTokenById, Flags, FlagScope, riderLock, riderX, riderY, socketAction, socketName, warn } from "./utils.js";
+import { error, findTokenById, Flags, FlagScope, riderLock, riderX, riderY, warn } from "./utils.js";
 /**
  * Provides all of the functionality for interacting with the game (tokens, canvas, etc.)
  */
@@ -24,8 +24,9 @@ export class MountManager {
                     continue;
                 }
                 let riders = mountToken.getFlag(FlagScope, Flags.Riders);
-                if (riders == undefined)
+                if (riders == undefined) {
                     riders = [];
+                }
                 if (!riders.includes(riderToken.id)) {
                     riders.push(riderToken.id);
                 }
@@ -85,7 +86,8 @@ export class MountManager {
         await mountToken.update({ flags: { mountup: { riders: riders } } });
         await riderToken.setFlag(FlagScope, Flags.Mount, mountToken.id);
         await riderToken.setFlag(FlagScope, Flags.OrigSize, { w: riderToken.w, h: riderToken.h });
-        this.moveRiderToMount(riderToken, { x: mountToken.x, y: mountToken.y }, null, null, null);
+        // NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
+        // this.moveRiderToMount(riderToken, { x: mountToken.x, y: mountToken.y }, null, null, null);
         Chatter.mountMessage(riderToken.id, mountToken.id);
         return true;
     }
@@ -178,13 +180,78 @@ export class MountManager {
         mountToken.parent.sortChildren();
         return true;
     }
+    // /**
+    //  * Called when a token is moved in the game.
+    //  * Determines if the token being moved is a mount - if it is, moves the rider to match
+    //  * @param {String} tokenId - The ID of the token being moved
+    //  * @param {Object} updateData - Update data being sent by the game
+    //  */
+    // static async doTokenUpdate(tokenId, updateData) {
+    //     if (this.isaRider(tokenId)) {
+    //         const riderToken = findTokenById(tokenId);
+    //         const mountToken = findTokenById(riderToken.getFlag(FlagScope, Flags.Mount));
+    //         const newLocation = {
+    //             x: updateData.x !== undefined ? updateData.x : riderToken.x,
+    //             y: updateData.y !== undefined ? updateData.y : riderToken.y
+    //         };
+    //         if (!riderToken.getFlag(FlagScope, Flags.MountMove)) {
+    //             if (!canvas.tokens.controlled.map(t => t.id).includes(riderToken.getFlag(FlagScope, Flags.Mount))) {
+    //                 switch (Settings.getRiderLock()) {
+    //                     case riderLock.NoLock:
+    //                         break;
+    //                     case riderLock.LockLocation:
+    //                         delete updateData.x;
+    //                         delete updateData.y;
+    //                         warn(`${riderToken.name} is currently locked to a mount`);
+    //                         break;
+    //                     case riderLock.LockBounds:
+    //                         if (!this.isInsideTokenBounds(newLocation, mountToken)) {
+    //                             delete updateData.x;
+    //                             delete updateData.y;
+    //                             warn(`${riderToken.name} is currently locked inside a mount`);
+    //                         }
+    //                         break;
+    //                     case riderLock.Dismount:
+    //                         if (!this.isInsideTokenBounds(newLocation, mountToken)) {
+    //                             this.doRemoveMount(riderToken, mountToken);
+    //                         }
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     if (this.isaMount(tokenId)) {
+    //         const mountToken = findTokenById(tokenId);
+    //         updateData.x = updateData.x !== undefined ? updateData.x : mountToken.x;
+    //         updateData.y = updateData.y !== undefined ? updateData.y : mountToken.y;
+    //         updateData.rotation = updateData.rotation !== undefined ? updateData.rotation : mountToken.data.rotation;
+    //         const mountLocation = { x: mountToken.x, y: mountToken.y };
+    //         for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
+    //             const riderToken = findTokenById(riderId);
+    //             if (riderToken.owner) {
+    //                 await this.moveRiderToMount(riderToken, mountLocation, updateData.x, updateData.y, updateData.rotation == undefined ? mountToken.data.rotation : updateData.rotation);
+    //             } else {
+    //                 const offset = { x: mountLocation.x - riderToken.x, y: mountLocation.y - riderToken.y };
+    //                 const rotation = Settings.getRiderRotate() ? updateData.rotation : riderToken.data.rotation;
+    //                 game.socket['emit'](socketName, {
+    //                     mode: socketAction.UpdateToken,
+    //                     riderId: riderToken.id,
+    //                     // updateData: updateData
+    //                     // mountId: mountToken.id,
+    //                     x: updateData.x - offset.x,
+    //                     y: updateData.y - offset.y,
+    //                     rotation: rotation
+    //                 });
+    //             }
+    //         }
+    //     }
+    // }
     /**
      * Called when a token is moved in the game.
      * Determines if the token being moved is a mount - if it is, moves the rider to match
      * @param {String} tokenId - The ID of the token being moved
      * @param {Object} updateData - Update data being sent by the game
      */
-    static async doTokenUpdate(tokenId, updateData) {
+    static async doTokenUpdateOnlyCheckBoundHandler(tokenId, updateData) {
         if (this.isaRider(tokenId)) {
             const riderToken = findTokenById(tokenId);
             const mountToken = findTokenById(riderToken.getFlag(FlagScope, Flags.Mount));
@@ -223,25 +290,25 @@ export class MountManager {
             updateData.y = updateData.y !== undefined ? updateData.y : mountToken.y;
             updateData.rotation = updateData.rotation !== undefined ? updateData.rotation : mountToken.data.rotation;
             const mountLocation = { x: mountToken.x, y: mountToken.y };
-            for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
-                const riderToken = findTokenById(riderId);
-                if (riderToken.owner) {
-                    await this.moveRiderToMount(riderToken, mountLocation, updateData.x, updateData.y, updateData.rotation == undefined ? mountToken.data.rotation : updateData.rotation);
-                }
-                else {
-                    const offset = { x: mountLocation.x - riderToken.x, y: mountLocation.y - riderToken.y };
-                    const rotation = Settings.getRiderRotate() ? updateData.rotation : riderToken.data.rotation;
-                    game.socket['emit'](socketName, {
-                        mode: socketAction.UpdateToken,
-                        riderId: riderToken.id,
-                        // updateData: updateData
-                        // mountId: mountToken.id,
-                        x: updateData.x - offset.x,
-                        y: updateData.y - offset.y,
-                        rotation: rotation
-                    });
-                }
-            }
+            // NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
+            // for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
+            //     const riderToken = findTokenById(riderId);
+            //     if (riderToken.owner) {
+            //         await this.moveRiderToMount(riderToken, mountLocation, updateData.x, updateData.y, updateData.rotation == undefined ? mountToken.data.rotation : updateData.rotation);
+            //     } else {
+            //         const offset = { x: mountLocation.x - riderToken.x, y: mountLocation.y - riderToken.y };
+            //         const rotation = Settings.getRiderRotate() ? updateData.rotation : riderToken.data.rotation;
+            //         game.socket['emit'](socketName, {
+            //             mode: socketAction.UpdateToken,
+            //             riderId: riderToken.id,
+            //             // updateData: updateData
+            //             // mountId: mountToken.id,
+            //             x: updateData.x - offset.x,
+            //             y: updateData.y - offset.y,
+            //             rotation: rotation
+            //         });
+            //     }
+            // }
         }
     }
     static isInsideTokenBounds(location, token) {
@@ -286,31 +353,30 @@ export class MountManager {
         let mount = findTokenById(mountId);
         return (rider.getFlag(FlagScope, Flags.Mount) == mount.id);
     }
-    /**
-     * Moves the Rider token to Mount token.
-     * If both tokens are being moved together, newX and newY must be provided, or rider
-     *  will end up at the Mount's starting location
-     * @param {Object} riderToken - The rider
-     * @param {Object} mountLocation - The mount
-     * @param {Number} newX - (optional) The new X-coordinate for the move
-     * @param {Number} newY - (optional) The new Y-coordinate for the move
-     */
-    static async moveRiderToMount(riderToken, mountLocation, newX, newY, newRot) {
-        riderToken = findTokenById(riderToken.id);
-        await riderToken.setFlag(FlagScope, Flags.MountMove, true);
-        const offset = { x: mountLocation.x - riderToken.x, y: mountLocation.y - riderToken.y };
-        if (Settings.getRiderRotate()) {
-            newRot = newRot !== undefined ? newRot : riderToken.rotation;
-        }
-        else {
-            newRot = riderToken.rotation;
-        }
-        await riderToken.update({
-            x: newX === undefined ? mountLocation.x - offset.x : newX - offset.x,
-            y: newY === undefined ? mountLocation.y - offset.y : newY - offset.y,
-            rotation: newRot
-        });
-    }
+    // /**
+    //  * Moves the Rider token to Mount token.
+    //  * If both tokens are being moved together, newX and newY must be provided, or rider
+    //  *  will end up at the Mount's starting location
+    //  * @param {Object} riderToken - The rider
+    //  * @param {Object} mountLocation - The mount
+    //  * @param {Number} newX - (optional) The new X-coordinate for the move
+    //  * @param {Number} newY - (optional) The new Y-coordinate for the move
+    //  */
+    // static async moveRiderToMount(riderToken, mountLocation, newX, newY, newRot) {
+    //     riderToken = findTokenById(riderToken.id);
+    //     await riderToken.setFlag(FlagScope, Flags.MountMove, true);
+    //     const offset = { x: mountLocation.x - riderToken.x, y: mountLocation.y - riderToken.y };
+    //     if (Settings.getRiderRotate()) {
+    //         newRot = newRot !== undefined ? newRot : riderToken.rotation;
+    //     } else {
+    //         newRot = riderToken.rotation;
+    //     }
+    //     await riderToken.update({
+    //         x: newX === undefined ? mountLocation.x - offset.x : newX - offset.x,
+    //         y: newY === undefined ? mountLocation.y - offset.y : newY - offset.y,
+    //         rotation: newRot
+    //     });
+    // }
     /**
      * Gets the correct rider placement coordinates based on the mount's position and movement
      * @param {token} riderToken - The rider token

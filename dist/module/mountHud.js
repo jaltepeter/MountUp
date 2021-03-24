@@ -47,7 +47,7 @@ export class MountHud {
     static addMountButton(html, hudToken) {
         let tokenNames = canvas.tokens.controlled.filter(token => token.id != hudToken._id).map(token => { return `'${token.name}'`; });
         const button = this.buildButton(html, `Mount ${tokenNames.join(', ').replace(/, ([^,]*)$/, ' and $1')} on to ${hudToken.name}`);
-        button.find('i').click(async (ev) => {
+        button.find('i').on("click", async (ev) => {
             MountManager.mountUp(hudToken);
         });
     }
@@ -55,14 +55,14 @@ export class MountHud {
         const rider = findTokenById(hudToken._id);
         let button = this.buildButton(html, `Dismount ${hudToken.name} from ${findTokenById(rider.getFlag(FlagScope, Flags.Mount)).name}`);
         button = this.addSlash(button);
-        button.find('i').click(async (ev) => {
+        button.find('i').on("click", async (ev) => {
             MountManager.dismount(hudToken);
         });
     }
     static addRemoveRidersButton(html, hudToken) {
         let button = this.buildButton(html, `Remove all riders from ${hudToken.name}`);
         button = this.addSlash(button);
-        button.find('i').click(async (ev) => {
+        button.find('i').on("click", async (ev) => {
             MountManager.removeAllRiders(hudToken);
         });
     }
@@ -95,7 +95,7 @@ export class MountHud {
         else {
             col.append(button);
         }
-        button.find('i').click(async (ev) => {
+        button.find('i').on("click", async (ev) => {
             if (MountManager.mountUp(data)) {
                 if (hasSlash) {
                     this.removeSlash(button);

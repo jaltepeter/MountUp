@@ -24,7 +24,8 @@ export let readyHooks = async () => {
       }
   });
 
-  window['MountUp'] = {
+  // window['MountUp'] = {
+  window[MODULE_NAME] = {
       mount: mount,
       dismount: dismount,
       dropRider: dropRider
@@ -46,10 +47,16 @@ export let initHooks = () => {
     MountHud.renderMountHud(app, html, data);
   });
 
+
+
   Hooks.on('preUpdateToken', async (scene, token, updateData) => {
       if (updateData.hasOwnProperty("x") || updateData.hasOwnProperty("y") || updateData.hasOwnProperty("rotation")) {
           //await findTokenById(token._id).setFlag(FlagScope, Flags.MountMove, true);
-          await MountManager.doTokenUpdate(token._id, updateData);
+
+          // NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
+          // await MountManager.doTokenUpdate(token._id, updateData);
+
+          await MountManager.doTokenUpdateOnlyCheckBoundHandler(token._id, updateData);
       }
   });
 
