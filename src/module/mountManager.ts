@@ -1,8 +1,7 @@
 import { Chatter } from "./chatter.js";
 import { Settings } from "./settings.js";
+import { dismountDropTarget, mountUp } from "./tokenAttacherHelper.js";
 import { error, findTokenById, Flags, FlagScope, riderLock, riderX, riderY, socketAction, socketName, warn } from "./utils.js";
-//@ts-ignore
-import { tokenAttacher } from '../../token-attacher/scripts/token-attacher.js';
 
 /**
  * Provides all of the functionality for interacting with the game (tokens, canvas, etc.)
@@ -41,6 +40,7 @@ export class MountManager {
                 await riderToken.setFlag(FlagScope, Flags.OrigSize, { w: riderToken.w, h: riderToken.h });
 
                 // CALL TOKEN ATTACHER
+                mountUp(riderToken,mountToken);
 
                 Chatter.mountMessage(riderToken.id, mountToken.id);
 
@@ -103,6 +103,7 @@ export class MountManager {
         // this.moveRiderToMount(riderToken, { x: mountToken.x, y: mountToken.y }, null, null, null);
 
         // CALL TOKEN ATTACHER
+        mountUp(riderToken,mountToken);
 
         Chatter.mountMessage(riderToken.id, mountToken.id);
         return true;
@@ -118,6 +119,7 @@ export class MountManager {
         this.restoreRiderSize(riderToken);
 
         // CALL TOKEN ATTACHER
+        dismountDropTarget(riderToken,mountToken);
 
         Chatter.dismountMessage(riderToken.id, mountToken.id);
         const riders = mountToken.getFlag(FlagScope, Flags.Riders);
