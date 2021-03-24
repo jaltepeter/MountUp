@@ -39,15 +39,9 @@ export let initHooks = () => {
 
   // setup all the hooks
 
-  Hooks.on('canvasReady', () => {
-    MountManager.popAllRiders();
-  });
-
   Hooks.on('renderTokenHUD', (app, html, data) => {
     MountHud.renderMountHud(app, html, data);
   });
-
-
 
   Hooks.on('preUpdateToken', async (scene, token, updateData) => {
       if (updateData.hasOwnProperty("x") || updateData.hasOwnProperty("y") || updateData.hasOwnProperty("rotation")) {
@@ -60,21 +54,27 @@ export let initHooks = () => {
       }
   });
 
-  Hooks.on('updateToken', async (scene, token, updateData) => {
-      if (MountManager.isaMount(updateData._id)) {
-          MountManager.popRider(updateData._id);
-      }
-  });
+  // REMOVED ?????
 
-  Hooks.on('controlToken', async (token) => {
-      if (MountManager.isaMount(token.id)) {
-          await MountManager.popRider(token.id);
-      }
-  });
+//   Hooks.on('canvasReady', () => {
+//      MountManager.popAllRiders();
+//   });
 
-  Hooks.on('preDeleteToken', async (scene, token) => {
-      await MountManager.handleTokenDelete(token._id);
-      return true;
-  });
+//   Hooks.on('updateToken', async (scene, token, updateData) => {
+//       if (MountManager.isaMount(updateData._id)) {
+//           MountManager.popRider(updateData._id);
+//       }
+//   });
+
+//   Hooks.on('controlToken', async (token) => {
+//       if (MountManager.isaMount(token.id)) {
+//           await MountManager.popRider(token.id);
+//       }
+//   });
+
+//   Hooks.on('preDeleteToken', async (scene, token) => {
+//       await MountManager.handleTokenDelete(token._id);
+//       return true;
+//   });
 
 }

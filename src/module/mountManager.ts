@@ -1,7 +1,8 @@
+import { error, warn } from "../foundryvtt-mountup.js";
 import { Chatter } from "./chatter.js";
 import { Settings } from "./settings.js";
 import { dismountDropTarget, mountUp } from "./tokenAttacherHelper.js";
-import { error, findTokenById, Flags, FlagScope, riderLock, riderX, riderY, socketAction, socketName, warn } from "./utils.js";
+import { findTokenById, Flags, FlagScope, riderLock, riderX, riderY, socketAction, socketName } from "./utils.js";
 
 /**
  * Provides all of the functionality for interacting with the game (tokens, canvas, etc.)
@@ -119,7 +120,7 @@ export class MountManager {
         this.restoreRiderSize(riderToken);
 
         // CALL TOKEN ATTACHER
-        dismountDropTarget(riderToken,mountToken);
+        dismountDropTarget(mountToken,riderToken);
 
         Chatter.dismountMessage(riderToken.id, mountToken.id);
         const riders = mountToken.getFlag(FlagScope, Flags.Riders);
@@ -206,7 +207,10 @@ export class MountManager {
             }
 
             if (this.isaMount(riderToken.id)) {
-                this.popRider(riderToken.id, callcount += 1);
+                //this.popRider(riderToken.id, callcount += 1);
+                callcount += 1;
+                // CALL TOKEN ATTACHER            
+                dismountDropTarget(mountToken, riderToken);
             }
 
             if (riderToken.owner) {
@@ -218,6 +222,39 @@ export class MountManager {
 
         return true;
     }
+
+    // /**
+    //  * Recursively pops a mount's riders on the z-index
+    //  * @param {string} mountId - The ID of the mount token
+    //  */
+    // static async popRider(mountId, callcount = 0) {
+
+    //     if (callcount > 100) {
+    //         error('Pop riders called too many times. Breaking all rides for safety.');
+    //         canvas.tokens.placeables.forEach(t => { t.unsetFlag('mountup', 'riders'); t.unsetFlag('mountup', 'mount'); });
+    //         return true;
+    //     }
+    //     let mountToken = findTokenById(mountId);
+
+    //     for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
+    //         const riderToken = findTokenById(riderId);
+    //         if (riderToken) {
+    //             riderToken.zIndex = mountToken.zIndex + 10;
+    //         }
+
+    //         if (this.isaMount(riderToken.id)) {
+    //             this.popRider(riderToken.id, callcount += 1);
+    //         }
+
+    //         if (riderToken.owner) {
+    //             await riderToken.unsetFlag(FlagScope, Flags.MountMove);
+    //         }
+    //     }
+
+    //     mountToken.parent.sortChildren();
+
+    //     return true;
+    // }
 
     // /**
     //  * Called when a token is moved in the game.
@@ -340,9 +377,9 @@ export class MountManager {
             updateData.y = updateData.y !== undefined ? updateData.y : mountToken.y;
             updateData.rotation = updateData.rotation !== undefined ? updateData.rotation : mountToken.data.rotation;
 
-            const mountLocation = { x: mountToken.x, y: mountToken.y };
-
             // NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
+
+            // const mountLocation = { x: mountToken.x, y: mountToken.y };
             // for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
             //     const riderToken = findTokenById(riderId);
             //     if (riderToken.owner) {

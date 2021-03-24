@@ -1,5 +1,6 @@
+import { warn } from "../foundryvtt-mountup.js";
 import { MountManager } from "./mountManager.js";
-import { Settings } from "./settings.js";
+import { MODULE_NAME, Settings } from "./settings.js";
 import { findTokenById, Flags, FlagScope } from "./utils.js";
 
 /**
@@ -28,6 +29,7 @@ export class MountHud {
                 this.addDismountButton(html, hudToken);
             }
         } else {
+            //ui.notifications.warn(`${MODULE_NAME}! : You must be sure to select only the token mount`);
             this.addMountButton(html, hudToken);
         }
 

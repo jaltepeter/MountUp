@@ -1,5 +1,6 @@
+import { error } from "../foundryvtt-mountup.js";
 import { MountManager } from "./mountManager.js";
-import { error, findTokenById, findTokenByName, Flags, FlagScope } from "./utils.js";
+import { findTokenById, findTokenByName, Flags, FlagScope } from "./utils.js";
 
 /**
  * Macro function to mount a rider token onto a mount token

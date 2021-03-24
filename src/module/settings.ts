@@ -18,8 +18,8 @@ export const registerSettings = function () {
 	// });
 
   game.settings.registerMenu(MODULE_NAME, 'settingsMenu', {
-      name: 'mu.settings.button.name',
-      label: 'mu.settings.button.label',
+      name: i18n(MODULE_NAME+".settings.button.name"),
+      label: i18n(MODULE_NAME+".settings.button.label"),
       icon: 'fas fa-horse',
       type: SettingsForm,
       restricted: true
@@ -144,7 +144,7 @@ export const hudTopBottom = ['Top', 'Bottom'];
 export const riderXOptions = ['Left', 'Center', 'Right'];
 export const riderYOptions = ['Top', 'Center', 'Bottom'];
 export const riderLockOptions = [
-    'mu.settings.riderLock.noLock',
+    MODULE_NAME+".settings.riderLock.noLock",
     'Lock to location',
     'Lock to mount bounds',
     'Dismount when outside mount bounds'
