@@ -78,9 +78,13 @@ Hooks.once('ready', () => {
 		return;
 	}
 	if (!game.modules.get("token-attacher")?.active && game.user.isGM){
-    ui.notifications.error(`The '${MODULE_NAME}' module requires to install and activate the 'token-attacher' module.`);
-    return;
-  }
+		ui.notifications.error(`The '${MODULE_NAME}' module requires to install and activate the 'token-attacher' module.`);
+		return;
+	}
+
+	if (game.modules.get("mountup")?.active && game.user.isGM){
+		ui.notifications.warn(`The 'mountup', is not needed anymore just use '${MODULE_NAME}'`);
+	}
 
 	readyHooks();
 });
