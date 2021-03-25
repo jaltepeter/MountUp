@@ -4,6 +4,7 @@
 - Direct integration with the module 'token-attacher'
 - Minor bug fix 
 - Preparation to foundryvtt 0.8.0
+- Update documentation
 
 # 3.0.1
 - Fix for rider rotation not returning to zero when mount does
