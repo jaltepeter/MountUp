@@ -35,7 +35,7 @@ To mount a token:
 1. Select the "rider" and the "mount" tokens.
 2. Right click on the "mount" icon to bring up the token HUD.
 3. Click on the horse icon (you can change this in your game).\
-![mount example](./img/mount-example.webm)\
+![mount example](./img/mount-example.png)\
 *The rider will now be linked to the mount. Anywhere the mount moves, the rider follows.*
 
 ## Dismounting
@@ -43,7 +43,7 @@ To mount a token:
 To dismount a token from a token:
 1. Right click on the "mount" to bring up the token HUD.
 2. Click on the dismount icon.\
-![dismount example](./img/dismount-example.webm)\
+![dismount example](./img/dismount-example.png)\
 *The rider will now be un-linked from the mount, and is free to move on their own.*
 
 ## Macros
