@@ -44,7 +44,7 @@
 		}
 	],
   "scripts": [
-    "./scripts/libs/shim.js"
+
   ],
   "esmodules": [
     "foundryvtt-mountup.js"

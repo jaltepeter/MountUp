@@ -10,7 +10,7 @@
  * 					 determines how others may use and modify your module
  */
 // Import JavaScript modules
-import {libWrapper} from './module/libs/shim.js'
+
 // Import TypeScript modules
 import { registerSettings } from './module/settings';
 import { preloadTemplates } from './module/preloadTemplates';
