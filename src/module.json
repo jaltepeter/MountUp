@@ -1,8 +1,8 @@
 {
 	"name": "foundryvtt-mountup",
-	"title": "Mount Up!",
+	"title": "FoundryVTT Mount Up!",
 	"description": "Allows tokens to carry or be carried by other tokens. This is completely system agnostic, and fully customizable to fit right into your game.",
-	"author": "Brunhine",
+	"author": "Brunhine and p4535992",
 	"version": "3.1.0",
   "type": "module",
   "socket": true,

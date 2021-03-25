@@ -31,7 +31,13 @@ export let readyHooks = async () => {
       dropRider: dropRider
   };
 
+  // FOR RETROCOMPATIBILITY
 
+  window['MountUp'] = {
+    mount: mount,
+    dismount: dismount,
+    dropRider: dropRider
+  };
 }
 
 export let initHooks = () => {

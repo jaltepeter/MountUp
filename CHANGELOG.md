@@ -1,7 +1,7 @@
 # 3.1.0
 
 - Converted to typescript
-- Direct integration with the module token attacher
+- Direct integration with the module 'token-attacher'
 - Minor bug fix 
 - Preparation to foundryvtt 0.8.0
 

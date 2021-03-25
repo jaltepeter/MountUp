@@ -18,14 +18,14 @@ export const mountUp = async function(token, target){
 		// await tokenAttacher.attachElementToToken(token, targets[0], true);
 		// await tokenAttacher.setElementsLockStatus(token, false, true);
 		await window['tokenAttacher'].attachElementToToken(token, targets[0], true);
-		await window['tokenAttacher'].setElementsLockStatus(token, false, true);	
+		await window['tokenAttacher'].setElementsLockStatus(token, false, true);
 	}
 }
 
 export const dismountDropAll = async function(token){
 	// tokenAttacher.detachAllElementsFromToken(token, true);
 	await window['tokenAttacher'].detachAllElementsFromToken(token, true);
-	ui['chat'].processMessage(`Everyone and everything get off!`);			
+	ui['chat'].processMessage(`Everyone and everything get off!`);
 }
 
 export const dismountDropTarget = async function(token, target){
@@ -38,6 +38,6 @@ export const dismountDropTarget = async function(token, target){
 		for (let i = 0; i < targets.length; i++) {
 			const targ = targets[i];
 			ui['chat'].processMessage(`Get off ${targ.name}!`);
-        }
-	}				
+    }
+	}
 }
