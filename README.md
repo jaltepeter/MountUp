@@ -10,6 +10,10 @@
 [![Become a Patron](https://img.shields.io/badge/support-patreon-orange.svg?style=flat-square&logo=patreon)](https://www.patreon.com/brunhine)
 [![Donate via Ko-Fi](https://img.shields.io/badge/support-ko--fi-ff4646?style=flat-square&logo=ko-fi)](https://ko-fi.com/brunhine)
 
+## NOTE
+
+This is just a upgrade of the wonderful work of brunhine, hope to see you back.
+
 # Installation
 It's always better and easier to install modules through in in app browser. Just search for "Mount Up!"
 
