@@ -86,7 +86,7 @@ Japanese Language support provided by [BrotherSharper](https://github.com/Brothe
 *always welcoming more translations*
 # Feedback
 
-Any issues, bugs, or feature requests are always welcome to be reported directly to the [Issue Tracker](https://github.com/p4535992/mountup/issues )
+Any issues, bugs, or feature requests are always welcome to be reported directly to the [Issue Tracker](https://github.com/p4535992/mountup/issues ), or using the [Bug Reporter Module](https://foundryvtt.com/packages/bug-reporter/).
 # Licensing
 
 **Mount Up!** is a module for [Foundry VTT](https://foundryvtt.com/  "Foundry VTT") by Jeremiah Altepeter and is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).

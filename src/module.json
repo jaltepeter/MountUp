@@ -58,6 +58,8 @@
   "minimumCoreVersion": "0.7.6",
   "compatibleCoreVersion": "0.7.9",
   "changelog": "https://raw.githubusercontent.com/p4535992/MountUp/master/changelog.md",
+  "bugs": "https://github.com/p4535992/MountUp/issues",
+  "allowBugReporter": true,
   "dependencies": [
     {
       "name": "lib-wrapper"
