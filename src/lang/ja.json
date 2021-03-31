@@ -1,4 +1,5 @@
 {
+  "foundryvtt-mountup": {
     "settings": {
         "button": {
             "name": "乗りなよ！(Mount Up!)設定",
@@ -49,4 +50,5 @@
             "hint": "下馬したときなどに表示されるメッセージを任意に設定できます。({rider}は乗り手の名前と、{mount}は乗騎と自動的に置き換わります)"
         }
     }
+  }
 }
