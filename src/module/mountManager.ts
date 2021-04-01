@@ -1,6 +1,6 @@
 import { error, warn } from "../foundryvtt-mountup.js";
 import { Chatter } from "./chatter.js";
-import { Settings } from "./settings.js";
+import { MODULE_NAME, Settings } from "./settings.js";
 import { dismountDropTarget, mountUp } from "./tokenAttacherHelper.js";
 import { findTokenById, Flags, FlagScope, riderLock, riderX, riderY, socketAction, socketName } from "./utils.js";
 
@@ -203,7 +203,10 @@ export class MountManager {
 
         if (callcount > 100) {
             error('Pop riders called too many times. Breaking all rides for safety.');
-            canvas.tokens.placeables.forEach(t => { t.unsetFlag('mountup', 'riders'); t.unsetFlag('mountup', 'mount'); });
+            canvas.tokens.placeables.forEach(t => { 
+                t.unsetFlag(MODULE_NAME, 'riders'); 
+                t.unsetFlag(MODULE_NAME, 'mount'); 
+            });
             return true;
         }
         let mountToken = findTokenById(mountId);
@@ -239,7 +242,7 @@ export class MountManager {
 
     //     if (callcount > 100) {
     //         error('Pop riders called too many times. Breaking all rides for safety.');
-    //         canvas.tokens.placeables.forEach(t => { t.unsetFlag('mountup', 'riders'); t.unsetFlag('mountup', 'mount'); });
+    //         canvas.tokens.placeables.forEach(t => { t.unsetFlag(MODULE_NAME, 'riders'); t.unsetFlag(MODULE_NAME, 'mount'); });
     //         return true;
     //     }
     //     let mountToken = findTokenById(mountId);
@@ -439,7 +442,7 @@ export class MountManager {
     static isaRider(tokenId) {
         let token = findTokenById(tokenId);
         if (token) {
-            return token.getFlag('mountup', 'mount') != undefined;
+            return token.getFlag(MODULE_NAME, 'mount') != undefined;
         } else return false;
     }
 

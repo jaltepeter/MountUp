@@ -1,3 +1,7 @@
+# 3.1.1
+
+- Forgot some flags to set
+
 # 3.1.0
 
 - Converted to typescript

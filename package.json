@@ -1,7 +1,7 @@
 {
 	"name": "foundryvtt-mountup",
-	"version": "3.1.0",
-	"description": "",
+	"version": "3.1.1",
+	"description": "Allows tokens to carry or be carried by other tokens. This is completely system agnostic, and fully customizable to fit right into your game.",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"package": "gulp package",
@@ -27,8 +27,8 @@
 		"json-stringify-pretty-compact": "^2.0.0",
 		"sass": "^1.26.10",
 		"typescript": "^3.9.7",
-		"yargs": "^15.4.1",
-		"webpack": "^4.43.0"
+		"webpack": "^4.43.0",
+		"yargs": "^15.4.1"
 	},
 	"repository": {
 		"type": "git",
