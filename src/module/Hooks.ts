@@ -13,18 +13,18 @@ export let readyHooks = async () => {
 
   // Settings.registerSettings();
 
-  game.socket['on'](socketName, data => {
-      if (game.user.isGM) {
-          switch (data.mode) {
-              case socketAction.UpdateToken:
-                  findTokenById(data.riderId).update({
-                      x: data.x,
-                      y: data.y,
-                      rotation: data.rotation
-                  });
-          }
-      }
-  });
+//   game.socket['on'](socketName, data => {
+//       if (game.user.isGM) {
+//           switch (data.mode) {
+//               case socketAction.UpdateToken:
+//                   findTokenById(data.riderId).update({
+//                       x: data.x,
+//                       y: data.y,
+//                       rotation: data.rotation
+//                   });
+//           }
+//       }
+//   });
 
   // window['MountUp'] = {
   window[MODULE_NAME] = {
@@ -59,9 +59,9 @@ export let initHooks = () => {
         // await MountManager.doTokenUpdate(token._id, updateData);
 
         await MountManager.doTokenUpdateOnlyCheckBoundHandler(token._id, updateData);
-        // if (MountManager.isaRider(token._id)) {
-        //     await MountManager.doPostTokenUpdate(token._id, updateData);
-        // }
+        if (MountManager.isaRider(token._id)) {
+            await MountManager.doPostTokenUpdate(token._id, updateData);
+        }
       }
   });
 
