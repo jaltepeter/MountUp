@@ -3,6 +3,7 @@
 // import { tokenAttacher } from '../../token-attacher/scripts/token-attacher.js';
 
 import { warn } from "../foundryvtt-mountup";
+import { findTokenById, Flags, FlagScope } from "./utils";
 
 export const mountUp = async function(riderToken, mountToken){
 	let targets = [mountToken]; // Array.from(game.user.targets);
@@ -10,6 +11,7 @@ export const mountUp = async function(riderToken, mountToken){
 		if(targets.length > 1){
 			 return ui.notifications.error("Can't mount more then one token!");
 		}
+		
 		let mount = targets[0];
 		let newCoords = {
 			x:riderToken.x, 
@@ -38,12 +40,11 @@ export const mountUp = async function(riderToken, mountToken){
 			await window['tokenAttacher'].attachElementToToken(riderToken, targets[0], true);
 			await window['tokenAttacher'].setElementsLockStatus(riderToken, false, true);
 		}catch(e){
-			try{
-				await window['tokenAttacher'].detachAllElementsFromToken(targets[0], true);
-			}catch(e2){
-				warn(e2.message);	
-			}
-			warn(e.message);			
+			warn(e.message);
+			for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
+				const riderToken = findTokenById(riderId);
+				await window['tokenAttacher'].detachAllElementsFromToken(riderToken, true);
+			}			
 		}
 	}
 }
@@ -54,11 +55,10 @@ export const dismountDropAll = async function(mountToken){
 		await window['tokenAttacher'].detachAllElementsFromToken(mountToken, true);
 		ui['chat'].processMessage(`Everyone and everything get off!`);
 	}catch(e){
-		try{
-			await window['tokenAttacher'].detachAllElementsFromToken(mountToken, true);
-			warn(e.message);
-		}catch(e2){
-			warn(e2.message);	
+		warn(e.message);
+		for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
+			const riderToken = findTokenById(riderId);
+			await window['tokenAttacher'].detachAllElementsFromToken(riderToken, true);
 		}
 	}
 }
@@ -73,13 +73,13 @@ export const dismountDropTarget = async function(mountToken, target){
 			//await tokenAttacher.detachElementsFromToken(targets, token, true);
 			await window['tokenAttacher'].detachElementsFromToken(targets, mountToken, true);
 		}catch(e){
-			try{
-				await window['tokenAttacher'].detachAllElementsFromToken(mountToken, true);
-				warn(e.message);
-			}catch(e2){
-				warn(e2.message);	
+			warn(e.message);
+			for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
+				const riderToken = findTokenById(riderId);
+				await window['tokenAttacher'].detachAllElementsFromToken(riderToken, true);
 			}
 		}
+
 		//dismountDropAll(token);
 		for (let i = 0; i < targets.length; i++) {
 			const targ = targets[i];
@@ -90,15 +90,10 @@ export const dismountDropTarget = async function(mountToken, target){
 
 export const detachAllFromToken = async function(mountToken){
 	try{
-		// tokenAttacher.detachAllElementsFromToken(mountToken, true);
-		await window['tokenAttacher'].detachAllElementsFromToken(mountToken, true);
-		ui['chat'].processMessage(`Everyone and everything get off!`);
+	// tokenAttacher.detachAllElementsFromToken(mountToken, true);
+	await window['tokenAttacher'].detachAllElementsFromToken(mountToken, true);
+	ui['chat'].processMessage(`Everyone and everything get off!`);
 	}catch(e){
-		try{
-			await window['tokenAttacher'].detachAllElementsFromToken(mountToken, true);
-			warn(e.message);
-		}catch(e2){
-			warn(e2.message);	
-		}
+		warn(e.message);
 	}
 }

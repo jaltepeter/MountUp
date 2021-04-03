@@ -1,7 +1,7 @@
 import { error, warn } from "../foundryvtt-mountup.js";
 import { Chatter } from "./chatter.js";
 import { MODULE_NAME, Settings } from "./settings.js";
-import { dismountDropTarget, mountUp } from "./tokenAttacherHelper.js";
+import { detachAllFromToken, dismountDropTarget, mountUp } from "./tokenAttacherHelper.js";
 import { findTokenById, Flags, FlagScope, riderLock, riderX, riderY, socketAction, socketName } from "./utils.js";
 
 /**
@@ -124,7 +124,8 @@ export class MountManager {
         this.restoreRiderSize(riderToken);
 
         // CALL TOKEN ATTACHER
-        dismountDropTarget(mountToken,riderToken);
+        //dismountDropTarget(mountToken,riderToken);
+        detachAllFromToken(mountToken);
 
         Chatter.dismountMessage(riderToken.id, mountToken.id);
         const riders = mountToken.getFlag(FlagScope, Flags.Riders);
@@ -391,9 +392,9 @@ export class MountManager {
                 //     };
                 // }
 
-                const mountLocation = { x: mountToken.x, y: mountToken.y };
-                const offset = { x: mountLocation.x - riderToken.x, y: mountLocation.y - riderToken.y };
-                const rotation = Settings.getRiderRotate() ? updateData.rotation : riderToken.data.rotation;
+                // const mountLocation = { x: mountToken.x, y: mountToken.y };
+                // const offset = { x: mountLocation.x - riderToken.x, y: mountLocation.y - riderToken.y };
+                // const rotation = Settings.getRiderRotate() ? updateData.rotation : riderToken.data.rotation;
                 
                 // let mount = mountToken;//targets[0];
                 // let newCoords = {
@@ -493,28 +494,28 @@ export class MountManager {
 
             // NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
 
-            const mountLocation = { 
-                x: mountToken.x, 
-                y: mountToken.y 
-            };
-            for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
-                const riderToken = findTokenById(riderId);
-                if (riderToken.owner) {
-                    await this.moveRiderToMount(riderToken, mountLocation, updateData.x, updateData.y, updateData.rotation == undefined ? mountToken.data.rotation : updateData.rotation);
-                } else {
-                    const offset = { x: mountLocation.x - riderToken.x, y: mountLocation.y - riderToken.y };
-                    const rotation = Settings.getRiderRotate() ? updateData.rotation : riderToken.data.rotation;
-                    game.socket['emit'](socketName, {
-                        mode: socketAction.UpdateToken,
-                        riderId: riderToken.id,
-                        // updateData: updateData
-                        // mountId: mountToken.id,
-                        x: updateData.x - offset.x,
-                        y: updateData.y - offset.y,
-                        rotation: rotation
-                    });
-                }
-            }
+            // const mountLocation = { 
+            //     x: mountToken.x, 
+            //     y: mountToken.y 
+            // };
+            // for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
+            //     const riderToken = findTokenById(riderId);
+            //     if (riderToken.owner) {
+            //         await this.moveRiderToMount(riderToken, mountLocation, updateData.x, updateData.y, updateData.rotation == undefined ? mountToken.data.rotation : updateData.rotation);
+            //     } else {
+            //         const offset = { x: mountLocation.x - riderToken.x, y: mountLocation.y - riderToken.y };
+            //         const rotation = Settings.getRiderRotate() ? updateData.rotation : riderToken.data.rotation;
+            //         game.socket['emit'](socketName, {
+            //             mode: socketAction.UpdateToken,
+            //             riderId: riderToken.id,
+            //             // updateData: updateData
+            //             // mountId: mountToken.id,
+            //             x: updateData.x - offset.x,
+            //             y: updateData.y - offset.y,
+            //             rotation: rotation
+            //         });
+            //     }
+            // }
 
 
         }

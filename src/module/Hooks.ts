@@ -7,6 +7,7 @@ import { MountHud } from "./mountHud.js";
 import { MountManager } from "./mountManager.js";
 import { Settings } from "./settings.js";
 import { findTokenById, socketAction, socketName } from "./utils.js";
+import { dismountDropAll } from "./tokenAttacherHelper";
 
 export let readyHooks = async () => {
 
@@ -58,9 +59,9 @@ export let initHooks = () => {
         // await MountManager.doTokenUpdate(token._id, updateData);
 
         await MountManager.doTokenUpdateOnlyCheckBoundHandler(token._id, updateData);
-        if (MountManager.isaRider(token._id)) {
-            await MountManager.doPostTokenUpdate(token._id, updateData);
-        }
+        // if (MountManager.isaRider(token._id)) {
+        //     await MountManager.doPostTokenUpdate(token._id, updateData);
+        // }
       }
   });
 
@@ -71,10 +72,10 @@ export let initHooks = () => {
   });
 
   Hooks.on('updateToken', async (scene, token, updateData) => {
-      if (MountManager.isaMount(updateData._id)) {
-          MountManager.popRider(updateData._id);
-      }
       if (updateData.hasOwnProperty("x") || updateData.hasOwnProperty("y") || updateData.hasOwnProperty("rotation")) {      
+        if (MountManager.isaMount(updateData._id)) {
+            MountManager.popRider(updateData._id);
+        }
         if (MountManager.isaRider(updateData._id)) {
             await MountManager.doPostTokenUpdate(updateData._id, updateData);
         }
