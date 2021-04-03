@@ -145,23 +145,17 @@ export class MountManager {
         // let mount = findTokenById(riderToken);
         // let rider = findTokenById(mount.getFlag(FlagScope, Flags.Riders));
         let origsize = riderToken.getFlag(FlagScope, Flags.OrigSize);
-
-        if (riderToken.w < origsize.w || riderToken.h < origsize.h) {
+        // MOD 4535992 REMOVED IF
+        // if (riderToken.w < origsize.w || riderToken.h < origsize.h) {
             let grid = canvas.scene.data.grid;
             let newWidth = riderToken.w < origsize.w ? origsize.w : riderToken.w;
-            let newHeight = riderToken.h < origsize.h ? origsize.h : riderToken.H;
+            let newHeight = riderToken.h < origsize.h ? origsize.h : riderToken.h;
 
             await riderToken.update({
                 width: newWidth / grid,
                 height: newHeight / grid
             });
-        }else{
-            // MOD 4535992 ????
-            await riderToken.update({
-                width: origsize.w,
-                height: origsize.h
-            });
-        }
+        // }
 
         riderToken.parent.sortChildren();
     }
