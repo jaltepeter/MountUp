@@ -52,13 +52,15 @@ export let initHooks = () => {
 
   Hooks.on('preUpdateToken', async (scene, token, updateData) => {
       if (updateData.hasOwnProperty("x") || updateData.hasOwnProperty("y") || updateData.hasOwnProperty("rotation")) {
-          //await findTokenById(token._id).setFlag(FlagScope, Flags.MountMove, true);
+        //await findTokenById(token._id).setFlag(FlagScope, Flags.MountMove, true);
 
-          // NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
-          // await MountManager.doTokenUpdate(token._id, updateData);
+        // NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
+        // await MountManager.doTokenUpdate(token._id, updateData);
 
-          await MountManager.doTokenUpdateOnlyCheckBoundHandler(token._id, updateData);
-          await MountManager.doPostTokenUpdate(token._id, updateData);
+        await MountManager.doTokenUpdateOnlyCheckBoundHandler(token._id, updateData);
+        if (MountManager.isaRider(token._id)) {
+            await MountManager.doPostTokenUpdate(token._id, updateData);
+        }
       }
   });
 
@@ -73,7 +75,9 @@ export let initHooks = () => {
           MountManager.popRider(updateData._id);
       }
       if (updateData.hasOwnProperty("x") || updateData.hasOwnProperty("y") || updateData.hasOwnProperty("rotation")) {      
-        await MountManager.doPostTokenUpdate(token._id, updateData);
+        if (MountManager.isaRider(updateData._id)) {
+            await MountManager.doPostTokenUpdate(updateData._id, updateData);
+        }
       }
   });
 
