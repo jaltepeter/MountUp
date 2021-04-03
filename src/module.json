@@ -54,7 +54,7 @@
   ],
   "url": "https://github.com/p4535992/MountUp",
   "manifest": "https://raw.githubusercontent.com/p4535992/MountUp/master/src/module.json",
-  "download": "https://raw.githubusercontent.com/p4535992/MountUp/master/package/foundryvtt-mountup-v3.1.1.zip",
+  "download": "https://raw.githubusercontent.com/p4535992/MountUp/master/package/foundryvtt-mountup-v3.1.2.zip",
   "minimumCoreVersion": "0.7.6",
   "compatibleCoreVersion": "0.7.9",
   "changelog": "https://raw.githubusercontent.com/p4535992/MountUp/master/changelog.md",
