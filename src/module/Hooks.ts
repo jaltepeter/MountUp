@@ -58,6 +58,7 @@ export let initHooks = () => {
           // await MountManager.doTokenUpdate(token._id, updateData);
 
           await MountManager.doTokenUpdateOnlyCheckBoundHandler(token._id, updateData);
+          await MountManager.doPostTokenUpdate(token._id, updateData);
       }
   });
 
@@ -71,6 +72,9 @@ export let initHooks = () => {
       if (MountManager.isaMount(updateData._id)) {
           MountManager.popRider(updateData._id);
       }
+      if (updateData.hasOwnProperty("x") || updateData.hasOwnProperty("y") || updateData.hasOwnProperty("rotation")) {      
+        await MountManager.doPostTokenUpdate(token._id, updateData);
+      }
   });
 
   Hooks.on('controlToken', async (token) => {
@@ -81,7 +85,7 @@ export let initHooks = () => {
 
   Hooks.on('preDeleteToken', async (scene, token) => {
       await MountManager.handleTokenDelete(token._id);
-      return true;
+      //return true;
   });
 
 }

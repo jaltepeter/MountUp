@@ -14,7 +14,7 @@ export class MountManager {
      * Determines if conditions are appropriate for mounting, and executes the mount if so
      * @param {Object} hudToken - The token from which the button was clicked on the hud
      */
-    static async mountUp(hudToken) {
+    static async mountUpHud(hudToken) {
         const mountToken = canvas.tokens.controlled.find(t => t.id == hudToken._id);
 
         for (const riderToken of canvas.tokens.controlled) {
@@ -38,7 +38,9 @@ export class MountManager {
                 await mountToken.unsetFlag(FlagScope, Flags.Riders);
                 await mountToken.setFlag(FlagScope, Flags.Riders, riders);
                 await riderToken.setFlag(FlagScope, Flags.Mount, mountToken.id);
+                if(!riderToken.getFlag(FlagScope, Flags.OrigSize)){
                 await riderToken.setFlag(FlagScope, Flags.OrigSize, { w: riderToken.w, h: riderToken.h });
+                }
 
                 // CALL TOKEN ATTACHER
                 mountUp(riderToken,mountToken);
@@ -98,7 +100,9 @@ export class MountManager {
         console.log(riders);
         await mountToken.update({ flags: { mountup: { riders: riders } } });
         await riderToken.setFlag(FlagScope, Flags.Mount, mountToken.id);
+        if(!riderToken.getFlag(FlagScope, Flags.OrigSize)){
         await riderToken.setFlag(FlagScope, Flags.OrigSize, { w: riderToken.w, h: riderToken.h });
+        }
 
         // NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
         // this.moveRiderToMount(riderToken, { x: mountToken.x, y: mountToken.y }, null, null, null);
@@ -340,6 +344,32 @@ export class MountManager {
     //     }
     // }
 
+    static async doPostTokenUpdate(tokenId, updateData) {
+        if (this.isaRider(tokenId)) {
+            const riderToken = findTokenById(tokenId);
+            const mountToken = findTokenById(riderToken.getFlag(FlagScope, Flags.Mount));
+            // shrink the rider if needed
+            if (riderToken.w >= mountToken.w || riderToken.h >= mountToken.h) {
+                // MOD 4535992 PATCH 2021-04-03
+                // let keyMap:any = {};
+                // keyMap.id = riderToken.id;
+                // MountManager.releaseOthersMap.set(keyMap,{
+                //     width: riderToken.w,
+                //     height: riderToken.h,
+                // });
+                // END MOD 4535992
+                let grid = canvas.scene.data.grid;
+                let newWidth = (mountToken.w / 2) / grid;
+                let newHeight = (mountToken.h / 2) / grid;
+                await riderToken.update({
+                    width: newWidth,
+                    height: newHeight,
+                });
+                riderToken.zIndex = mountToken.zIndex + 10;
+            }
+        }
+    }
+
     /**
      * Called when a token is moved in the game.
      * Determines if the token being moved is a mount - if it is, moves the rider to match
@@ -390,7 +420,10 @@ export class MountManager {
 
             // NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
 
-            const mountLocation = { x: mountToken.x, y: mountToken.y };
+            const mountLocation = { 
+                x: mountToken.x, 
+                y: mountToken.y 
+            };
             for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
                 const riderToken = findTokenById(riderId);
                 if (riderToken.owner) {
@@ -465,6 +498,8 @@ export class MountManager {
      * @param {Object} mountLocation - The mount
      * @param {Number} newX - (optional) The new X-coordinate for the move
      * @param {Number} newY - (optional) The new Y-coordinate for the move
+     * @param {Object} newRot - (optional) The new Y-coordinate for the move
+     * @param {Object} updateData - Update data being sent by the game
      */
     static async moveRiderToMount(riderToken, mountLocation, newX, newY, newRot) {
 
@@ -485,6 +520,37 @@ export class MountManager {
             y: newY === undefined ? mountLocation.y - offset.y : newY - offset.y,
             rotation: newRot
         });
+
+        // MOD 4535992 2021-04-30 PACTH FOR BETTER CALCULATION
+        // TODO CHECK BETTER SOLUTION
+        // const mountToken = findTokenById(riderToken.getFlag(FlagScope, Flags.Mount));
+        // let mount = mountToken;//targets[0];
+        // let newCoords = {
+        //     x:riderToken.x, 
+        //     y:riderToken.y
+        // };
+        // if(mount.x+mount.w-riderToken.w < riderToken.x){
+        //     newCoords.x = mount.x+mount.w-riderToken.w;
+        // }
+        // else if(mount.x > riderToken.x){
+        //     newCoords.x = mount.x;
+        // }
+        // if(mount.y+mount.h-riderToken.h < riderToken.y){
+        //     newCoords.y = mount.y+mount.h-riderToken.h;
+        // }
+        // else if(mount.y > riderToken.y){
+        //     newCoords.y = mount.y;
+        // }
+        // newX = newCoords.x;
+        // newY = newCoords.y;
+        // //let loc = this.getRiderInitialLocation(riderToken, mountToken);   
+        // await riderToken.update({
+        //     x: newX === undefined ? mountLocation.x - offset.x : newX - offset.x,
+        //     y: newY === undefined ? mountLocation.y - offset.y : newY - offset.y,
+        //     rotation: newRot
+        // });
+        // riderToken.zIndex = mountToken.zIndex + 10;
+        // END MOD 4535992
     }
 
     /**

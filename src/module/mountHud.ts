@@ -59,7 +59,7 @@ export class MountHud {
         const button = this.buildButton(html, `Mount ${tokenNames.join(', ').replace(/, ([^,]*)$/, ' and $1')} on to ${hudToken.name}`);
 
         button.find('i').on("click", async (ev) => {
-            MountManager.mountUp(hudToken);
+            MountManager.mountUpHud(hudToken);
         });
     }
 
@@ -114,7 +114,7 @@ export class MountHud {
         }
 
         button.find('i').on("click", async (ev) => {
-            if (MountManager.mountUp(data)) {
+            if (MountManager.mountUpHud(data)) {
                 if (hasSlash) {
                     this.removeSlash(button);
                 } else {
