@@ -221,14 +221,14 @@ export class MountManager {
                 riderToken.zIndex = mountToken.zIndex + 10;
             }
 
-            if (this.isaMount(riderToken.id)) {
+            if (riderToken && this.isaMount(riderToken.id)) {
                 //this.popRider(riderToken.id, callcount += 1);
                 callcount += 1;
                 // CALL TOKEN ATTACHER            
                 dismountDropTarget(mountToken, riderToken);
             }
 
-            if (riderToken.owner) {
+            if (riderToken && riderToken.owner) {
                 await riderToken.unsetFlag(FlagScope, Flags.MountMove);
             }
         }
@@ -359,6 +359,28 @@ export class MountManager {
                 });
                 riderToken.zIndex = mountToken.zIndex + 10;
             }
+            // const offset = { x: mountToken.x - riderToken.x, y: mountToken.y - riderToken.y };
+            // let newRot;
+            // if (Settings.getRiderRotate()) {
+            //     newRot = newRot !== undefined ? newRot : riderToken.rotation;
+            // } else {
+            //     newRot = riderToken.rotation;
+            // }
+            // if (Settings.getRiderRotate()) {
+            //     newRot = newRot !== undefined ? newRot : riderToken.rotation;
+            // } else {
+            //     newRot = riderToken.rotation;
+            // }
+
+            // await riderToken.update({
+            //     // WTF THIS GOING TO INFINTE LOOP WHY
+            //     // x: riderToken.x === undefined ? mountToken.x - offset.x : riderToken.x - offset.x,
+            //     // y: riderToken.y === undefined ? mountToken.y - offset.y : riderToken.y - offset.y,
+            //     // rotation: newRot,
+            //     width: newWidth,
+            //     height: newHeight,
+            // });
+            // riderToken.zIndex = mountToken.zIndex + 10;
         }
     }
 
@@ -552,33 +574,30 @@ export class MountManager {
      */
     static getRiderInitialLocation(riderToken, mountToken) {
         let loc = { x: mountToken.x, y: mountToken.y };
- 
-        // MOD 4535992 ADD LITTLE OFFSET
-        // let riders = mountToken.getFlag(FlagScope, Flags.Riders);
-        // let offset = 0;
-        // if(riders){
-        //     let index = riders.indexOf(riderToken.id); // 1
-        //     offset = index * 2;
-        // }
-        // END MOD 4535992 ADD LITTLE OFFSET
+   
+        // MOD 4535992 SET UP A OFFSET MORE EASY TO SEE IF MORE TOKEN ON THE SAME MOUNT
+        let riders = mountToken.getFlag(FlagScope, Flags.Riders);
+        let index = riders.indexOf(riderToken.id); // 1
+        let offset = index;
+        // END MOD 4535992 SET UP OFFSET MORE EASY TO SEE IF MORE TOKEN ON THE SAME MOUNT
 
         switch (Settings.getRiderX()) {
             case riderX.Center:
                 let mountCenter = mountToken.getCenter(mountToken.x, mountToken.y);
-                loc.x = mountCenter.x - (riderToken.w / 2);
+                loc.x = mountCenter.x - (riderToken.w / 2) + offset;
                 break;
             case riderX.Right:
-                loc.x = mountToken.x + mountToken.w - riderToken.w;
+                loc.x = mountToken.x + mountToken.w - riderToken.w + offset;
                 break;
         }
 
         switch (Settings.getRiderY()) {
             case riderY.Center:
                 let mountCenter = mountToken.getCenter(mountToken.x, mountToken.y);
-                loc.y = mountCenter.y - (riderToken.h / 2);
+                loc.y = mountCenter.y - (riderToken.h / 2) + offset;
                 break;
             case riderY.Bottom:
-                loc.y = mountToken.y + mountToken.h - riderToken.h;
+                loc.y = mountToken.y + mountToken.h - riderToken.h + offset;
                 break;
         }
         return loc;
