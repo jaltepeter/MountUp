@@ -56,7 +56,7 @@ export class MountManager {
                         width: newWidth,
                         height: newHeight,
                     });
-                    riderToken.zIndex = mountToken.zIndex + 10;
+                    //riderToken.zIndex = mountToken.zIndex + 10;
                 }
 
                 let loc:any = this.getRiderInitialLocation(riderToken, mountToken);
@@ -75,23 +75,35 @@ export class MountManager {
     static async dismount(hudToken) {
         const riderToken = findTokenById(hudToken._id);
         const mountToken = findTokenById(riderToken.getFlag(FlagScope, Flags.Mount));
+        // MOD 4535992
         this.doRemoveMount(riderToken, mountToken);
     }
 
     static async removeAllRiders(hudToken) {
         const mountToken = findTokenById(hudToken._id);
+        // CALL TOKEN ATTACHER   
         dismountDropAll(mountToken);
         let riders = mountToken.getFlag(FlagScope, Flags.Riders);
-        let riders2 = riders;
-        for (const riderId of riders2) {
-            const riderToken = findTokenById(riderId);
-            this.restoreRiderSize(riderToken);
-            // MOD 4535992
-            riders = riders.filter(tokenId => tokenId !== riderToken.id)
+        for (const riderId of riders) {
+            try{
+                const riderToken = findTokenById(riderId);
+                // MOD 4535992
+                //this.doRemoveMount(riderToken, mountToken);
+                await riderToken.setFlag(FlagScope, Flags.MountMove, true);
+                this.restoreRiderSize(riderToken);
+                // CALL TOKEN ATTACHER
+                // dismountDropTarget(mountToken,riderToken); // MOD 4535992 SOME BUG WITH TOKENATTACHER
+                Chatter.dismountMessage(riderToken.id, mountToken.id);
+                
+                await mountToken.unsetFlag(FlagScope, Flags.Riders);
+                riders.splice(riders.indexOf(riderToken.id));
+                await mountToken.setFlag(FlagScope, Flags.Riders, riders);
+                await riderToken.unsetFlag(FlagScope, Flags.Mount);
+                await riderToken.unsetFlag(FlagScope, Flags.OrigSize);
+            }catch(e){
+                console.error(e.message);
+            }
         }
-        // MOD 4535992
-        await mountToken.unsetFlag(FlagScope, Flags.Riders);
-        await mountToken.setFlag(FlagScope, Flags.Riders, riders);
     }
 
     /**
@@ -102,8 +114,10 @@ export class MountManager {
     static async doCreateMount(riderToken, mountToken) {
         let riders = mountToken.getFlag(FlagScope, Flags.Riders);
         if (riders == undefined) riders = [];
-        if (!riders.includes(riderToken.id)) { riders.push(riderToken.id); }
-        // await mountToken.setFlag(FlagScope, Flags.Riders, riders);
+        if (!riders.includes(riderToken.id)) { 
+            riders.push(riderToken.id); 
+        }
+        await mountToken.setFlag(FlagScope, Flags.Riders, riders);
         console.log(riders);
         await mountToken.update({ flags: { mountup: { riders: riders } } });
         await riderToken.setFlag(FlagScope, Flags.Mount, mountToken.id);
@@ -140,10 +154,6 @@ export class MountManager {
         await mountToken.setFlag(FlagScope, Flags.Riders, riders);
         await riderToken.unsetFlag(FlagScope, Flags.Mount);
         await riderToken.unsetFlag(FlagScope, Flags.OrigSize);
-        // MOD 4535992
-        riders = riders.filter(tokenId => tokenId !== riderToken.id)
-        await mountToken.unsetFlag(FlagScope, Flags.Riders);
-        await mountToken.setFlag(FlagScope, Flags.Riders, riders);
 
         return true;
     }
@@ -167,13 +177,6 @@ export class MountManager {
                 let newHeight = riderToken.h < origsize.h ? origsize.h : riderToken.h;
 
                 await riderToken.update({
-                    width: newWidth / grid,
-                    height: newHeight / grid
-                });
-
-                game.socket['emit'](socketName, {
-                    mode: socketAction.UpdateToken,
-                    riderId: riderToken.id,
                     width: newWidth / grid,
                     height: newHeight / grid
                 });
@@ -258,6 +261,7 @@ export class MountManager {
                 callcount += 1;
                 // CALL TOKEN ATTACHER            
                 dismountDropTarget(mountToken, riderToken);
+                this.doRemoveMount(riderToken, mountToken);
             }
 
             if (riderToken && riderToken.owner) {
@@ -503,42 +507,40 @@ export class MountManager {
                 }
             }
         }
+        // MOD 4535992 NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
+        // if (this.isaMount(tokenId)) {
+        //     const mountToken = findTokenById(tokenId);
 
-        if (this.isaMount(tokenId)) {
-            const mountToken = findTokenById(tokenId);
+        //     updateData.x = updateData.x !== undefined ? updateData.x : mountToken.x;
+        //     updateData.y = updateData.y !== undefined ? updateData.y : mountToken.y;
+        //     updateData.rotation = updateData.rotation !== undefined ? updateData.rotation : mountToken.data.rotation;
 
-            updateData.x = updateData.x !== undefined ? updateData.x : mountToken.x;
-            updateData.y = updateData.y !== undefined ? updateData.y : mountToken.y;
-            updateData.rotation = updateData.rotation !== undefined ? updateData.rotation : mountToken.data.rotation;
+            
 
-            // MOD 4535992 NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
+        //     const mountLocation = { 
+        //         x: mountToken.x, 
+        //         y: mountToken.y 
+        //     };
+        //     for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
+        //         const riderToken = findTokenById(riderId);
+        //         if (riderToken.owner) {
+        //             await this.moveRiderToMount(riderToken, mountLocation, updateData.x, updateData.y, updateData.rotation == undefined ? mountToken.data.rotation : updateData.rotation);
+        //         } else {
+        //             const offset = { x: mountLocation.x - riderToken.x, y: mountLocation.y - riderToken.y };
+        //             const rotation = Settings.getRiderRotate() ? updateData.rotation : riderToken.data.rotation;
+        //             game.socket['emit'](socketName, {
+        //                 mode: socketAction.UpdateToken,
+        //                 riderId: riderToken.id,
+        //                 // updateData: updateData
+        //                 // mountId: mountToken.id,
+        //                 x: updateData.x - offset.x,
+        //                 y: updateData.y - offset.y,
+        //                 rotation: rotation
+        //             });
 
-            // const mountLocation = { 
-            //     x: mountToken.x, 
-            //     y: mountToken.y 
-            // };
-            // for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
-            //     const riderToken = findTokenById(riderId);
-            //     if (riderToken.owner) {
-            //         await this.moveRiderToMount(riderToken, mountLocation, updateData.x, updateData.y, updateData.rotation == undefined ? mountToken.data.rotation : updateData.rotation);
-            //     } else {
-            //         const offset = { x: mountLocation.x - riderToken.x, y: mountLocation.y - riderToken.y };
-            //         const rotation = Settings.getRiderRotate() ? updateData.rotation : riderToken.data.rotation;
-            //         game.socket['emit'](socketName, {
-            //             mode: socketAction.UpdateToken,
-            //             riderId: riderToken.id,
-            //             // updateData: updateData
-            //             // mountId: mountToken.id,
-            //             x: updateData.x - offset.x,
-            //             y: updateData.y - offset.y,
-            //             rotation: rotation
-            //         });
-
-            //     }
-            // }
-
-            // END MOD 4535992 NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
-        }
+        //         }
+        //     }
+        // }
     }
 
     static isInsideTokenBounds(location, token) {

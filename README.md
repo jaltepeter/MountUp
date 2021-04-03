@@ -10,9 +10,14 @@
 [![Become a Patron](https://img.shields.io/badge/support-patreon-orange.svg?style=flat-square&logo=patreon)](https://www.patreon.com/brunhine)
 [![Donate via Ko-Fi](https://img.shields.io/badge/support-ko--fi-ff4646?style=flat-square&logo=ko-fi)](https://ko-fi.com/brunhine)
 
-## NOTE
+# NOTE
 
-This is just a upgrade of the wonderful work of brunhine, hope to see you back.
+This is just a variant code of the wonderful work of brunhine hope to see you back, (try to make it work for 0.7.9), but i failed there is to many issues, i try  make some strange patches, but anyone more skilled then me is welcome take charge of this.
+
+## Known issue
+
+- When mount token of the same size (medium for example) and the number of riders is more than 1, when you de-mount the riders all togheter the last one remain "small"
+-  When mount token of the same size (medium for example), if you try to drop the single rider (rigth click on the rider not the mount)m the rider turn back to normal but hide the mount token
 
 # Installation
 It's always better and easier to install modules through in in app browser. Just search for "Mount Up!"

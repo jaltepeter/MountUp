@@ -1,3 +1,7 @@
+# 3.1.2
+
+- Many bug fixes and patches, but still remain some
+
 # 3.1.1
 
 - Forgot some flags to set

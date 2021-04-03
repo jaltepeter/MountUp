@@ -67,8 +67,14 @@ export let initHooks = () => {
 
   // REMOVED ?????
 
-  Hooks.on('canvasReady', () => {
-     MountManager.popAllRiders();
+  Hooks.on('canvasReady', async () => {
+    MountManager.popAllRiders();
+    // for (let x = canvas.tokens.placeables.length -1; x >=0; x--) {
+    //     let token = canvas.tokens.placeables[x];
+    //     if (MountManager.isaRider(token.id)) {
+    //         await MountManager.doPostTokenUpdate(token.id, null);
+    //     }
+    // }
   });
 
   Hooks.on('updateToken', async (scene, token, updateData) => {
