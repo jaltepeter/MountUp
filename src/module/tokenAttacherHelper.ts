@@ -2,6 +2,8 @@
 //@ts-ignore
 // import { tokenAttacher } from '../../token-attacher/scripts/token-attacher.js';
 
+import { warn } from "../foundryvtt-mountup";
+
 export const mountUp = async function(riderToken, mountToken){
 	let targets = [mountToken]; // Array.from(game.user.targets);
 	if(targets.length > 0){
@@ -36,16 +38,29 @@ export const mountUp = async function(riderToken, mountToken){
 			await window['tokenAttacher'].attachElementToToken(riderToken, targets[0], true);
 			await window['tokenAttacher'].setElementsLockStatus(riderToken, false, true);
 		}catch(e){
-			console.warn(e.message);
-			await window['tokenAttacher'].detachAllElementsFromToken(targets[0], true);
+			try{
+				await window['tokenAttacher'].detachAllElementsFromToken(targets[0], true);
+			}catch(e2){
+				warn(e2.message);	
+			}
+			warn(e.message);			
 		}
 	}
 }
 
 export const dismountDropAll = async function(mountToken){
-	// tokenAttacher.detachAllElementsFromToken(mountToken, true);
-	await window['tokenAttacher'].detachAllElementsFromToken(mountToken, true);
-	ui['chat'].processMessage(`Everyone and everything get off!`);
+	try{
+		// tokenAttacher.detachAllElementsFromToken(mountToken, true);
+		await window['tokenAttacher'].detachAllElementsFromToken(mountToken, true);
+		ui['chat'].processMessage(`Everyone and everything get off!`);
+	}catch(e){
+		try{
+			await window['tokenAttacher'].detachAllElementsFromToken(mountToken, true);
+			warn(e.message);
+		}catch(e2){
+			warn(e2.message);	
+		}
+	}
 }
 
 export const dismountDropTarget = async function(mountToken, target){
@@ -54,12 +69,36 @@ export const dismountDropTarget = async function(mountToken, target){
 		if(targets.length > 1){
 			return ui.notifications.error("Can't follow more then one token!");
 		}
-		//await tokenAttacher.detachElementsFromToken(targets, token, true);
-		await window['tokenAttacher'].detachElementsFromToken(targets, mountToken, true);
+		try{
+			//await tokenAttacher.detachElementsFromToken(targets, token, true);
+			await window['tokenAttacher'].detachElementsFromToken(targets, mountToken, true);
+		}catch(e){
+			try{
+				await window['tokenAttacher'].detachAllElementsFromToken(mountToken, true);
+				warn(e.message);
+			}catch(e2){
+				warn(e2.message);	
+			}
+		}
 		//dismountDropAll(token);
 		for (let i = 0; i < targets.length; i++) {
 			const targ = targets[i];
 			ui['chat'].processMessage(`Get off ${targ.name}!`);
     	}
+	}
+}
+
+export const detachAllFromToken = async function(mountToken){
+	try{
+		// tokenAttacher.detachAllElementsFromToken(mountToken, true);
+		await window['tokenAttacher'].detachAllElementsFromToken(mountToken, true);
+		ui['chat'].processMessage(`Everyone and everything get off!`);
+	}catch(e){
+		try{
+			await window['tokenAttacher'].detachAllElementsFromToken(mountToken, true);
+			warn(e.message);
+		}catch(e2){
+			warn(e2.message);	
+		}
 	}
 }
