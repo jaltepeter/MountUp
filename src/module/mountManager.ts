@@ -39,7 +39,7 @@ export class MountManager {
                 await mountToken.setFlag(FlagScope, Flags.Riders, riders);
                 await riderToken.setFlag(FlagScope, Flags.Mount, mountToken.id);
                 if(!riderToken.getFlag(FlagScope, Flags.OrigSize)){
-                await riderToken.setFlag(FlagScope, Flags.OrigSize, { w: riderToken.w, h: riderToken.h });
+                    await riderToken.setFlag(FlagScope, Flags.OrigSize, { w: riderToken.w, h: riderToken.h });
                 }
 
                 // CALL TOKEN ATTACHER
@@ -101,7 +101,7 @@ export class MountManager {
         await mountToken.update({ flags: { mountup: { riders: riders } } });
         await riderToken.setFlag(FlagScope, Flags.Mount, mountToken.id);
         if(!riderToken.getFlag(FlagScope, Flags.OrigSize)){
-        await riderToken.setFlag(FlagScope, Flags.OrigSize, { w: riderToken.w, h: riderToken.h });
+            await riderToken.setFlag(FlagScope, Flags.OrigSize, { w: riderToken.w, h: riderToken.h });
         }
 
         // NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
@@ -208,8 +208,8 @@ export class MountManager {
         if (callcount > 100) {
             error('Pop riders called too many times. Breaking all rides for safety.');
             canvas.tokens.placeables.forEach(t => { 
-                t.unsetFlag(MODULE_NAME, 'riders'); 
-                t.unsetFlag(MODULE_NAME, 'mount'); 
+                t.unsetFlag(MODULE_NAME, Flags.Riders); 
+                t.unsetFlag(MODULE_NAME, Flags.Mount); 
             });
             return true;
         }
@@ -350,14 +350,6 @@ export class MountManager {
             const mountToken = findTokenById(riderToken.getFlag(FlagScope, Flags.Mount));
             // shrink the rider if needed
             if (riderToken.w >= mountToken.w || riderToken.h >= mountToken.h) {
-                // MOD 4535992 PATCH 2021-04-03
-                // let keyMap:any = {};
-                // keyMap.id = riderToken.id;
-                // MountManager.releaseOthersMap.set(keyMap,{
-                //     width: riderToken.w,
-                //     height: riderToken.h,
-                // });
-                // END MOD 4535992
                 let grid = canvas.scene.data.grid;
                 let newWidth = (mountToken.w / 2) / grid;
                 let newHeight = (mountToken.h / 2) / grid;
@@ -560,6 +552,15 @@ export class MountManager {
      */
     static getRiderInitialLocation(riderToken, mountToken) {
         let loc = { x: mountToken.x, y: mountToken.y };
+ 
+        // MOD 4535992 ADD LITTLE OFFSET
+        // let riders = mountToken.getFlag(FlagScope, Flags.Riders);
+        // let offset = 0;
+        // if(riders){
+        //     let index = riders.indexOf(riderToken.id); // 1
+        //     offset = index * 2;
+        // }
+        // END MOD 4535992 ADD LITTLE OFFSET
 
         switch (Settings.getRiderX()) {
             case riderX.Center:
