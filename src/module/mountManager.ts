@@ -120,7 +120,7 @@ export class MountManager {
         // this.moveRiderToMount(riderToken, { x: mountToken.x, y: mountToken.y }, null, null, null);
 
         // CALL TOKEN ATTACHER MOVED UP
-        //mountUp(riderToken,mountToken);
+        mountUp(riderToken,mountToken);
 
         Chatter.mountMessage(riderToken.id, mountToken.id);
         return true;
@@ -136,7 +136,7 @@ export class MountManager {
         this.restoreRiderSize(riderToken);
 
         // CALL TOKEN ATTACHER MOVED UP
-        //dismountDropTarget(mountToken,riderToken);
+        dismountDropTarget(mountToken,riderToken);
 
         Chatter.dismountMessage(riderToken.id, mountToken.id);
         let riders = mountToken.getFlag(FlagScope, Flags.Riders);

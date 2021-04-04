@@ -76,9 +76,9 @@ export let initHooks = () => {
         if (MountManager.isaMount(updateData._id)) {
             MountManager.popRider(updateData._id);
         }
-        // if (MountManager.isaRider(updateData._id)) {
-        //     await MountManager.doPostTokenUpdate(updateData._id, updateData);
-        // }
+        if (MountManager.isaRider(updateData._id)) {
+            await MountManager.doPostTokenUpdate(updateData._id, updateData);
+        }
       }
   });
 

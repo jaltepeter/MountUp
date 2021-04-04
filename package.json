@@ -1,6 +1,6 @@
 {
 	"name": "foundryvtt-mountup",
-	"version": "3.1.2",
+	"version": "3.1.3",
 	"description": "Allows tokens to carry or be carried by other tokens. This is completely system agnostic, and fully customizable to fit right into your game.",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",

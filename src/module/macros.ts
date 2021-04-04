@@ -1,6 +1,5 @@
 import { error } from "../foundryvtt-mountup.js";
 import { MountManager } from "./mountManager.js";
-import { dismountDropTarget, mountUp } from "./tokenAttacherHelper.js";
 import { findTokenById, findTokenByName, Flags, FlagScope } from "./utils.js";
 
 /**
@@ -18,8 +17,6 @@ export function mount(riderNameOrId, mountNameOrId) {
     if (rider) {
         if (mount) {
             if (rider.id != mount.id) {
-                // CALL TOKEN ATTACHER
-                mountUp(rider,mount);
                 MountManager.doCreateMount(rider, mount);
             } else { error('You cannot mount a token to itself'); }
         } else {
@@ -42,8 +39,6 @@ export function dismount(riderNameOrId) {
     if (rider) {
         if (MountManager.isaRider(rider.id)) {
             let mountToken = findTokenById(rider.getFlag(FlagScope, Flags.Mount));
-            // CALL TOKEN ATTACHER MOVED UP
-            dismountDropTarget(mountToken,rider);
             MountManager.doRemoveMount(rider, mountToken);
         } else {
           error(`Token '${riderName}' is not a rider`);
@@ -64,8 +59,6 @@ export function dropRider(mountNameOrId) {
     if (mount) {
         if (MountManager.isaMount(mount.id)) {
             let riderToken = findTokenById(mount.getFlag(FlagScope, Flags.Riders));
-            // CALL TOKEN ATTACHER MOVED UP
-            dismountDropTarget(mount,riderToken);
             MountManager.doRemoveMount(riderToken, mount); // TODO Flag.Rider ???
         } else {
           error(`Token '${mountName}' is not a mount`);

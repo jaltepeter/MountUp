@@ -16,8 +16,8 @@ This is just a variant code of the wonderful work of brunhine hope to see you ba
 
 ## Known issue
 
-- When mount token of the same size (medium for example) and the number of riders is more than 1, when you de-mount the riders all togheter the last one remain "small"
--  When mount token of the same size (medium for example), if you try to drop the single rider (rigth click on the rider not the mount)m the rider turn back to normal but hide the mount token
+- [SOLVED version 3.1.3] When mount token of the same size (medium for example) and the number of riders is more than 1, when you de-mount the riders all togheter the last one remain "small"
+-  [SOLVED version 3.1.3] When mount token of the same size (medium for example), if you try to drop the single rider (rigth click on the rider not the mount)m the rider turn back to normal but hide the mount token
 
 # Installation
 It's always better and easier to install modules through in in app browser. Just search for "Mount Up!"
