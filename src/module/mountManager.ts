@@ -23,10 +23,14 @@ export class MountManager {
                 if (this.isaRider(riderToken.id) && !this.isRidersMount(riderToken.id, hudToken._id)) {
                     warn(`Couldn't mount '${riderToken.name}' on to '${hudToken.name}' because \
                         it is already mounted to '${findTokenById(riderToken.getFlag(FlagScope, Flags.Mount)).name}'.`);
-                    //continue;// MOD 4535992
+                    // MOD 4535992 ADD CHECK
+                    const mountTokenTmp = findTokenById(riderToken.getFlag(FlagScope, Flags.Mount));
+                    if(mountToken.id==mountTokenTmp.id){
+                        continue;
+                    }
                 }
                 if (this.isAncestor(mountToken.id, riderToken.id)) {
-                    //continue;// MOD 4535992
+                    continue;
                 }
                 let riders = mountToken.getFlag(FlagScope, Flags.Riders);
                 if (riders == undefined){
@@ -76,7 +80,9 @@ export class MountManager {
         const riderToken = findTokenById(hudToken._id);
         const mountToken = findTokenById(riderToken.getFlag(FlagScope, Flags.Mount));
         // MOD 4535992
-        this.doRemoveMount(riderToken, mountToken);
+        // CALL TOKEN ATTACHER MOVED UP
+        dismountDropTarget(mountToken,riderToken);
+        this.doRemoveMount(riderToken, mountToken); 
     }
 
     static async removeAllRiders(hudToken) {
@@ -85,24 +91,9 @@ export class MountManager {
         dismountDropAll(mountToken);
         let riders = mountToken.getFlag(FlagScope, Flags.Riders);
         for (const riderId of riders) {
-            try{
-                const riderToken = findTokenById(riderId);
-                // MOD 4535992
-                //this.doRemoveMount(riderToken, mountToken);
-                await riderToken.setFlag(FlagScope, Flags.MountMove, true);
-                this.restoreRiderSize(riderToken);
-                // CALL TOKEN ATTACHER
-                // dismountDropTarget(mountToken,riderToken); // MOD 4535992 SOME BUG WITH TOKENATTACHER
-                Chatter.dismountMessage(riderToken.id, mountToken.id);
-                
-                await mountToken.unsetFlag(FlagScope, Flags.Riders);
-                riders.splice(riders.indexOf(riderToken.id));
-                await mountToken.setFlag(FlagScope, Flags.Riders, riders);
-                await riderToken.unsetFlag(FlagScope, Flags.Mount);
-                await riderToken.unsetFlag(FlagScope, Flags.OrigSize);
-            }catch(e){
-                console.error(e.message);
-            }
+            const riderToken = findTokenById(riderId);
+            // MOD 4535992
+            this.doRemoveMount(riderToken, mountToken);    
         }
     }
 
@@ -128,8 +119,8 @@ export class MountManager {
         // NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
         // this.moveRiderToMount(riderToken, { x: mountToken.x, y: mountToken.y }, null, null, null);
 
-        // CALL TOKEN ATTACHER
-        mountUp(riderToken,mountToken);
+        // CALL TOKEN ATTACHER MOVED UP
+        //mountUp(riderToken,mountToken);
 
         Chatter.mountMessage(riderToken.id, mountToken.id);
         return true;
@@ -144,8 +135,8 @@ export class MountManager {
         await riderToken.setFlag(FlagScope, Flags.MountMove, true);
         this.restoreRiderSize(riderToken);
 
-        // CALL TOKEN ATTACHER
-        dismountDropTarget(mountToken,riderToken); // MOD 4535992 SOME BUG WITH TOKENATTACHER
+        // CALL TOKEN ATTACHER MOVED UP
+        //dismountDropTarget(mountToken,riderToken);
 
         Chatter.dismountMessage(riderToken.id, mountToken.id);
         let riders = mountToken.getFlag(FlagScope, Flags.Riders);
@@ -154,6 +145,25 @@ export class MountManager {
         await mountToken.setFlag(FlagScope, Flags.Riders, riders);
         await riderToken.unsetFlag(FlagScope, Flags.Mount);
         await riderToken.unsetFlag(FlagScope, Flags.OrigSize);
+
+        // MOD 4535992 FROCE SHRINK TO OHETRS RIDERS
+        //let riders = mountToken.getFlag(FlagScope, Flags.Riders);
+        for (const riderTokenTmp of riders) {
+            if (riders.includes(riderTokenTmp.id)) { 
+                // shrink the rider if needed
+                if (riderTokenTmp.w >= mountToken.w || riderTokenTmp.h >= mountToken.h) {
+                    let grid = canvas.scene.data.grid;
+                    let newWidth = (mountToken.w / 2) / grid;
+                    let newHeight = (mountToken.h / 2) / grid;
+                    await riderTokenTmp.update({
+                        width: newWidth,
+                        height: newHeight,
+                    });
+                    riderTokenTmp.zIndex = mountToken.zIndex + 10;
+                }   
+            }
+        }
+        // END MOD 4535992 FROCE SHRINK TO OHETRS RIDERS
 
         return true;
     }
