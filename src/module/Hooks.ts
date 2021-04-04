@@ -6,8 +6,8 @@ import { dismount, dropRider, mount } from './macros.js';
 import { MountHud } from "./mountHud.js";
 import { MountManager } from "./mountManager.js";
 import { Settings } from "./settings.js";
-import { findTokenById, socketAction, socketName } from "./utils.js";
-import { dismountDropAll } from "./tokenAttacherHelper";
+import { findTokenById, Flags, FlagScope, socketAction, socketName } from "./utils.js";
+import { dismountDropAll, dismountDropTarget } from "./tokenAttacherHelper";
 
 export let readyHooks = async () => {
 
@@ -69,12 +69,6 @@ export let initHooks = () => {
 
   Hooks.on('canvasReady', async () => {
     MountManager.popAllRiders();
-    // for (let x = canvas.tokens.placeables.length -1; x >=0; x--) {
-    //     let token = canvas.tokens.placeables[x];
-    //     if (MountManager.isaRider(token.id)) {
-    //         await MountManager.doPostTokenUpdate(token.id, null);
-    //     }
-    // }
   });
 
   Hooks.on('updateToken', async (scene, token, updateData) => {
@@ -82,9 +76,9 @@ export let initHooks = () => {
         if (MountManager.isaMount(updateData._id)) {
             MountManager.popRider(updateData._id);
         }
-        if (MountManager.isaRider(updateData._id)) {
-            await MountManager.doPostTokenUpdate(updateData._id, updateData);
-        }
+        // if (MountManager.isaRider(updateData._id)) {
+        //     await MountManager.doPostTokenUpdate(updateData._id, updateData);
+        // }
       }
   });
 

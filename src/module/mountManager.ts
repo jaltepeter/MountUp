@@ -238,8 +238,6 @@ export class MountManager {
         await canvas.tokens.placeables.forEach((token) => {
             if (this.isaMount(token.id) && !this.isaRider(token.id)) {
                 this.popRider(token.id);
-            }else{
-                //this.doPostTokenUpdate(token._id, null);
             }
         });
     }
