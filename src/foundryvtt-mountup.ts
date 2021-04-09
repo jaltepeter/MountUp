@@ -16,7 +16,6 @@ import { registerSettings } from './module/settings';
 import { preloadTemplates } from './module/preloadTemplates';
 import { MODULE_NAME } from './module/settings';
 import { initHooks, readyHooks } from './module/Hooks';
-import { installedModules, setupModules } from './module/setupModules';
 
 export let debugEnabled = 0;
 // 0 = none, warnings = 1, debug = 2, all = 3

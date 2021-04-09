@@ -1,6 +1,6 @@
 import { error, warn } from "../foundryvtt-mountup.js";
 import { Chatter } from "./chatter.js";
-import { MODULE_NAME, Settings } from "./settings.js";
+import { getCanvas, MODULE_NAME, Settings } from "./settings.js";
 import { detachAllFromToken, dismountDropAll, dismountDropTarget, mountUp } from "./tokenAttacherHelper.js";
 import { findTokenById, Flags, FlagScope, riderLock, riderX, riderY, socketAction, socketName } from "./utils.js";
 
@@ -15,9 +15,9 @@ export class MountManager {
      * @param {Object} hudToken - The token from which the button was clicked on the hud
      */
     static async mountUpHud(hudToken) {
-        const mountToken = canvas.tokens.controlled.find(t => t.id == hudToken._id);
+        const mountToken = getCanvas().tokens.controlled.find(t => t.id == hudToken._id);
 
-        for (const riderToken of canvas.tokens.controlled) {
+        for (const riderToken of getCanvas().tokens.controlled) {
             if (riderToken.id != mountToken.id) {
                 // check that the new rider isn't already a rider of a different mount
                 if (this.isaRider(riderToken.id) && !this.isRidersMount(riderToken.id, hudToken._id)) {
@@ -25,14 +25,14 @@ export class MountManager {
                         it is already mounted to '${findTokenById(riderToken.getFlag(FlagScope, Flags.Mount)).name}'.`);
                     // MOD 4535992 ADD CHECK
                     const mountTokenTmp = findTokenById(riderToken.getFlag(FlagScope, Flags.Mount));
-                    if(mountToken.id==mountTokenTmp.id){
+                    if(mountToken.id!=mountTokenTmp.id){
                         continue;
                     }
                 }
                 if (this.isAncestor(mountToken.id, riderToken.id)) {
                     continue;
                 }
-                let riders = mountToken.getFlag(FlagScope, Flags.Riders);
+                let riders:string[] = <string[]>mountToken.getFlag(FlagScope, Flags.Riders);
                 if (riders == undefined){
                   riders = [];
                 }
@@ -53,7 +53,7 @@ export class MountManager {
 
                 // shrink the rider if needed
                 if (riderToken.w >= mountToken.w || riderToken.h >= mountToken.h) {
-                    let grid = canvas.scene.data.grid;
+                    let grid = getCanvas().scene.data.grid;
                     let newWidth = (mountToken.w / 2) / grid;
                     let newHeight = (mountToken.h / 2) / grid;
                     await riderToken.update({
@@ -89,7 +89,7 @@ export class MountManager {
         const mountToken = findTokenById(hudToken._id);
         // CALL TOKEN ATTACHER   
         dismountDropAll(mountToken);
-        let riders = mountToken.getFlag(FlagScope, Flags.Riders);
+        let riders:string[] = <string[]>mountToken.getFlag(FlagScope, Flags.Riders);
         for (const riderId of riders) {
             const riderToken = findTokenById(riderId);
             // MOD 4535992
@@ -152,7 +152,7 @@ export class MountManager {
             if (riders.includes(riderTokenTmp.id)) { 
                 // shrink the rider if needed
                 if (riderTokenTmp.w >= mountToken.w || riderTokenTmp.h >= mountToken.h) {
-                    let grid = canvas.scene.data.grid;
+                    let grid = getCanvas().scene.data.grid;
                     let newWidth = (mountToken.w / 2) / grid;
                     let newHeight = (mountToken.h / 2) / grid;
                     await riderTokenTmp.update({
@@ -175,14 +175,14 @@ export class MountManager {
     static async restoreRiderSize(riderToken) {
         // MOD 4535992 ADD CHECK FOR RIDERS FLAGS
         const mountToken = findTokenById(riderToken.getFlag(FlagScope, Flags.Mount));
-        let riders = mountToken.getFlag(FlagScope, Flags.Riders);
+        let riders:string[] = <string[]>mountToken.getFlag(FlagScope, Flags.Riders);
         if (riders && riders.includes(riderToken.id)) {
             // let mount = findTokenById(riderToken);
             // let rider = findTokenById(mount.getFlag(FlagScope, Flags.Riders));
             let origsize = riderToken.getFlag(FlagScope, Flags.OrigSize);
             // MOD 4535992 REMOVED IF
             //if (riderToken.w < origsize.w || riderToken.h < origsize.h) {
-                let grid = canvas.scene.data.grid;
+                let grid = getCanvas().scene.data.grid;
                 let newWidth = riderToken.w < origsize.w ? origsize.w : riderToken.w;
                 let newHeight = riderToken.h < origsize.h ? origsize.h : riderToken.h;
 
@@ -235,7 +235,7 @@ export class MountManager {
      * Pops all rider tokens on top of their mount tokens (canvas wide)
      */
     static async popAllRiders() {
-        await canvas.tokens.placeables.forEach((token) => {
+        await getCanvas().tokens.placeables.forEach((token) => {
             if (this.isaMount(token.id) && !this.isaRider(token.id)) {
                 this.popRider(token.id);
             }
@@ -250,15 +250,15 @@ export class MountManager {
 
         if (callcount > 100) {
             error('Pop riders called too many times. Breaking all rides for safety.');
-            canvas.tokens.placeables.forEach(t => { 
+            getCanvas().tokens.placeables.forEach(t => { 
                 t.unsetFlag(MODULE_NAME, Flags.Riders); 
                 t.unsetFlag(MODULE_NAME, Flags.Mount); 
             });
             return true;
         }
         let mountToken = findTokenById(mountId);
-
-        for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
+        let riders:string[] = <string[]>mountToken.getFlag(FlagScope, Flags.Riders);
+        for (const riderId of riders) {
             const riderToken = findTokenById(riderId);
             if (riderToken) {
                 riderToken.zIndex = mountToken.zIndex + 10;
@@ -290,7 +290,7 @@ export class MountManager {
 
     //     if (callcount > 100) {
     //         error('Pop riders called too many times. Breaking all rides for safety.');
-    //         canvas.tokens.placeables.forEach(t => { t.unsetFlag(MODULE_NAME, 'riders'); t.unsetFlag(MODULE_NAME, 'mount'); });
+    //         getCanvas().tokens.placeables.forEach(t => { t.unsetFlag(MODULE_NAME, 'riders'); t.unsetFlag(MODULE_NAME, 'mount'); });
     //         return true;
     //     }
     //     let mountToken = findTokenById(mountId);
@@ -331,7 +331,7 @@ export class MountManager {
     //         };
 
     //         if (!riderToken.getFlag(FlagScope, Flags.MountMove)) {
-    //             if (!canvas.tokens.controlled.map(t => t.id).includes(riderToken.getFlag(FlagScope, Flags.Mount))) {
+    //             if (!getCanvas().tokens.controlled.map(t => t.id).includes(riderToken.getFlag(FlagScope, Flags.Mount))) {
     //                 switch (Settings.getRiderLock()) {
     //                     case riderLock.NoLock:
     //                         break;
@@ -393,80 +393,82 @@ export class MountManager {
             const riderToken = findTokenById(tokenId);
             const mountToken = findTokenById(riderToken.getFlag(FlagScope, Flags.Mount));
             // MOD 4535992 ADD CHECK FOR RIDERS FLAGS
-            let riders = mountToken.getFlag(FlagScope, Flags.Riders);
-            if (riders && riders.includes(riderToken.id)) {
-                // shrink the rider if needed
-                if (riderToken.w >= mountToken.w || riderToken.h >= mountToken.h) {
-                    let grid = canvas.scene.data.grid;
-                    let newWidth = (mountToken.w / 2) / grid;
-                    let newHeight = (mountToken.h / 2) / grid;
-                    await riderToken.update({
-                        width: newWidth,
-                        height: newHeight,
-                    });
-                    riderToken.zIndex = mountToken.zIndex + 10;
+            if( mountToken){
+                let riders:string[] = <string[]>mountToken.getFlag(FlagScope, Flags.Riders);
+                if (riders && riders.includes(riderToken.id)) {
+                    // shrink the rider if needed
+                    if (riderToken.w >= mountToken.w || riderToken.h >= mountToken.h) {
+                        let grid = getCanvas().scene.data.grid;
+                        let newWidth = (mountToken.w / 2) / grid;
+                        let newHeight = (mountToken.h / 2) / grid;
+                        await riderToken.update({
+                            width: newWidth,
+                            height: newHeight,
+                        });
+                        riderToken.zIndex = mountToken.zIndex + 10;
+                    }
+                    // MOD 4535992 SET UP A OFFSET MORE EASY TO SEE IF MORE TOKEN ON THE SAME MOUNT
+                    // let riders = mountToken.getFlag(FlagScope, Flags.Riders);
+                    // let index = riders.indexOf(riderToken.id); // 1
+                    // let offsetM = index;
+                    // if(!updateData){
+                    //     updateData = {
+                    //         x: riderToken.x, 
+                    //         y: riderToken.y 
+                    //     };
+                    // }
+
+                    // const mountLocation = { x: mountToken.x, y: mountToken.y };
+                    // const offset = { x: mountLocation.x - riderToken.x, y: mountLocation.y - riderToken.y };
+                    // const rotation = Settings.getRiderRotate() ? updateData.rotation : riderToken.data.rotation;
+                    
+                    // let mount = mountToken;//targets[0];
+                    // let newCoords = {
+                    //     x:riderToken.x, 
+                    //     y:riderToken.y
+                    // };
+                    // if(mount.x+mount.w-riderToken.w < riderToken.x){
+                    //     newCoords.x = mount.x+mount.w-riderToken.w;
+                    // }
+                    // else if(mount.x > riderToken.x){
+                    //     newCoords.x = mount.x;
+                    // }
+                    // if(mount.y+mount.h-riderToken.h < riderToken.y){
+                    //     newCoords.y = mount.y+mount.h-riderToken.h;
+                    // }
+                    // else if(mount.y > riderToken.y){
+                    //     newCoords.y = mount.y;
+                    // }
+                    // let newX = newCoords.x;
+                    // let newY = newCoords.y;
+
+                    // await riderToken.update({
+                    //     x: newX === undefined ? mountLocation.x - offset.x : newX - offset.x,
+                    //     y: newY === undefined ? mountLocation.y - offset.y : newY - offset.y,
+                    //     rotation: rotation
+                    // });
+                    // riderToken.zIndex = mountToken.zIndex + 10;
+                    // END MOD 4535992 SET UP OFFSET MORE EASY TO SEE IF MORE TOKEN ON THE SAME MOUNT
+
+                    // MOD 4535992 REMOVED
+
+                    // updateData.x = (updateData.x !== undefined ? updateData.x : mountToken.x);
+                    // updateData.y = (updateData.y !== undefined ? updateData.y : mountToken.y);
+                    // updateData.rotation = updateData.rotation !== undefined ? updateData.rotation : mountToken.data.rotation;
+
+                    // game.socket['emit'](socketName, {
+                    //     mode: socketAction.UpdateToken,
+                    //     riderId: riderToken.id,
+                    //     // updateData: updateData
+                    //     // mountId: mountToken.id,
+                    //     // x: updateData.x - offset.x,
+                    //     // y: updateData.y - offset.y,
+                    //     x: newX - offset.x,
+                    //     y: newY - offset.y,
+                    //     rotation: rotation
+                    // });
+                    
                 }
-                // MOD 4535992 SET UP A OFFSET MORE EASY TO SEE IF MORE TOKEN ON THE SAME MOUNT
-                // let riders = mountToken.getFlag(FlagScope, Flags.Riders);
-                // let index = riders.indexOf(riderToken.id); // 1
-                // let offsetM = index;
-                // if(!updateData){
-                //     updateData = {
-                //         x: riderToken.x, 
-                //         y: riderToken.y 
-                //     };
-                // }
-
-                // const mountLocation = { x: mountToken.x, y: mountToken.y };
-                // const offset = { x: mountLocation.x - riderToken.x, y: mountLocation.y - riderToken.y };
-                // const rotation = Settings.getRiderRotate() ? updateData.rotation : riderToken.data.rotation;
-                
-                // let mount = mountToken;//targets[0];
-                // let newCoords = {
-                //     x:riderToken.x, 
-                //     y:riderToken.y
-                // };
-                // if(mount.x+mount.w-riderToken.w < riderToken.x){
-                //     newCoords.x = mount.x+mount.w-riderToken.w;
-                // }
-                // else if(mount.x > riderToken.x){
-                //     newCoords.x = mount.x;
-                // }
-                // if(mount.y+mount.h-riderToken.h < riderToken.y){
-                //     newCoords.y = mount.y+mount.h-riderToken.h;
-                // }
-                // else if(mount.y > riderToken.y){
-                //     newCoords.y = mount.y;
-                // }
-                // let newX = newCoords.x;
-                // let newY = newCoords.y;
-
-                // await riderToken.update({
-                //     x: newX === undefined ? mountLocation.x - offset.x : newX - offset.x,
-                //     y: newY === undefined ? mountLocation.y - offset.y : newY - offset.y,
-                //     rotation: rotation
-                // });
-                // riderToken.zIndex = mountToken.zIndex + 10;
-                // END MOD 4535992 SET UP OFFSET MORE EASY TO SEE IF MORE TOKEN ON THE SAME MOUNT
-
-                // MOD 4535992 REMOVED
-
-                // updateData.x = (updateData.x !== undefined ? updateData.x : mountToken.x);
-                // updateData.y = (updateData.y !== undefined ? updateData.y : mountToken.y);
-                // updateData.rotation = updateData.rotation !== undefined ? updateData.rotation : mountToken.data.rotation;
-
-                // game.socket['emit'](socketName, {
-                //     mode: socketAction.UpdateToken,
-                //     riderId: riderToken.id,
-                //     // updateData: updateData
-                //     // mountId: mountToken.id,
-                //     // x: updateData.x - offset.x,
-                //     // y: updateData.y - offset.y,
-                //     x: newX - offset.x,
-                //     y: newY - offset.y,
-                //     rotation: rotation
-                // });
-                
             }
         }
     }
@@ -482,34 +484,36 @@ export class MountManager {
             const riderToken = findTokenById(tokenId);
             const mountToken = findTokenById(riderToken.getFlag(FlagScope, Flags.Mount));
             // MOD 4535992 ADD CHECK FOR RIDERS FLAGS
-            let riders = mountToken.getFlag(FlagScope, Flags.Riders);
-            if (riders && riders.includes(riderToken.id)) {
-                const newLocation = {
-                    x: updateData.x !== undefined ? updateData.x : riderToken.x,
-                    y: updateData.y !== undefined ? updateData.y : riderToken.y
-                };
+            if(mountToken){
+                let riders:any = mountToken.getFlag(FlagScope, Flags.Riders);
+                if (riders && riders.includes(riderToken.id)) {
+                    const newLocation = {
+                        x: updateData.x !== undefined ? updateData.x : riderToken.x,
+                        y: updateData.y !== undefined ? updateData.y : riderToken.y
+                    };
 
-                if (!riderToken.getFlag(FlagScope, Flags.MountMove)) {
-                    if (!canvas.tokens.controlled.map(t => t.id).includes(riderToken.getFlag(FlagScope, Flags.Mount))) {
-                        switch (Settings.getRiderLock()) {
-                            case riderLock.NoLock:
-                                break;
-                            case riderLock.LockLocation:
-                                delete updateData.x;
-                                delete updateData.y;
-                                warn(`${riderToken.name} is currently locked to a mount`);
-                                break;
-                            case riderLock.LockBounds:
-                                if (!this.isInsideTokenBounds(newLocation, mountToken)) {
+                    if (!riderToken.getFlag(FlagScope, Flags.MountMove)) {
+                        if (!getCanvas().tokens.controlled.map(t => t.id).includes(<string>riderToken.getFlag(FlagScope, Flags.Mount))) {
+                            switch (Settings.getRiderLock()) {
+                                case riderLock.NoLock:
+                                    break;
+                                case riderLock.LockLocation:
                                     delete updateData.x;
                                     delete updateData.y;
-                                    warn(`${riderToken.name} is currently locked inside a mount`);
-                                }
-                                break;
-                            case riderLock.Dismount:
-                                if (!this.isInsideTokenBounds(newLocation, mountToken)) {
-                                    this.doRemoveMount(riderToken, mountToken);
-                                }
+                                    warn(`${riderToken.name} is currently locked to a mount`);
+                                    break;
+                                case riderLock.LockBounds:
+                                    if (!this.isInsideTokenBounds(newLocation, mountToken)) {
+                                        delete updateData.x;
+                                        delete updateData.y;
+                                        warn(`${riderToken.name} is currently locked inside a mount`);
+                                    }
+                                    break;
+                                case riderLock.Dismount:
+                                    if (!this.isInsideTokenBounds(newLocation, mountToken)) {
+                                        this.doRemoveMount(riderToken, mountToken);
+                                    }
+                            }
                         }
                     }
                 }
@@ -568,8 +572,11 @@ export class MountManager {
     static isaMount(tokenId) {
         let token = findTokenById(tokenId);
         if (token) {
-            return token.getFlag(FlagScope, Flags.Riders) != undefined && token.getFlag(FlagScope, Flags.Riders).length > 0;
-        } else return false;
+            let riders:string[] = <string[]>token.getFlag(FlagScope, Flags.Riders);
+            return token.getFlag(FlagScope, Flags.Riders) != undefined && riders.length > 0;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -580,7 +587,9 @@ export class MountManager {
         let token = findTokenById(tokenId);
         if (token) {
             return token.getFlag(MODULE_NAME, 'mount') != undefined;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -671,7 +680,7 @@ export class MountManager {
     //     // };
 
     //     // if (!riderToken.getFlag(FlagScope, Flags.MountMove)) {
-    //     //     if (!canvas.tokens.controlled.map(t => t.id).includes(riderToken.getFlag(FlagScope, Flags.Mount))) {
+    //     //     if (!getCanvas().tokens.controlled.map(t => t.id).includes(riderToken.getFlag(FlagScope, Flags.Mount))) {
     //     //         switch (Settings.getRiderLock()) {
     //     //             case riderLock.NoLock:
     //     //                 break;

@@ -16,8 +16,7 @@ This is just a variant code of the wonderful work of brunhine hope to see you ba
 
 ## Known issue
 
-- [SOLVED version 3.1.3] When mount token of the same size (medium for example) and the number of riders is more than 1, when you de-mount the riders all togheter the last one remain "small"
--  [SOLVED version 3.1.3] When mount token of the same size (medium for example), if you try to drop the single rider (rigth click on the rider not the mount)m the rider turn back to normal but hide the mount token
+
 
 # Installation
 It's always better and easier to install modules through in in app browser. Just search for "Mount Up!"
@@ -97,8 +96,9 @@ Any issues, bugs, or feature requests are always welcome to be reported directly
 **Mount Up!** is a module for [Foundry VTT](https://foundryvtt.com/  "Foundry VTT") by Jeremiah Altepeter and is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
 
 This work is licensed under Foundry Virtual Tabletop [EULA - Limited License Agreement for module development v 0.1.6](https://foundryvtt.com/article/license/).
+
 ## Acknowledgements
 
-Bootstrapped with Nick East's [create-foundry-project](https://gitlab.com/foundry-projects/foundry-pc/create-foundry-project).
+Bootstrapped with League of Extraordinary FoundryVTT Developers  [foundry-vtt-types](https://github.com/League-of-Foundry-Developers/foundry-vtt-types).
 
 Mad props to the 'League of Extraordinary FoundryVTT Developers' community which helped me figure out a lot.

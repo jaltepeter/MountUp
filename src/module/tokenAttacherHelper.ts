@@ -33,34 +33,33 @@ export const mountUp = async function(riderToken, mountToken){
 			x: newCoords.x, 
 			y: newCoords.y
 		});
-		ui['chat'].processMessage(`I mount this ${targets[0].name}`);
-		// try{
-			// await tokenAttacher.attachElementToToken(token, targets[0], true);
-			// await tokenAttacher.setElementsLockStatus(token, false, true);
-			await window['tokenAttacher'].attachElementToToken(riderToken, targets[0], true);
-			await window['tokenAttacher'].setElementsLockStatus(riderToken, false, true);
-		// }catch(e){
-		// 	warn(e.message);
-		// 	for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
-		// 		const riderToken = findTokenById(riderId);
-		// 		await window['tokenAttacher'].detachAllElementsFromToken(riderToken, true);
-		// 	}			
-		// }
+		// ui.chat.processMessage(`I mount this ${targets[0].name}`);
+		let chatData = {
+			type: 4,
+			user: game.user,
+			speaker: { alias: "Mount Up" },
+			content: `I mount this ${targets[0].name}`,
+			whisper: [game.users.find((u) => u.isGM && u.active).id, game.user]
+		};
+		ChatMessage.create({},chatData);
+
+		await window['tokenAttacher'].attachElementToToken(riderToken, targets[0], true);
+		await window['tokenAttacher'].setElementsLockStatus(riderToken, false, true);
 	}
 }
 
 export const dismountDropAll = async function(mountToken){
-	// try{
-		// tokenAttacher.detachAllElementsFromToken(mountToken, true);
-		await window['tokenAttacher'].detachAllElementsFromToken(mountToken, true);
-		ui['chat'].processMessage(`Everyone and everything get off!`);
-	// }catch(e){
-	// 	warn(e.message);
-	// 	for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
-	// 		const riderToken = findTokenById(riderId);
-	// 		await window['tokenAttacher'].detachAllElementsFromToken(riderToken, true);
-	// 	}
-	// }
+	// tokenAttacher.detachAllElementsFromToken(mountToken, true);
+	await window['tokenAttacher'].detachAllElementsFromToken(mountToken, true);
+	//ui.chat.processMessage(`Everyone and everything get off!`);
+	let chatData = {
+		type: 4,
+		user: game.user,
+		speaker: { alias: "Mount Up" },
+		content: `Everyone and everything get off!`,
+		whisper: [game.users.find((u) => u.isGM && u.active).id, game.user]
+	};
+	ChatMessage.create({},chatData);
 }
 
 export const dismountDropTarget = async function(mountToken, target){
@@ -69,31 +68,34 @@ export const dismountDropTarget = async function(mountToken, target){
 		if(targets.length > 1){
 			return ui.notifications.error("Can't follow more then one token!");
 		}
-		// try{
-			//await tokenAttacher.detachElementsFromToken(targets, token, true);
-			await window['tokenAttacher'].detachElementsFromToken(targets, mountToken, true);
-		// }catch(e){
-		// 	warn(e.message);
-		// 	for (const riderId of mountToken.getFlag(FlagScope, Flags.Riders)) {
-		// 		const riderToken = findTokenById(riderId);
-		// 		await window['tokenAttacher'].detachAllElementsFromToken(riderToken, true);
-		// 	}
-		// }
-
+		//await tokenAttacher.detachElementsFromToken(targets, token, true);
+		await window['tokenAttacher'].detachElementsFromToken(targets, mountToken, true);
 		//dismountDropAll(token);
 		for (let i = 0; i < targets.length; i++) {
 			const targ = targets[i];
-			ui['chat'].processMessage(`Get off ${targ.name}!`);
+			//ui.chat.processMessage(`Get off ${targ.name}!`);
+			let chatData = {
+				type: 4,
+				user: game.user,
+				speaker: { alias: "Mount Up" },
+				content: `Get off ${targ.name}!`,
+				whisper: [game.users.find((u) => u.isGM && u.active).id, game.user]
+			};
+			ChatMessage.create({},chatData);
     	}
 	}
 }
 
 export const detachAllFromToken = async function(mountToken){
-	// try{
 	// tokenAttacher.detachAllElementsFromToken(mountToken, true);
 	await window['tokenAttacher'].detachAllElementsFromToken(mountToken, true);
-	ui['chat'].processMessage(`Everyone and everything get off!`);
-	// }catch(e){
-	// 	warn(e.message);
-	// }
+	//ui.chat.processMessage(`Everyone and everything get off!`);
+	let chatData = {
+		type: 4,
+		user: game.user,
+		speaker: { alias: "Mount Up" },
+		content: `Everyone and everything get off!`,
+		whisper: [game.users.find((u) => u.isGM && u.active).id, game.user]
+	};
+	ChatMessage.create({},chatData);
 }

@@ -9,19 +9,36 @@ export class SettingsForm extends FormApplication {
     /**
     * Default Options for this FormApplication
     */
-    static get defaultOptions() {
+     static get defaultOptions():any {
         return mergeObject(super.defaultOptions, {
             id: "mountup-settings-form",
             title: "Mount Up! - Settings",
-            //template: "./modules/mountup/templates/settings.html",
             template: `./modules/${MODULE_NAME}/templates/settings.html`,
             classes: ["sheet"],
             width: 500,
-            closeOnSubmit: true
+            closeOnSubmit: true,
+
+            // TO CHECK
+
+            submitOnChange: false,
+            submitOnClose: false,
+            editable: true,
+
+            baseApplication: null,
+            height: null,
+            top: null,
+            left: null,
+            popOut: false,
+            minimizable: true,
+            resizable: true,
+            dragDrop: [],
+            tabs: [],
+            filters: [],
+            scrollY: [],
         });
     }
 
-    getData() {
+    getData():any {
         const data = {
             icons: this.getSelectList(iconOptions, Settings.getIcon()),
             hudColumn: this.getSelectList(hudColumns, Settings.getHudColumn()),
