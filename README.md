@@ -18,7 +18,7 @@ This is just a variant code of the wonderful work of brunhine hope to see you ba
 
 ## Known issue
 
-
+- There is a incompatibility con the [Token Factions](https://github.com/p4535992/token-factions ) when i "Mount Up" a faction token the PIXI Graphic go in conlict and launch a exception is not a grave exception but is annoying
 
 # Installation
 It's always better and easier to install modules through in in app browser. Just search for "Mount Up!"
