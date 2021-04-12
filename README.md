@@ -5,9 +5,6 @@
 # Mount Up!
 **Mount Up!** is a module for [Foundry VTT](https://foundryvtt.com/  "Foundry VTT") that allows tokens to carry or be carried by other tokens. This is completely system agnostic, and fully customizable to fit right into your game.
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/brunhine/mountup?style=flat-square)
-![GitHub latest version downloads](https://img.shields.io/github/downloads/brunhine/mountup/latest/total?style=flat-square)
-
 [![Twitter Follow](https://img.shields.io/badge/follow-%40Brunhine-blue.svg?style=flat-square&logo=twitter)](https://twitter.com/brunhine)
 [![Become a Patron](https://img.shields.io/badge/support-patreon-orange.svg?style=flat-square&logo=patreon)](https://www.patreon.com/brunhine)
 [![Donate via Ko-Fi](https://img.shields.io/badge/support-ko--fi-ff4646?style=flat-square&logo=ko-fi)](https://ko-fi.com/brunhine)
@@ -18,7 +15,7 @@ This is just a variant code of the wonderful work of brunhine hope to see you ba
 
 ## Known issue
 
-- There is a incompatibility con the [Token Factions](https://github.com/p4535992/token-factions ) when i "Mount Up" a faction token the PIXI Graphic go in conlict and launch a exception is not a grave exception but is annoying
+- There is a incompatibility with the [Token Factions](https://github.com/p4535992/token-factions ) when i "Mount Up" a faction token the PIXI Graphic go in conlict and launch a exception is not a grave exception but is annoying
 
 # Installation
 It's always better and easier to install modules through in in app browser. Just search for "Mount Up!"
