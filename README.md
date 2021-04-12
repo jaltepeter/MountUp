@@ -11,7 +11,7 @@
 
 # NOTE
 
-This is just a variant code of the wonderful work of brunhine hope to see you back, (try to make it work for 0.7.9), but i failed there is to many issues, i try  make some strange patches, but anyone more skilled then me is welcome take charge of this.
+**This is just a variant code of the wonderful work of brunhine hope to see you back, (try to make it work for 0.7.9), but i failed there is to many issues, i will try to  make some strange patches, but anyone more skilled then me is welcome take charge of this.**
 
 ## Known issue
 

@@ -1,3 +1,8 @@
+# 3.1.5
+
+- Bug fix about a error while trying to open the module settings (TODO SOME CHECK WITH TYPESCRIPT)
+- Update lib-wrapper
+
 # 3.1.4
 
 - Bootstrapped with League of Extraordinary FoundryVTT Developers  [foundry-vtt-types](https://github.com/League-of-Foundry-Developers/foundry-vtt-types)

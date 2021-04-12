@@ -3,7 +3,7 @@
 	"title": "FoundryVTT Mount Up!",
 	"description": "Allows tokens to carry or be carried by other tokens. This is completely system agnostic, and fully customizable to fit right into your game.",
 	"author": "Brunhine and p4535992",
-	"version": "3.1.4",
+	"version": "3.1.5",
   "type": "module",
   "socket": true,
   "includes": [
@@ -54,7 +54,7 @@
   ],
   "url": "https://github.com/p4535992/MountUp",
   "manifest": "https://raw.githubusercontent.com/p4535992/MountUp/master/src/module.json",
-  "download": "https://raw.githubusercontent.com/p4535992/MountUp/master/package/foundryvtt-mountup-v3.1.4.zip",
+  "download": "https://raw.githubusercontent.com/p4535992/MountUp/master/package/foundryvtt-mountup-v3.1.5.zip",
   "minimumCoreVersion": "0.7.6",
   "compatibleCoreVersion": "0.7.9",
   "changelog": "https://raw.githubusercontent.com/p4535992/MountUp/master/changelog.md",

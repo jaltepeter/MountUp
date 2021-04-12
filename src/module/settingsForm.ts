@@ -10,6 +10,7 @@ export class SettingsForm extends FormApplication {
     * Default Options for this FormApplication
     */
      static get defaultOptions():any {
+        //@ts-ignore
         return mergeObject(super.defaultOptions, {
             id: "mountup-settings-form",
             title: "Mount Up! - Settings",
@@ -18,8 +19,8 @@ export class SettingsForm extends FormApplication {
             width: 500,
             closeOnSubmit: true,
 
-            // TO CHECK
-
+            // TODO TO CHECK TYPESCRIPT IS WRONG ?
+            /*
             submitOnChange: false,
             submitOnClose: false,
             editable: true,
@@ -35,6 +36,7 @@ export class SettingsForm extends FormApplication {
             tabs: [],
             filters: [],
             scrollY: [],
+            */
         });
     }
 
@@ -77,9 +79,9 @@ export class SettingsForm extends FormApplication {
         super.activateListeners(html);
     }
 
-    getSelectList(array, selected) {
+    getSelectList(myselectslist, selected) {
         let options = [];
-        array.forEach((x, i) => {
+        Object.keys(myselectslist).forEach((x, i) => {
             options.push({ value: x, selected: i == selected });
         });
         return options;
