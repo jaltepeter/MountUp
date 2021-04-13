@@ -1,6 +1,6 @@
 import { warn } from "../foundryvtt-mountup.js";
 import { MountManager } from "./mountManager.js";
-import { MODULE_NAME, Settings } from "./settings.js";
+import { getCanvas, MODULE_NAME, Settings } from "./settings.js";
 import { findTokenById, Flags, FlagScope } from "./utils.js";
 
 /**
@@ -17,15 +17,15 @@ export class MountHud {
      */
     static async renderMountHud(app, html, hudToken) {
 
-        let mount = canvas.tokens.controlled.find(t => t.id == hudToken._id);
+        let mount = getCanvas().tokens.controlled.find(t => t.id == hudToken._id);
 
         // if only one token is selected
-        if (canvas.tokens.controlled.length == 1) {
+        if (getCanvas().tokens.controlled.length == 1) {
             // if the selected token is a mount
-            if (MountManager.isaMount(canvas.tokens.controlled[0].id)) {
+            if (MountManager.isaMount(getCanvas().tokens.controlled[0].id)) {
                 this.addRemoveRidersButton(html, hudToken);
             }
-            if (MountManager.isaRider(canvas.tokens.controlled[0].id)) {
+            if (MountManager.isaRider(getCanvas().tokens.controlled[0].id)) {
                 this.addDismountButton(html, hudToken);
             }
         } else {
@@ -33,11 +33,11 @@ export class MountHud {
             this.addMountButton(html, hudToken);
         }
 
-        // if (canvas.tokens.controlled.length == 1 && MountManager.isaMount(mount.id)) {
+        // if (getCanvas().tokens.controlled.length == 1 && MountManager.isaMount(mount.id)) {
         //     this.addButton(html, hudToken, true);
-        // } else if (canvas.tokens.controlled.length >= 2) {
+        // } else if (getCanvas().tokens.controlled.length >= 2) {
         //     this.addMountButton(html, hudToken);
-        //     // let rider = canvas.tokens.controlled.find(t => t.id != mount.id);
+        //     // let rider = getCanvas().tokens.controlled.find(t => t.id != mount.id);
 
         //     // if (MountManager.isRidersMount(rider.id, mount.id)) {
         //     //     this.addButton(html, data, true);
@@ -54,12 +54,12 @@ export class MountHud {
 
     static addMountButton(html, hudToken) {
 
-        let tokenNames = canvas.tokens.controlled.filter(token => token.id != hudToken._id).map(token => { return `'${token.name}'`; });
+        let tokenNames = getCanvas().tokens.controlled.filter(token => token.id != hudToken._id).map(token => { return `'${token.name}'`; });
 
         const button = this.buildButton(html, `Mount ${tokenNames.join(', ').replace(/, ([^,]*)$/, ' and $1')} on to ${hudToken.name}`);
 
         button.find('i').on("click", async (ev) => {
-            MountManager.mountUp(hudToken);
+            MountManager.mountUpHud(hudToken);
         });
     }
 
@@ -114,7 +114,7 @@ export class MountHud {
         }
 
         button.find('i').on("click", async (ev) => {
-            if (MountManager.mountUp(data)) {
+            if (MountManager.mountUpHud(data)) {
                 if (hasSlash) {
                     this.removeSlash(button);
                 } else {

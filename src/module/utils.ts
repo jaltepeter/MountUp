@@ -1,4 +1,4 @@
-import { MODULE_NAME } from "./settings.js";
+import { getCanvas, MODULE_NAME } from "./settings.js";
 
 /**
  * Flag Info
@@ -98,14 +98,14 @@ export function firstGM() {
  * Returns the first token object from the canvas based on the ID value
  * @param {String} tokenId - The ID of the token to look for
  */
-export function findTokenById(tokenId) {
-    return canvas.tokens.placeables.find(t => t.id == tokenId);
+export function findTokenById(tokenId):Token {
+    return getCanvas().tokens.placeables.find(t => t.id == tokenId);
 }
 
 /**
  * Returns the first token object from the canvas based on the name value (uses a lowercase search)
  * @param {String} tokenName - The name of the token to look for
  */
-export function findTokenByName(tokenName) {
-    return canvas.tokens.placeables.find(t => t.name.toLowerCase() == tokenName.toLowerCase());
+export function findTokenByName(tokenName):Token {
+    return getCanvas().tokens.placeables.find(t => t.name.toLowerCase() == tokenName.toLowerCase());
 }

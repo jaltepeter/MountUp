@@ -6,24 +6,25 @@ import { dismount, dropRider, mount } from './macros.js';
 import { MountHud } from "./mountHud.js";
 import { MountManager } from "./mountManager.js";
 import { Settings } from "./settings.js";
-import { findTokenById, socketAction, socketName } from "./utils.js";
+import { findTokenById, Flags, FlagScope, socketAction, socketName } from "./utils.js";
+import { dismountDropAll, dismountDropTarget } from "./tokenAttacherHelper";
 
 export let readyHooks = async () => {
 
   // Settings.registerSettings();
 
-  game.socket['on'](socketName, data => {
-      if (game.user.isGM) {
-          switch (data.mode) {
-              case socketAction.UpdateToken:
-                  findTokenById(data.riderId).update({
-                      x: data.x,
-                      y: data.y,
-                      rotation: data.rotation
-                  });
-          }
-      }
-  });
+//   game.socket['on'](socketName, data => {
+//       if (game.user.isGM) {
+//           switch (data.mode) {
+//               case socketAction.UpdateToken:
+//                   findTokenById(data.riderId).update({
+//                       x: data.x,
+//                       y: data.y,
+//                       rotation: data.rotation
+//                   });
+//           }
+//       }
+//   });
 
   // window['MountUp'] = {
   window[MODULE_NAME] = {
@@ -52,24 +53,32 @@ export let initHooks = () => {
 
   Hooks.on('preUpdateToken', async (scene, token, updateData) => {
       if (updateData.hasOwnProperty("x") || updateData.hasOwnProperty("y") || updateData.hasOwnProperty("rotation")) {
-          //await findTokenById(token._id).setFlag(FlagScope, Flags.MountMove, true);
+        //await findTokenById(token._id).setFlag(FlagScope, Flags.MountMove, true);
 
-          // NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
-          // await MountManager.doTokenUpdate(token._id, updateData);
+        // NO NEED ANYMORE TOKEN ATTACHER DO THE WORK
+        // await MountManager.doTokenUpdate(token._id, updateData);
 
-          await MountManager.doTokenUpdateOnlyCheckBoundHandler(token._id, updateData);
+        await MountManager.doTokenUpdateOnlyCheckBoundHandler(token._id, updateData);
+        if (MountManager.isaRider(token._id)) {
+            await MountManager.doPostTokenUpdate(token._id, updateData);
+        }
       }
   });
 
   // REMOVED ?????
 
-  Hooks.on('canvasReady', () => {
-     MountManager.popAllRiders();
+  Hooks.on('canvasReady', async () => {
+    MountManager.popAllRiders();
   });
 
   Hooks.on('updateToken', async (scene, token, updateData) => {
-      if (MountManager.isaMount(updateData._id)) {
-          MountManager.popRider(updateData._id);
+      if (updateData.hasOwnProperty("x") || updateData.hasOwnProperty("y") || updateData.hasOwnProperty("rotation")) {      
+        if (MountManager.isaMount(updateData._id)) {
+            MountManager.popRider(updateData._id);
+        }
+        if (MountManager.isaRider(updateData._id)) {
+            await MountManager.doPostTokenUpdate(updateData._id, updateData);
+        }
       }
   });
 
@@ -81,7 +90,7 @@ export let initHooks = () => {
 
   Hooks.on('preDeleteToken', async (scene, token) => {
       await MountManager.handleTokenDelete(token._id);
-      return true;
+      //return true;
   });
 
 }

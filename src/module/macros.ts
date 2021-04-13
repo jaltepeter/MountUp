@@ -38,7 +38,8 @@ export function dismount(riderNameOrId) {
 
     if (rider) {
         if (MountManager.isaRider(rider.id)) {
-            MountManager.doRemoveMount(rider, findTokenById(rider.getFlag(FlagScope, Flags.Mount)));
+            let mountToken = findTokenById(rider.getFlag(FlagScope, Flags.Mount));
+            MountManager.doRemoveMount(rider, mountToken);
         } else {
           error(`Token '${riderName}' is not a rider`);
         }
@@ -57,7 +58,8 @@ export function dropRider(mountNameOrId) {
 
     if (mount) {
         if (MountManager.isaMount(mount.id)) {
-            MountManager.doRemoveMount(findTokenById(mount.getFlag(FlagScope, Flags.Riders)), mount); // TODO Flag.Rider ???
+            let riderToken = findTokenById(mount.getFlag(FlagScope, Flags.Riders));
+            MountManager.doRemoveMount(riderToken, mount); // TODO Flag.Rider ???
         } else {
           error(`Token '${mountName}' is not a mount`);
         }

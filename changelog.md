@@ -1,3 +1,26 @@
+# 3.1.5
+
+- Bug fix about a error while trying to open the module settings (TODO SOME CHECK WITH TYPESCRIPT)
+- Update lib-wrapper
+
+# 3.1.4
+
+- Bootstrapped with League of Extraordinary FoundryVTT Developers  [foundry-vtt-types](https://github.com/League-of-Foundry-Developers/foundry-vtt-types)
+
+# 3.1.3
+
+- Many bug fixes and patches, but still remain some
+- Bug fix - When mount token of the same size (medium for example) and the number of riders is more than 1, when you de-mount the riders all togheter the last one remain "small"
+- Bug fix - When mount token of the same size (medium for example), if you try to drop the single rider (rigth click on the rider not the mount)m the rider turn back to normal but hide the mount token
+
+# 3.1.2
+
+- Many bug fixes and patches, but still remain some
+
+# 3.1.1
+
+- Forgot some flags to set
+
 # 3.1.0
 
 - Converted to typescript

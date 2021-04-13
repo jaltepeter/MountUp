@@ -6,6 +6,22 @@ export const MODULE_NAME = 'foundryvtt-mountup';
 //export const modName = 'Mount Up';
 // const mod = 'foundryvtt-mountup';
 
+/**
+ * Because typescript doesn’t know when in the lifecycle of foundry your code runs, we have to assume that the
+ * canvas is potentially not yet initialized, so it’s typed as declare let canvas: Canvas | {ready: false}.
+ * That’s why you get errors when you try to access properties on canvas other than ready.
+ * In order to get around that, you need to type guard canvas.
+ * Also be aware that this will become even more important in 0.8.x because a „no canvas“ mode is being introduced there.
+ * So you will need to deal with the fact that there might not be an initialized canvas at any point in time.
+ * @returns
+ */
+ export function getCanvas(): Canvas {
+    if (!(canvas instanceof Canvas) || !canvas.ready) {
+        throw new Error("Canvas Is Not Initialized");
+    }
+    return canvas;
+}
+
 export const registerSettings = function () {
 
   // game.settings.register(MODULE_NAME, "coloredEffectsEnabled", {
@@ -65,7 +81,7 @@ export const registerSettings = function () {
       scope: 'world',
       config: false,
       type: Boolean,
-      defualt: false
+      default: false
   });
 
   /** Where to place the rider horizontally on the mount */
@@ -73,7 +89,7 @@ export const registerSettings = function () {
       scope: 'world',
       config: false,
       type: Number,
-      defualt: 1,
+      default: 1,
       choices: riderXOptions
   });
 
@@ -82,7 +98,7 @@ export const registerSettings = function () {
       scope: 'world',
       config: false,
       type: Number,
-      defualt: 0,
+      default: 0,
       choices: riderYOptions
   });
 
@@ -131,24 +147,38 @@ export const registerSettings = function () {
 // }
 
 
-export const iconOptions = [
-    'Horse',
-    'People Carrying',
-    'Hands',
-    'Open Hand',
-    'Fist',
-    'Handshake'
-];
-export const hudColumns = ['Left', 'Right'];
-export const hudTopBottom = ['Top', 'Bottom'];
-export const riderXOptions = ['Left', 'Center', 'Right'];
-export const riderYOptions = ['Top', 'Center', 'Bottom'];
-export const riderLockOptions = [
-    MODULE_NAME+".settings.riderLock.noLock",
-    'Lock to location',
-    'Lock to mount bounds',
-    'Dismount when outside mount bounds'
-];
+export const iconOptions:Record<string, string> = {
+    'Horse':'Horse',
+    'People Carrying':'People Carrying',
+    'Hands':'Hands',
+    'Open Hand':'Open Hand',
+    'Fist':'Fist',
+    'Handshake':'Handshake'
+};
+export const hudColumns:Record<string, string> = {
+    'Left':'Left', 
+    'Right':'Right'
+};
+export const hudTopBottom:Record<string, string> = {
+    'Top':'Top', 
+    'Bottom':'Bottom'
+};
+export const riderXOptions:Record<string, string> = {
+    'Left':'Left', 
+    'Center':'Center', 
+    'Right':'Right'
+};
+export const riderYOptions:Record<string, string> = {
+    'Top':'Top', 
+    'Center':'Center', 
+    'Bottom':'Bottom'
+};
+export const riderLockOptions:Record<string, string> = {
+    "No Lock":MODULE_NAME+".settings.riderLock.noLock",
+    'Lock to location':'Lock to location',
+    'Lock to mount bounds':'Lock to mount bounds',
+    'Dismount when outside mount bounds':'Dismount when outside mount bounds'
+};
 
 /**
  * Provides functionality for interaction with module settings

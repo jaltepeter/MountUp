@@ -1,18 +1,21 @@
 ![logo](/img/ogMountUp.png)
 
+![](https://img.shields.io/badge/Foundry-v0.7.9-informational)
+
 # Mount Up!
 **Mount Up!** is a module for [Foundry VTT](https://foundryvtt.com/  "Foundry VTT") that allows tokens to carry or be carried by other tokens. This is completely system agnostic, and fully customizable to fit right into your game.
-
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/brunhine/mountup?style=flat-square)
-![GitHub latest version downloads](https://img.shields.io/github/downloads/brunhine/mountup/latest/total?style=flat-square)
 
 [![Twitter Follow](https://img.shields.io/badge/follow-%40Brunhine-blue.svg?style=flat-square&logo=twitter)](https://twitter.com/brunhine)
 [![Become a Patron](https://img.shields.io/badge/support-patreon-orange.svg?style=flat-square&logo=patreon)](https://www.patreon.com/brunhine)
 [![Donate via Ko-Fi](https://img.shields.io/badge/support-ko--fi-ff4646?style=flat-square&logo=ko-fi)](https://ko-fi.com/brunhine)
 
-## NOTE
+# NOTE
 
-This is just a upgrade of the wonderful work of brunhine, hope to see you back.
+**This is just a variant code of the wonderful work of brunhine hope to see you back, (try to make it work for 0.7.9), but i failed there is to many issues, i will try to  make some strange patches, but anyone more skilled then me is welcome take charge of this.**
+
+## Known issue
+
+- There is a incompatibility with the [Token Factions](https://github.com/p4535992/token-factions ) when i "Mount Up" a faction token the PIXI Graphic go in conlict and launch a exception is not a grave exception but is annoying
 
 # Installation
 It's always better and easier to install modules through in in app browser. Just search for "Mount Up!"
@@ -92,8 +95,9 @@ Any issues, bugs, or feature requests are always welcome to be reported directly
 **Mount Up!** is a module for [Foundry VTT](https://foundryvtt.com/  "Foundry VTT") by Jeremiah Altepeter and is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
 
 This work is licensed under Foundry Virtual Tabletop [EULA - Limited License Agreement for module development v 0.1.6](https://foundryvtt.com/article/license/).
+
 ## Acknowledgements
 
-Bootstrapped with Nick East's [create-foundry-project](https://gitlab.com/foundry-projects/foundry-pc/create-foundry-project).
+Bootstrapped with League of Extraordinary FoundryVTT Developers  [foundry-vtt-types](https://github.com/League-of-Foundry-Developers/foundry-vtt-types).
 
 Mad props to the 'League of Extraordinary FoundryVTT Developers' community which helped me figure out a lot.

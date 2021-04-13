@@ -9,19 +9,38 @@ export class SettingsForm extends FormApplication {
     /**
     * Default Options for this FormApplication
     */
-    static get defaultOptions() {
+     static get defaultOptions():any {
+        //@ts-ignore
         return mergeObject(super.defaultOptions, {
             id: "mountup-settings-form",
             title: "Mount Up! - Settings",
-            //template: "./modules/mountup/templates/settings.html",
             template: `./modules/${MODULE_NAME}/templates/settings.html`,
             classes: ["sheet"],
             width: 500,
-            closeOnSubmit: true
+            closeOnSubmit: true,
+
+            // TODO TO CHECK TYPESCRIPT IS WRONG ?
+            /*
+            submitOnChange: false,
+            submitOnClose: false,
+            editable: true,
+
+            baseApplication: null,
+            height: null,
+            top: null,
+            left: null,
+            popOut: false,
+            minimizable: true,
+            resizable: true,
+            dragDrop: [],
+            tabs: [],
+            filters: [],
+            scrollY: [],
+            */
         });
     }
 
-    getData() {
+    getData():any {
         const data = {
             icons: this.getSelectList(iconOptions, Settings.getIcon()),
             hudColumn: this.getSelectList(hudColumns, Settings.getHudColumn()),
@@ -60,9 +79,9 @@ export class SettingsForm extends FormApplication {
         super.activateListeners(html);
     }
 
-    getSelectList(array, selected) {
+    getSelectList(myselectslist, selected) {
         let options = [];
-        array.forEach((x, i) => {
+        Object.keys(myselectslist).forEach((x, i) => {
             options.push({ value: x, selected: i == selected });
         });
         return options;
